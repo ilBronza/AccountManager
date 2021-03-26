@@ -4,9 +4,9 @@
     "license": "MIT",
     "authors": [
         {
-            "name": "author name",
-            "email": "author email",
-            "homepage": "author homepage"
+            "name": "Davide Bronzini",
+            "email": "davide_bronzini@hotmail.com",
+            "homepage": "https://www.sistema.srl"
         }
     ],
     "homepage": "https://github.com/ilbronza/accountmanager",
