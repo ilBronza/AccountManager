@@ -2,6 +2,7 @@
 
 namespace IlBronza\AccountManager\Http\Controllers;
 
+use App\Http\Controllers\Controller;
 use Auth;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Hash;
@@ -21,11 +22,16 @@ class EditAccountController extends CRUD
                 'password_confirmation' => ['password' => 'string|nullable'],
             ]
         ]
-    ];    
+    ];
 
-    public $allowedMethods = ['edit', 'update'];
-    public $modelClass = '\App\User';
+    public $allowedMethods = ['edit', 'update', 'index'];
+    public $modelClass = '\App\Models\User';
 
+
+    public function index()
+    {
+    	mori('deh');
+    }
 
 	public function edit()
 	{

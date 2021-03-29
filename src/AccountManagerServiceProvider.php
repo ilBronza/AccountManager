@@ -15,7 +15,7 @@ class AccountManagerServiceProvider extends ServiceProvider
     {
         // $this->loadTranslationsFrom(__DIR__.'/../resources/lang', 'ilbronza');
         // $this->loadViewsFrom(__DIR__.'/../resources/views', 'ilbronza');
-        // $this->loadMigrationsFrom(__DIR__.'/../database/migrations');
+        $this->loadMigrationsFrom(__DIR__.'/Migrations');
         $this->loadRoutesFrom(__DIR__.'/Routes/web.php');
 
         // Publishing is only necessary when using the CLI.
@@ -34,6 +34,11 @@ class AccountManagerServiceProvider extends ServiceProvider
         $this->mergeConfigFrom(__DIR__.'/../config/accountmanager.php', 'accountmanager');
 
         $this->app->make('IlBronza\AccountManager\Http\Controllers\EditAccountController');
+        $this->app->make('IlBronza\AccountManager\Http\Controllers\UserController');
+        $this->app->make('IlBronza\AccountManager\Http\Controllers\RoleController');
+        $this->app->make('IlBronza\AccountManager\Http\Controllers\PermissionController');
+
+
 
         // Register the service the package provides.
         $this->app->singleton('accountmanager', function ($app) {
