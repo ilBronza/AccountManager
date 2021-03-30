@@ -57,10 +57,10 @@ class UserController extends CRUD
         // 'cities'
     ];
 
-    // protected $relationshipsControllers = [
-    //     'roles' => '\IlBronza\AccountManager\Http\Controllers\RoleController',
-    //     // 'cities' => '\App\Http\Controllers\Address\CityController'
-    // ];
+    public $relationshipsControllers = [
+        'roles' => '\IlBronza\AccountManager\Http\Controllers\RoleController',
+        // 'cities' => '\App\Http\Controllers\Address\CityController'
+    ];
 
     public function getIndexElements()
     {
