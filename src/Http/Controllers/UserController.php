@@ -52,14 +52,14 @@ class UserController extends CRUD
     public $guardedShowDBFields = ['id', 'created_at', 'updated_at', 'deleted_at'];
 
     public $showMethodRelationships = [
-        // 'permissions',
-        // 'roles',
+        'contacts',
+        'roles',
         // 'cities'
     ];
 
     public $relationshipsControllers = [
-        'roles' => '\IlBronza\AccountManager\Http\Controllers\RoleController',
-        // 'cities' => '\App\Http\Controllers\Address\CityController'
+        'contacts' => '\App\Http\Controllers\Contacts\CRUDContactController',
+        'roles' => '\IlBronza\AccountManager\Http\Controllers\RoleController'
     ];
 
     public function getIndexElements()

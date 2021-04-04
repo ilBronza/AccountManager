@@ -23,7 +23,7 @@ class PopulateRolesTable extends Migration
             ]);
 
         if(! $user = User::find(1))
-            $user = User::make()->id = 1;
+            return;
 
         $user->assignRole('superadmin');
     }
