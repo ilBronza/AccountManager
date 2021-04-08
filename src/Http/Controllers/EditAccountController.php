@@ -6,8 +6,8 @@ use App\Http\Controllers\Controller;
 use Auth;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Hash;
-use ilBronza\CRUD\CRUD;
-use ilBronza\CRUD\Traits\CRUDEditUpdateTrait;
+use IlBronza\CRUD\CRUD;
+use IlBronza\CRUD\Traits\CRUDEditUpdateTrait;
 
 class EditAccountController extends CRUD
 {

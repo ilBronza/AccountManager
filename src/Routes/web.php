@@ -6,7 +6,7 @@ use Illuminate\Support\Facades\Route;
 Route::group([
 	'middleware' => ['web', 'auth'],
 	'prefix' => 'account-management',
-	'namespace' => 'ilBronza\AccountManager\Http\Controllers'
+	'namespace' => 'IlBronza\AccountManager\Http\Controllers'
 	],
 	function()
 	{

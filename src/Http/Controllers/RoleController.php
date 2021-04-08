@@ -5,16 +5,16 @@ namespace IlBronza\AccountManager\Http\Controllers;
 use IlBronza\AccountManager\Http\Traits\CRUDRoleParametersTrait;
 use IlBronza\AccountManager\Models\Role as Role;
 use Illuminate\Http\Request;
-use ilBronza\CRUD\CRUD;
-use ilBronza\CRUD\Traits\CRUDBelongsToManyTrait;
-use ilBronza\CRUD\Traits\CRUDCreateStoreTrait;
-use ilBronza\CRUD\Traits\CRUDDeleteTrait;
-use ilBronza\CRUD\Traits\CRUDDestroyTrait;
-use ilBronza\CRUD\Traits\CRUDEditUpdateTrait;
-use ilBronza\CRUD\Traits\CRUDIndexTrait;
-use ilBronza\CRUD\Traits\CRUDPlainIndexTrait;
-use ilBronza\CRUD\Traits\CRUDRelationshipTrait;
-use ilBronza\CRUD\Traits\CRUDShowTrait;
+use IlBronza\CRUD\CRUD;
+use IlBronza\CRUD\Traits\CRUDBelongsToManyTrait;
+use IlBronza\CRUD\Traits\CRUDCreateStoreTrait;
+use IlBronza\CRUD\Traits\CRUDDeleteTrait;
+use IlBronza\CRUD\Traits\CRUDDestroyTrait;
+use IlBronza\CRUD\Traits\CRUDEditUpdateTrait;
+use IlBronza\CRUD\Traits\CRUDIndexTrait;
+use IlBronza\CRUD\Traits\CRUDPlainIndexTrait;
+use IlBronza\CRUD\Traits\CRUDRelationshipTrait;
+use IlBronza\CRUD\Traits\CRUDShowTrait;
 
 class RoleController extends CRUD
 {

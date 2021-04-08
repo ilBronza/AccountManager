@@ -3,8 +3,8 @@
 namespace IlBronza\AccountManager\Models;
 
 use Spatie\Permission\Models\Role as SpatieRole;
-use ilBronza\CRUD\Traits\Model\CRUDModelTrait;
-use ilBronza\CRUD\Traits\Model\CRUDRelationshipModelTrait;
+use IlBronza\CRUD\Traits\Model\CRUDModelTrait;
+use IlBronza\CRUD\Traits\Model\CRUDRelationshipModelTrait;
 
 class Role extends SpatieRole
 {
