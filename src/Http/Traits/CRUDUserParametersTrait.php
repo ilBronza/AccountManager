@@ -20,8 +20,9 @@ trait CRUDUserParametersTrait
                     'filterRange' => 'alphabetical'
                 ],
                 'email' => 'flat',
-                'roles' => 'relations.hasMany',
-                'permissions' => 'relations.hasMany',
+                'roles' => 'relations.belongsToMany',
+                'permissions' => 'relations.belongsToMany',
+
                 // 'cities' => 'relations.hasMany',
                 // 'mySelfCallableCount.cities' => [
                 //     'type' => 'iterators.each',
@@ -61,7 +62,7 @@ trait CRUDUserParametersTrait
                 'roles' => [
                     'type' => 'select',
                     'multiple' => true,
-                    'rules' => 'array|required|exists:roles,id',
+                    'rules' => 'array|nullable|exists:roles,id',
                     'relation' => 'roles'
                 ],
                 'permissions' => [
@@ -74,8 +75,8 @@ trait CRUDUserParametersTrait
         ],
         'create' => [
             'default' => [
-                'password' => ['text' => 'string|required|confirmed|max:191'],
-                'password_confirmation' => ['text' => 'string|required'],
+                'password' => ['password' => 'string|required|confirmed|max:191'],
+                'password_confirmation' => ['password' => 'string|required'],
             ]
         ],
     ];    
