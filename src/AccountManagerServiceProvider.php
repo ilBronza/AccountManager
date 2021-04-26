@@ -13,8 +13,8 @@ class AccountManagerServiceProvider extends ServiceProvider
      */
     public function boot()
     {
-        // $this->loadTranslationsFrom(__DIR__.'/../resources/lang', 'ilbronza');
-        // $this->loadViewsFrom(__DIR__.'/../resources/views', 'ilbronza');
+        $this->loadTranslationsFrom(__DIR__.'/../resources/lang', 'accountManager');
+        // $this->loadViewsFrom(__DIR__.'/../resources/views', 'accountManager');
         $this->loadMigrationsFrom(__DIR__.'/Migrations');
         $this->loadRoutesFrom(__DIR__.'/Routes/web.php');
 
@@ -22,6 +22,10 @@ class AccountManagerServiceProvider extends ServiceProvider
         if ($this->app->runningInConsole()) {
             $this->bootForConsole();
         }
+
+        $this->publishes([
+            __DIR__.'/../resources/views/auth' => resource_path('views/auth'),
+        ], 'accountmanager');
     }
 
     /**
