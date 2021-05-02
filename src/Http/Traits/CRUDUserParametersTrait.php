@@ -35,22 +35,6 @@ trait CRUDUserParametersTrait
                 // 'system' => 'flat',
                 'mySelfDelete' => 'links.delete'
             ]
-        ],
- 
-        'report' => [
-            'fields' => 
-            [
-                'mySelfReport' => [
-                    'view' => 'button',
-                    'button' => 'getReportButton'
-                ],
-                'name' => 'flat',
-                'cities' => 'many',
-                'calls_count' => 'flat',
-                'appointment_calls_count' => 'flat',
-                'missed_calls_count' => 'flat',
-                'bad_calls_count' => 'flat'
-            ]
         ]
     ];
 
