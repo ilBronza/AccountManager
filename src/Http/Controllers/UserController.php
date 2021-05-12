@@ -52,7 +52,6 @@ class UserController extends CRUD
     public $guardedShowDBFields = ['id', 'created_at', 'updated_at', 'deleted_at'];
 
     public $showMethodRelationships = [
-        'contacts',
         'roles',
         // 'cities'
     ];

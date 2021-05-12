@@ -2,6 +2,7 @@
 
 namespace IlBronza\AccountManager;
 
+use IlBronza\AccountManager\Http\Middleware\ManageRolesAndPermissionsMiddleware;
 use Illuminate\Support\ServiceProvider;
 
 class AccountManagerServiceProvider extends ServiceProvider
@@ -22,6 +23,8 @@ class AccountManagerServiceProvider extends ServiceProvider
         if ($this->app->runningInConsole()) {
             $this->bootForConsole();
         }
+
+        app('router')->pushMiddlewareToGroup('web', ManageRolesAndPermissionsMiddleware::class);
 
         $this->publishes([
             __DIR__.'/../resources/views/auth' => resource_path('views/auth'),

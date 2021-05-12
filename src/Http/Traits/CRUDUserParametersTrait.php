@@ -20,8 +20,14 @@ trait CRUDUserParametersTrait
                     'filterRange' => 'alphabetical'
                 ],
                 'email' => 'flat',
-                'roles' => 'relations.belongsToMany',
-                'permissions' => 'relations.belongsToMany',
+                'roles' => [
+                    'type' => 'relations.belongsToMany',
+                    'allowedForRoles' => ['administrator']
+                ],
+                'permissions' => [
+                    'type' => 'relations.belongsToMany',
+                    'allowedForRoles' => ['administrator']
+                ],
 
                 // 'cities' => 'relations.hasMany',
                 // 'mySelfCallableCount.cities' => [
@@ -41,19 +47,22 @@ trait CRUDUserParametersTrait
     static $formFields = [
         'common' => [
             'default' => [
-                'name' => ['text' => 'string|required|max:191'],
-                'email' => ['email' => 'email|required|max:191'],
-                'roles' => [
-                    'type' => 'select',
-                    'multiple' => true,
-                    'rules' => 'array|nullable|exists:roles,id',
-                    'relation' => 'roles'
-                ],
-                'permissions' => [
-                    'type' => 'select',
-                    'multiple' => true,
-                    'rules' => 'array|nullable|exists:permissions,id',
-                    'relation' => 'permissions'
+                'fields' => [
+                    'name' => ['text' => 'string|required|max:191'],
+                    'email' => ['email' => 'email|required|max:191'],
+                    'roles' => [
+                        'type' => 'select',
+                        'multiple' => true,
+                        'rules' => 'array|nullable|exists:roles,id',
+                        'relation' => 'roles',
+                        'roles' => ['asdqwd']
+                    ],
+                    'permissions' => [
+                        'type' => 'select',
+                        'multiple' => true,
+                        'rules' => 'array|nullable|exists:permissions,id',
+                        'relation' => 'permissions'
+                    ],
                 ],
             ]
         ],

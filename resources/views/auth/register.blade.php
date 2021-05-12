@@ -9,7 +9,7 @@
             <img
                 class="uk-margin-bottom"
                 width="100%"
-                src="https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcQ2mHLs5RpsTwXFVYsCL8xLXb8NJF_QOSIMPg&usqp=CAU"
+                src="https://www.idealpacksrl.it/img/logo_idealpack_topmenu.png"
                 alt="">
 
             <form class="uk-form uk-form-vertical uk-text-left" method="POST" action="{{ route('register') }}">
