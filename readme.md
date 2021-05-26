@@ -19,11 +19,13 @@ Edit config.permissions
 
 ``` bash
 'permission' => IlBronza\AccountManager\Models\Permission::class,
-
 'role' => IlBronza\AccountManager\Models\Role::class,
-
 ```
 
+Edit App\Models\User, add AccountManagerUserPermissionsTrait 
+``` bash
+    use AccountManagerUserPermissionsTrait;
+```
 
 ## Usage
 
