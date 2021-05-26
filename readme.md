@@ -15,6 +15,16 @@ Via Composer
 $ composer require ilbronza/accountmanager
 ```
 
+Edit config.permissions
+
+``` bash
+'permission' => IlBronza\AccountManager\Models\Permission::class,
+
+'role' => IlBronza\AccountManager\Models\Role::class,
+
+```
+
+
 ## Usage
 
 ## Change log
