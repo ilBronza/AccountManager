@@ -4,10 +4,10 @@ namespace IlBronza\AccountManager\Http\Controllers;
 
 use App\Http\Controllers\Controller;
 use Auth;
-use Illuminate\Http\Request;
-use Illuminate\Support\Facades\Hash;
 use IlBronza\CRUD\CRUD;
 use IlBronza\CRUD\Traits\CRUDEditUpdateTrait;
+use Illuminate\Http\Request;
+use Illuminate\Support\Facades\Hash;
 
 class EditAccountController extends CRUD
 {

@@ -14,10 +14,6 @@ Route::group([
 		Route::get('edit-account', 'EditAccountController@edit')->name('accountManager.account');
 		Route::put('update-account', 'EditAccountController@update')->name('accountManager.update');
 
-		Route::resource('users', 'UserController');
-		Route::resource('roles', 'RoleController');
-		Route::resource('permissions', 'PermissionController');
-
 		Route::get('logout', function(Request $request)
 		{
 			Auth::logout();
@@ -27,4 +23,19 @@ Route::group([
 
 			return redirect('/');
 		})->name('accountManager.logout');
+
+
+
+
+
+		Route::group([
+			'middleware' => ['role:superadmin|administrator'],
+			],
+			function()
+			{
+				Route::resource('users', 'UserController');
+				Route::resource('roles', 'RoleController');
+				Route::resource('permissions', 'PermissionController');				
+			});
+
 	});

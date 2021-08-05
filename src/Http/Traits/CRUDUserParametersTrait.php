@@ -22,11 +22,11 @@ trait CRUDUserParametersTrait
                 'email' => 'flat',
                 'roles' => [
                     'type' => 'relations.belongsToMany',
-                    'allowedForRoles' => ['administrator']
+                    'allowedForRoles' => ['superadmin', 'administrator'],
                 ],
                 'permissions' => [
                     'type' => 'relations.belongsToMany',
-                    'allowedForRoles' => ['administrator']
+                    'allowedForRoles' => ['superadmin', 'administrator']
                 ],
 
                 // 'cities' => 'relations.hasMany',
@@ -68,8 +68,10 @@ trait CRUDUserParametersTrait
         ],
         'create' => [
             'default' => [
-                'password' => ['password' => 'string|required|confirmed|max:191'],
-                'password_confirmation' => ['password' => 'string|required'],
+                'fields' => [
+                    'password' => ['password' => 'string|required|confirmed|max:191'],
+                    'password_confirmation' => ['password' => 'string|required'],
+                ]
             ]
         ],
     ];    

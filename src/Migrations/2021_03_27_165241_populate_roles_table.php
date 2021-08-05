@@ -16,7 +16,11 @@ class PopulateRolesTable extends Migration
      */
     public function up()
     {
-        foreach(['superadmin', 'administrator', 'editor'] as $type)
+        foreach([
+            'superadmin',
+            'administrator',
+            'editor'
+        ] as $type)
             $role = Role::create([
                 'name' => $type,
                 'guard_name' => 'web'

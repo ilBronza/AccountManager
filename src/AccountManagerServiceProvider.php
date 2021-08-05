@@ -76,9 +76,9 @@ class AccountManagerServiceProvider extends ServiceProvider
         ], 'accountmanager.config');
 
         // Publishing the views.
-        /*$this->publishes([
-            __DIR__.'/../resources/views' => base_path('resources/views/vendor/ilbronza'),
-        ], 'accountmanager.views');*/
+        $this->publishes([
+            __DIR__.'/../resources/views' => base_path('resources/views'),
+        ], 'accountmanager.views');
 
         // Publishing assets.
         /*$this->publishes([

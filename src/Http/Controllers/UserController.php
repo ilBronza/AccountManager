@@ -2,11 +2,8 @@
 
 namespace IlBronza\AccountManager\Http\Controllers;
 
-use App\Models\User;
 use IlBronza\AccountManager\Http\Traits\CRUDUserParametersTrait;
-
-use Illuminate\Http\Request;
-use Illuminate\Support\Facades\Hash;
+use IlBronza\AccountManager\Models\User;
 use IlBronza\CRUD\CRUD;
 use IlBronza\CRUD\Traits\CRUDBelongsToManyTrait;
 use IlBronza\CRUD\Traits\CRUDCreateStoreTrait;
@@ -17,6 +14,8 @@ use IlBronza\CRUD\Traits\CRUDIndexTrait;
 use IlBronza\CRUD\Traits\CRUDPlainIndexTrait;
 use IlBronza\CRUD\Traits\CRUDRelationshipTrait;
 use IlBronza\CRUD\Traits\CRUDShowTrait;
+use Illuminate\Http\Request;
+use Illuminate\Support\Facades\Hash;
 
 class UserController extends CRUD
 {
@@ -34,7 +33,7 @@ class UserController extends CRUD
     use CRUDRelationshipTrait;
     use CRUDBelongsToManyTrait;
 
-    public $modelClass = '\App\Models\User';
+    public $modelClass = User::class;
 
     public $allowedMethods = [
         'index',
