@@ -14,7 +14,7 @@ trait CRUDUserParametersTrait
                     'filterRange' => true
                 ],
                 'mySelfEdit' => 'links.edit',
-                'mySelfSee' => 'links.see',
+                // 'mySelfSee' => 'links.see',
                 'name' => [
                     'type' => 'flat',
                     'filterRange' => 'alphabetical'
@@ -29,17 +29,7 @@ trait CRUDUserParametersTrait
                     'allowedForRoles' => ['superadmin', 'administrator']
                 ],
 
-                // 'cities' => 'relations.hasMany',
-                // 'mySelfCallableCount.cities' => [
-                //     'type' => 'iterators.each',
-                //     'childType' => '_fn_getCallableContactsCount'
-                // ],
-                // 'mySelfNeverCalledCount.cities' => [
-                //     'type' => 'iterators.each',
-                //     'childType' => '_fn_getNeverCalledContactsCount'
-                // ],
-                // 'system' => 'flat',
-                'mySelfDelete' => 'links.delete'
+                // 'mySelfDelete' => 'links.delete'
             ]
         ]
     ];
