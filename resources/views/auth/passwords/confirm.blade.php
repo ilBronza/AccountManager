@@ -9,7 +9,7 @@
             <img
                 class="uk-margin-bottom"
                 width="100%"
-                src="https://www.idealpacksrl.it/img/logo_idealpack_topmenu.png"
+                src="/img/login.gif"
                 alt="">
 
             <p class="uk-text-small">{{ __('accountManager::auth.confirmPasswordText') }}</p>

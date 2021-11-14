@@ -17,18 +17,18 @@ class ManageRolesAndPermissionsMiddleware
      */
     public function handle(Request $request, Closure $next)
     {
-        if(session('currentUser') !== null)
-            return $next($request);
+    //     if(session('currentUser') !== null)
+    //         return $next($request);
 
-        if(! $currentUser = Auth::user())
-            return $next($request);
+    //     if(! $currentUser = Auth::user())
+    //         return $next($request);
 
-        $currentUser->loadMissing('roles', 'permissions');
+    //     $currentUser->loadMissing('roles', 'permissions');
 
-        $currentUser->roleNames = $currentUser->roles->pluck('name')->toArray();
-        $currentUser->permissionNames = $currentUser->permissions->pluck('name')->toArray();
+    //     $currentUser->roleNames = $currentUser->roles->pluck('name')->toArray();
+    //     $currentUser->permissionNames = $currentUser->permissions->pluck('name')->toArray();
 
-        session(['currentUser' => $currentUser]);
+    //     session(['currentUser' => $currentUser]);
 
         return $next($request);
     }

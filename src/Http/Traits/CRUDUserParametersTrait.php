@@ -45,22 +45,47 @@ trait CRUDUserParametersTrait
                         'multiple' => true,
                         'rules' => 'array|nullable|exists:roles,id',
                         'relation' => 'roles',
-                        'roles' => ['asdqwd']
+                        'roles' => ['superadmin', 'administrator']
                     ],
                     'permissions' => [
                         'type' => 'select',
                         'multiple' => true,
                         'rules' => 'array|nullable|exists:permissions,id',
-                        'relation' => 'permissions'
-                    ],
-                ],
+                        'relation' => 'permissions',
+                        'roles' => ['superadmin', 'administrator']
+                    ]
+                ]
             ]
         ],
         'create' => [
             'default' => [
                 'fields' => [
-                    'password' => ['password' => 'string|required|confirmed|max:191'],
-                    'password_confirmation' => ['password' => 'string|required'],
+                    'password' => [
+                        'type' => 'password',
+                        'rules' => 'string|required|confirmed|max:191',
+                        'roles' => ['superadmin', 'administrator']
+                    ],
+                    'password_confirmation' => [
+                        'type' => 'password',
+                        'rules' => 'string|required',
+                        'roles' => ['superadmin', 'administrator']
+                    ],
+                ]
+            ]
+        ],
+        'edit' => [
+            'default' => [
+                'fields' => [
+                    'password' => [
+                        'type' => 'password',
+                        'rules' => 'string|nullable|confirmed|max:191',
+                        'roles' => ['superadmin', 'administrator']
+                    ],
+                    'password_confirmation' => [
+                        'type' => 'password',
+                        'rules' => 'string|nullable',
+                        'roles' => ['superadmin', 'administrator']
+                    ],
                 ]
             ]
         ],

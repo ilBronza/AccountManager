@@ -9,7 +9,7 @@
             <img
                 class="uk-margin-bottom"
                 width="100%"
-                src="https://www.idealpacksrl.it/img/logo_idealpack_topmenu.png"
+                src="/img/login.gif"
                 alt="">
 
             <form class="uk-form uk-form-vertical uk-text-left" method="POST" action="{{ route('password.update') }}">

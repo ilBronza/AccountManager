@@ -85,10 +85,4 @@ class UserController extends CRUD
     {
         return $this->_delete($user);
     }
-
-    public function setBeforeStoreFields(array $parameters)
-    {
-        $this->modelInstance->password = Hash::make($parameters['password']);
-    }
-
 }
