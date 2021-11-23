@@ -29,7 +29,7 @@ trait CRUDUserParametersTrait
                     'allowedForRoles' => ['superadmin', 'administrator']
                 ],
 
-                // 'mySelfDelete' => 'links.delete'
+                'mySelfDelete' => 'links.delete'
             ]
         ]
     ];

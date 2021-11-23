@@ -10,6 +10,8 @@ use IlBronza\Notifications\Traits\ExtendedNotifiable;
 
 class User extends BaseUser
 {
+	static $deletingRelationships = [];
+
     use AccountManagerUserPermissionsTrait;
 
     use CRUDModelTrait;
