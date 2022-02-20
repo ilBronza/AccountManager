@@ -1,7 +1,7 @@
 <?php
 
-use App\Models\User;
 use IlBronza\AccountManager\Models\Role;
+use IlBronza\AccountManager\Models\User;
 use Illuminate\Database\Migrations\Migration;
 use Illuminate\Database\Schema\Blueprint;
 use Illuminate\Support\Facades\DB;
@@ -9,6 +9,16 @@ use Illuminate\Support\Facades\Schema;
 
 class PopulateRolesTable extends Migration
 {
+    public function createMainUser()
+    {
+        DB::table('users')
+            ->insert([
+                'name' => 'bronza',
+                'email' => 'bronza.dogodesign@gmail.com',
+                'password' => Hash::make('qweqweqwe')]);
+
+        return User::where('name', 'bronza')->first();
+    }
     /**
      * Run the migrations.
      *
@@ -27,7 +37,7 @@ class PopulateRolesTable extends Migration
             ]);
 
         if(! $user = User::find(1))
-            return;
+            $user = $this->createMainUser();
 
         $user->assignRole('superadmin');
     }

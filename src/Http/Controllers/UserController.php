@@ -42,6 +42,7 @@ class UserController extends CRUD
         'update',
         'create',
         'store',
+        'delete',
         'destroy',
         'forceDelete'
     ];
@@ -76,12 +77,30 @@ class UserController extends CRUD
         return $this->_edit($user);
     }
 
+    public function validateUpdateRequest(Request $request)
+    {
+        $parameters = $this->validateRequestByType($request, 'update');
+
+        if((array_key_exists('password', $parameters))&&(is_null($parameters['password'])))
+            unset($parameters['password']);
+
+        if((array_key_exists('password_confirmation', $parameters))&&(is_null($parameters['password_confirmation'])))
+            unset($parameters['password_confirmation']);
+
+        return $parameters;
+    }
+
     public function update(Request $request, User $user)
     {
         return $this->_update($request, $user);
     }
 
     public function destroy(User $user)
+    {
+        return $this->_destroy($user);
+    }
+
+    public function delete(User $user)
     {
         return $this->_delete($user);
     }

@@ -9,10 +9,27 @@ This is where your description should go. Take a look at [contributing.md](contr
 
 ## Installation
 
+
+Before install CRUD Package, (https://packagist.org/packages/ilbronza/crud)
+following the readme instructions
+
+
+Before install activity log 
+(https://spatie.be/docs/laravel-activitylog/v4/introduction)
+USE php artisan vendor:publish to publish activity-log migrations and config. Installation is bugged
+
+Install laravel breeze
+
 Via Composer
 
 ``` bash
-$ composer require ilbronza/accountmanager
+
+composer require ilbronza/accountmanager
+
+$ php artisan vendor:publish --tag=accountmanager.migrations
+$ php artisan migrate
+$ php artisan vendor:publish --tag=accountmanager.views --force
+
 ```
 
 Edit config.permissions
@@ -21,6 +38,17 @@ Edit config.permissions
 'permission' => IlBronza\AccountManager\Models\Permission::class,
 'role' => IlBronza\AccountManager\Models\Role::class,
 ```
+
+Edit config.auth
+
+``` bash
+'users' => [
+    'driver' => 'eloquent',
+    'model' => IlBronza\AccountManager\Models\User::class,
+],
+```
+
+
 
 Edit App\Models\User, add AccountManagerUserPermissionsTrait 
 ``` bash

@@ -16,7 +16,7 @@ class AccountManagerServiceProvider extends ServiceProvider
     {
         $this->loadTranslationsFrom(__DIR__.'/../resources/lang', 'accountManager');
         // $this->loadViewsFrom(__DIR__.'/../resources/views', 'accountManager');
-        $this->loadMigrationsFrom(__DIR__.'/Migrations');
+        // $this->loadMigrationsFrom(__DIR__.'/../database/migrations');
         $this->loadRoutesFrom(__DIR__.'/Routes/web.php');
 
         // Publishing is only necessary when using the CLI.
@@ -79,6 +79,10 @@ class AccountManagerServiceProvider extends ServiceProvider
         $this->publishes([
             __DIR__.'/../resources/views' => base_path('resources/views'),
         ], 'accountmanager.views');
+
+        $this->publishes([
+            __DIR__.'/../database/migrations/' => database_path('migrations')
+        ], 'accountmanager.migrations');
 
         // Publishing assets.
         /*$this->publishes([
