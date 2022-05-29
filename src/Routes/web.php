@@ -14,6 +14,18 @@ Route::group([
 		Route::get('edit-account', 'EditAccountController@edit')->name('accountManager.account');
 		Route::put('update-account', 'EditAccountController@update')->name('accountManager.update');
 
+
+		Route::group([
+				'prefix' => 'userdata',
+			],
+			function()
+			{
+				Route::get('edit', 'EditUserDataController@edit')->name('accountManager.editUserdata');
+				Route::put('update', 'EditUserDataController@update')->name('accountManager.updateUserdata');
+				Route::delete('delete-media/{media}', 'EditUserDataController@deleteMedia')->name('userdatas.deleteMedia');
+			});
+
+
 		Route::get('logout', function(Request $request)
 		{
 			Auth::logout();

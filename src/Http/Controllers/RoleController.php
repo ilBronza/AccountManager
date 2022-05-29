@@ -2,6 +2,7 @@
 
 namespace IlBronza\AccountManager\Http\Controllers;
 
+use Auth;
 use IlBronza\AccountManager\Http\Traits\CRUDRoleParametersTrait;
 use IlBronza\AccountManager\Models\Role as Role;
 use Illuminate\Http\Request;
@@ -45,7 +46,10 @@ class RoleController extends CRUD
 
     public function getIndexElements()
     {
-        return Role::all();
+        if(Auth::user()->hasRole('superadmin'))
+            return Role::all();
+
+        return Role::where('name', '!=', 'superadmin')->get();
     }
 
     public function show(Role $role)
