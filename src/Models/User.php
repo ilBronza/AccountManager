@@ -15,6 +15,8 @@ class User extends BaseUser
 {
 	static $deletingRelationships = [];
 
+    protected $guard_name = 'web';
+
 	use SoftDeletes;
 
 	use AccountManagerUserPermissionsTrait;

@@ -7,4 +7,9 @@ use Spatie\Permission\Traits\HasRoles;
 trait AccountManagerUserPermissionsTrait
 {
 	use HasRoles;
+
+	public function isSuperAdmin()
+	{
+		return $this->hasRole('superadmin');
+	}
 }

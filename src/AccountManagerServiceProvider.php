@@ -3,6 +3,7 @@
 namespace IlBronza\AccountManager;
 
 use IlBronza\AccountManager\Http\Middleware\ManageRolesAndPermissionsMiddleware;
+
 use Illuminate\Support\ServiceProvider;
 
 class AccountManagerServiceProvider extends ServiceProvider
