@@ -2,6 +2,7 @@
 
 namespace IlBronza\AccountManager;
 
+use Auth;
 use IlBronza\AccountManager\Models\Role;
 use IlBronza\AccountManager\Models\User;
 
@@ -56,6 +57,33 @@ class AccountManager
         $authButton->addChild($usersButton);
         $authButton->addChild($rolesButton);
         $authButton->addChild($permissionsButton);
+
+
+        if(Auth::user())
+            $account = $menu->provideButton([
+                'name' => 'account',
+                'translatedText' => Auth::user()->getName(),
+                'href' => route('users.show', [Auth::user()]),
+                'children' => [
+                    [
+                        'text' => 'auth.edit',
+                        'href' => route('users.edit', [Auth::user()])
+                    ],
+                    [
+                        'text' => 'auth.editUserdata',
+                        'href' => route('accountManager.editUserdata')
+                    ],
+                    [
+                        'text' => 'auth.editPassword',
+                        'href' => route('password.request')
+                    ],
+                    [
+                        'text' => 'auth.logout',
+                        'href' => route('accountManager.logout'),
+                    ]
+                ]
+            ]);
+
     }
 
 	static function getSuperAdministrator()

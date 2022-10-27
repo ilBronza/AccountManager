@@ -14,5 +14,9 @@ return [
 	'resendVerificationEmail' => 'Invia un nuovo link di reset',
 	'logout' => 'Logout',
 	'thanksForSigninEmailConfirmationText' => 'Grazie per esserti registrato! Prima di poter iniziare, ti chiediamo di verificare il tuo indirizzo email cliccando sul link che ti abbiamo inotrato. Se non l\'hai ricevuto, premi sul link e te ne invieremo uno nuovo.',
-	'aNewConfirmationLinkHasBeenSent' => 'Un nuovo link di verifica è stato inoltrato all\'indirizzo email che hai fornito in fase di registrazione'
+	'aNewConfirmationLinkHasBeenSent' => 'Un nuovo link di verifica è stato inoltrato all\'indirizzo email che hai fornito in fase di registrazione',
+	'edit' => 'Modifica account',
+	'editUserData' => 'Modifica dati utente',
+	'editPassword' => 'Modifica password',
+	'logout' => 'Logout'
 ];
