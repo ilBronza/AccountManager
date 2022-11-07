@@ -2,8 +2,8 @@
 
 namespace IlBronza\AccountManager;
 
+use IlBronza\AccountManager\Http\Middleware\CheckActiveUser;
 use IlBronza\AccountManager\Http\Middleware\ManageRolesAndPermissionsMiddleware;
-
 use Illuminate\Support\ServiceProvider;
 
 class AccountManagerServiceProvider extends ServiceProvider
@@ -26,6 +26,7 @@ class AccountManagerServiceProvider extends ServiceProvider
         }
 
         app('router')->pushMiddlewareToGroup('web', ManageRolesAndPermissionsMiddleware::class);
+        app('router')->pushMiddlewareToGroup('web', CheckActiveUser::class);
 
         $this->publishes([
             __DIR__.'/../resources/views/auth' => resource_path('views/auth'),

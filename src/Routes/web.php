@@ -15,6 +15,8 @@ Route::group([
 		Route::put('update-account', 'EditAccountController@update')->name('accountManager.update');
 
 
+		Route::get('duplicate/{user}', 'DuplicateAccountController@duplicate')->name('accountManager.duplicate');
+
 		Route::group([
 				'prefix' => 'userdata',
 			],

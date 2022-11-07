@@ -19,10 +19,17 @@ trait CRUDUserParametersTrait
                     'type' => 'flat',
                     'filterRange' => 'alphabetical'
                 ],
+                'active' => 'editor.toggle',
                 'email' => 'flat',
                 'roles' => [
                     'type' => 'relations.belongsToMany',
                     'allowedForRoles' => ['superadmin', 'administrator'],
+                ],
+                'mySelfDuplicate' => [
+                    'type' => 'links.link',
+                    'function' => 'getDuplicateUrl',
+                    'faIcon' => 'copy',
+                    'roles' => ['superadmin']
                 ],
                 'permissions' => [
                     'type' => 'relations.belongsToMany',
@@ -40,6 +47,11 @@ trait CRUDUserParametersTrait
                 'fields' => [
                     'name' => ['text' => 'string|required|max:191'],
                     'email' => ['email' => 'email|required|max:191'],
+                    'active' => [
+                        'type' => 'boolean',
+                        'rules' => 'boolean|required',
+                        'roles' => ['superadmin', 'administrator']
+                    ],
                     'roles' => [
                         'type' => 'select',
                         'multiple' => true,

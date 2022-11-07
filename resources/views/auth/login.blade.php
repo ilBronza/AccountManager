@@ -4,6 +4,9 @@
 
 <div uk-height-viewport>
     <div class="uk-position-center">
+        @if(session('errors'))
+        <p class="uk-text-danger">{{session('errors')->first('error');}}</p>
+        @endif
         <div class="uk-width-medium">
             
             <img

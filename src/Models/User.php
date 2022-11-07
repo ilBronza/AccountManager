@@ -72,4 +72,9 @@ class User extends BaseUser
     {
         return 'https://hooks.slack.com/services/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';
     }
+
+    public function getDuplicateUrl()
+    {
+    	return route('accountManager.duplicate', ['user' => $this]);
+    }
 }
