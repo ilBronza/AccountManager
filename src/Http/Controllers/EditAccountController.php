@@ -30,7 +30,7 @@ class EditAccountController extends CRUD
 
     public function index()
     {
-    	mori('deh');
+    	dd('deh');
     }
 
 	public function edit()

@@ -23,22 +23,22 @@ class AccountManager
         $button->setFirst();
 
         $authButton = $menu->createButton([
-            'name' => 'account-manager',
+            'name' => 'accountManager',
             'icon' => 'user-gear',
-            'text' => 'account-manager.accounts'
+            'text' => 'accountManager.accounts'
         ]);
 
         $usersButton = $menu->createButton([
             'name' => 'users.index',
             'icon' => 'users',
-            'text' => 'account-manager.users',
+            'text' => 'accountManager.users',
             'href' => route('users.index'),
             'permissions' => ['users.index']
         ]);
 
         $rolesButton = $menu->createButton([
             'name' => 'roles.index',
-            'text' => 'account-manager.roles',
+            'text' => 'accountManager.roles',
             'icon' => 'graduation-cap',
             'href' => route('roles.index'),
             'permissions' => ['roles.index']
@@ -46,7 +46,7 @@ class AccountManager
 
         $permissionsButton = $menu->createButton([
             'name' => 'permissions.index',
-            'text' => 'account-manager.permissions',
+            'text' => 'accountManager.permissions',
             'icon' => 'user-lock',
             'href' => route('permissions.index'),
             'permissions' => ['permissions.index']
@@ -66,29 +66,23 @@ class AccountManager
                 'href' => route('users.show', [Auth::user()]),
                 'children' => [
                     [
-                        'text' => 'auth.edit',
+                        'text' => 'accountManager.edit',
                         'href' => route('users.edit', [Auth::user()])
                     ],
                     [
-                        'text' => 'auth.editUserdata',
+                        'text' => 'accountManager.editUserdata',
                         'href' => route('accountManager.editUserdata')
                     ],
                     [
-                        'text' => 'auth.editPassword',
+                        'text' => 'accountManager.editPassword',
                         'href' => route('password.request')
                     ],
                     [
-                        'text' => 'auth.logout',
+                        'text' => 'accountManager.logout',
                         'href' => route('accountManager.logout'),
                     ]
                 ]
             ]);
 
     }
-
-	static function getSuperAdministrator()
-	{
-		mori(Role::with('users')->get());
-		return User::role('superadmin')->get();
-	}
 }

@@ -2,8 +2,8 @@
 
 namespace IlBronza\AccountManager\Http\Controllers;
 
+use App\Models\ProjectSpecific\User;
 use IlBronza\AccountManager\Http\Traits\CRUDUserParametersTrait;
-use IlBronza\AccountManager\Models\User;
 use IlBronza\CRUD\CRUD;
 use IlBronza\CRUD\Traits\CRUDBelongsToManyTrait;
 use IlBronza\CRUD\Traits\CRUDCreateStoreTrait;
@@ -65,6 +65,27 @@ class UserController extends CRUD
     {
         return User::all();
         return User::with($this->showMethodRelationships)->withTrashed()->get();
+    }
+
+    public function getTableFieldsGroup(string $key)
+    {
+        return config('accountmanager.indexFields');
+    }
+
+    public function getFormFieldsets(string $type)
+    {
+        $result = array_merge_recursive(
+            config('accountmanager.formFields.common', []),
+            config('accountmanager.formFields.' . $type, [])
+        );
+
+        if($type == 'editor')
+            $result = array_merge_recursive(
+                config('accountmanager.formFields.edit', []),
+                $result
+            );
+
+        return $result;
     }
 
     public function show(User $user)

@@ -20,7 +20,10 @@ trait CRUDUserParametersTrait
                     'filterRange' => 'alphabetical'
                 ],
                 'active' => 'editor.toggle',
-                'email' => 'flat',
+                'email' => [
+                    'type' => 'flat',
+                    'width' => '250px'
+                ],
                 'roles' => [
                     'type' => 'relations.belongsToMany',
                     'allowedForRoles' => ['superadmin', 'administrator'],

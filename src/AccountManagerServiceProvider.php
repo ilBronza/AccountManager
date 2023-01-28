@@ -15,7 +15,7 @@ class AccountManagerServiceProvider extends ServiceProvider
      */
     public function boot()
     {
-        $this->loadTranslationsFrom(__DIR__.'/../resources/lang', 'accountManager');
+        // $this->loadTranslationsFrom(__DIR__.'/../resources/lang', 'accountManager');
         // $this->loadViewsFrom(__DIR__.'/../resources/views', 'accountManager');
         // $this->loadMigrationsFrom(__DIR__.'/../database/migrations');
         $this->loadRoutesFrom(__DIR__.'/Routes/web.php');
@@ -92,9 +92,9 @@ class AccountManagerServiceProvider extends ServiceProvider
         ], 'accountmanager.views');*/
 
         // Publishing the translation files.
-        /*$this->publishes([
-            __DIR__.'/../resources/lang' => resource_path('lang/vendor/ilbronza'),
-        ], 'accountmanager.views');*/
+        $this->publishes([
+            __DIR__.'/../resources/lang' => base_path('resources/lang'),
+        ], 'accountmanager.lang');
 
         // Registering package commands.
         // $this->commands([]);
