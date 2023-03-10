@@ -1,6 +1,12 @@
 <?php
 
+use App\Models\ProjectSpecific\User;
+
 return [
+    'user' => [
+        'class' => User::class
+    ],
+
 	'indexFields' => [
 		'fields' => [
             'created_at' => [

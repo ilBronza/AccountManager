@@ -2,8 +2,8 @@
 
 namespace IlBronza\AccountManager\Http\Controllers;
 
-use App\Models\ProjectSpecific\User;
 use IlBronza\AccountManager\Http\Traits\CRUDUserParametersTrait;
+use IlBronza\AccountManager\Models\User;
 use IlBronza\CRUD\CRUD;
 use IlBronza\CRUD\Traits\CRUDBelongsToManyTrait;
 use IlBronza\CRUD\Traits\CRUDCreateStoreTrait;
@@ -33,8 +33,12 @@ class UserController extends CRUD
     use CRUDRelationshipTrait;
     use CRUDBelongsToManyTrait;
 
-    public $modelClass = User::class;
+    public function getModelClass() : string
+    {
+        return config('accountmanager.user.class');
+    }
 
+    public $rowSelectCheckboxes = true;
     public $allowedMethods = [
         'index',
         'show',
@@ -88,6 +92,11 @@ class UserController extends CRUD
         return $result;
     }
 
+    public function addIndexButtons()
+    {
+        $this->table->addButton(User::getDeactivateSelectedButton());
+    }
+
     public function show(User $user)
     {
         return $this->_show($user);
@@ -98,18 +107,18 @@ class UserController extends CRUD
         return $this->_edit($user);
     }
 
-    public function validateUpdateRequest(Request $request)
-    {
-        $parameters = $this->validateRequestByType($request, 'update');
+    // public function validateUpdateRequest(Request $request)
+    // {
+    //     $parameters = $this->validateRequestByType($request, 'update');
 
-        if((array_key_exists('password', $parameters))&&(is_null($parameters['password'])))
-            unset($parameters['password']);
+    //     if((array_key_exists('password', $parameters))&&(is_null($parameters['password'])))
+    //         unset($parameters['password']);
 
-        if((array_key_exists('password_confirmation', $parameters))&&(is_null($parameters['password_confirmation'])))
-            unset($parameters['password_confirmation']);
+    //     if((array_key_exists('password_confirmation', $parameters))&&(is_null($parameters['password_confirmation'])))
+    //         unset($parameters['password_confirmation']);
 
-        return $parameters;
-    }
+    //     return $parameters;
+    // }
 
     public function update(Request $request, User $user)
     {

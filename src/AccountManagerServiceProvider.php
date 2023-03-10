@@ -15,7 +15,7 @@ class AccountManagerServiceProvider extends ServiceProvider
      */
     public function boot()
     {
-        // $this->loadTranslationsFrom(__DIR__.'/../resources/lang', 'accountManager');
+        $this->loadTranslationsFrom(__DIR__.'/../resources/lang', 'accountManager');
         // $this->loadViewsFrom(__DIR__.'/../resources/views', 'accountManager');
         // $this->loadMigrationsFrom(__DIR__.'/../database/migrations');
         $this->loadRoutesFrom(__DIR__.'/Routes/web.php');

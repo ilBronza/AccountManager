@@ -6,6 +6,7 @@ use App\Models\User as BaseUser;
 use Auth;
 use IlBronza\AccountManager\Models\Userdata;
 use IlBronza\AccountManager\Traits\AccountManagerUserPermissionsTrait;
+use IlBronza\Buttons\Button;
 use IlBronza\CRUD\Traits\Model\CRUDModelTrait;
 use IlBronza\CRUD\Traits\Model\CRUDRelationshipModelTrait;
 use IlBronza\Notifications\Traits\ExtendedNotifiable;
@@ -29,10 +30,15 @@ class User extends BaseUser
 		return $this->hasOne(Userdata::class);
 	}
 
+	public function setPasswordAttribute($value)
+	{
+		if($value)
+			$this->attributes['password'] = $value;
+	}
+
 	public function getShortPrivacyName()
 	{
 		$pieces = explode(" ", $this->name);
-
 
 		return implode(" ", [
 			$pieces[0],
@@ -76,5 +82,19 @@ class User extends BaseUser
     public function getDuplicateUrl()
     {
     	return route('accountManager.duplicate', ['user' => $this]);
+    }
+
+    static function getDeactivateSelectedButton()
+    {
+        $button = Button::create([
+        	'href' => route('users.activate'),
+        	'text' => 'users.activate',
+        	'icon' => 'list'
+        ]);
+
+        //table id as parameter
+        $button->setAjaxTableButton();
+
+        return $button;    	
     }
 }

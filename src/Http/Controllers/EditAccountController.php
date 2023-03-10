@@ -45,14 +45,16 @@ class EditAccountController extends CRUD
 		return route('accountManager.update');
 	}
 
-	public function manageModelInstanceAfterUpdate(array $parameters)
-	{
-		if($password = $parameters['password'] ?? false)
-			$this->modelInstance->update(['password'=> Hash::make($password)]);
-	}
-
 	public function update(Request $request)
 	{
+		throw new \Exception ('Ricordare di impostare mutator per password');
+		// public function manageModelInstanceAfterUpdate(array $parameters)
+		// {
+		// 	if($password = $parameters['password'] ?? false)
+		// 		$this->modelInstance->update(['password'=> Hash::make($password)]);
+		// }
+
+
 		return $this->_update($request, Auth::user());
 	}
 

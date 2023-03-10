@@ -8,6 +8,18 @@ use IlBronza\AccountManager\Models\User;
 
 class AccountManager
 {
+    public function getCachedUserById(string $value)
+    {
+        return cache()->remember(
+            'user' . $value,
+            3600,
+            function() use($value)
+            {
+                return User::find($value);
+            }
+        );        
+    }
+
     public function manageMenuButtons()
     {
         if(! $menu = app('menu'))

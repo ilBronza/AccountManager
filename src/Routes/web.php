@@ -91,6 +91,9 @@ Route::group([
 			function()
 			{
 				Route::resource('users', 'UserController');
+
+				Route::put('activate-users', 'UserController@activateBulk')->name('users.activate');
+
 				Route::resource('roles', 'RoleController');
 				Route::resource('permissions', 'PermissionController');				
 			});
@@ -99,4 +102,4 @@ Route::group([
 
 
 
-	});
+});
