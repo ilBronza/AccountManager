@@ -84,6 +84,11 @@ class User extends BaseUser
     	return route('accountManager.duplicate', ['user' => $this]);
     }
 
+    public function getRestoreUrl()
+    {
+    	return route('accountManager.restore', ['user' => $this]);
+    }
+
     static function getDeactivateSelectedButton()
     {
         $button = Button::create([

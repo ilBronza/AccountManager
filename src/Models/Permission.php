@@ -12,4 +12,9 @@ class Permission extends SpatiePermission
 	use CRUDRelationshipModelTrait;
 
 	protected $fillable = ['name', 'guard_name'];
+
+	public function getTranslatedClassname()
+	{
+		return trans('crudModels.' . $this->getCamelcaseClassBasename());
+	}
 }

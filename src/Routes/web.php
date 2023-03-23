@@ -59,6 +59,7 @@ Route::group([
 
 
 		Route::get('duplicate/{user}', 'DuplicateAccountController@duplicate')->name('accountManager.duplicate');
+		Route::get('restore/{user}', 'RestoreAccountController@restore')->name('accountManager.restore');
 
 		Route::group([
 				'prefix' => 'userdata',
