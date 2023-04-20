@@ -101,7 +101,7 @@ class AccountManager
 
             $menu->addToNavbar($account, $destra);
 
-            // $destra->setPosition(0);
+            $account->setFirst();
         }
     }
 }
