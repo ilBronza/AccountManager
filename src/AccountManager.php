@@ -72,6 +72,7 @@ class AccountManager
 
 
         if(Auth::user())
+        {
             $account = $menu->provideButton([
                 'name' => 'account',
                 'translatedText' => Auth::user()->getName(),
@@ -96,5 +97,11 @@ class AccountManager
                 ]
             ]);
 
+            $destra = $menu->provideMainRightBar();
+
+            $menu->addToNavbar($account, $destra);
+
+            // $destra->setPosition(0);
+        }
     }
 }
