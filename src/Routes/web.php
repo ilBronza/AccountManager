@@ -1,6 +1,6 @@
 <?php
 
-use App\Models\ProjectSpecific\User;
+use IlBronza\AccountManager\Models\User;
 use IlBronza\Ukn\Ukn;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Route;
@@ -18,12 +18,12 @@ Route::group(['middleware' => ['web']], function () {
 	{
 		$githubUser = Socialite::driver('github')->user();
 
-		if(! $user = User::where('github_id', $githubUser->id)->first())
-			if(! $user = User::where('email', $githubUser->email)->first())
+		if(! $user = User::getProjectClassName()::where('github_id', $githubUser->id)->first())
+			if(! $user = User::getProjectClassName()::where('email', $githubUser->email)->first())
 			{
 				$password = Str::random(8);
 
-				$user = User::make();
+				$user = User::getProjectClassName()::make();
 				$user->name = $githubUser->name ?? $githubUser->email;
 				$user->email = $githubUser->email;
 				$user->password = Hash::make($password);
@@ -49,26 +49,58 @@ Route::group(['middleware' => ['web']], function () {
 
 Route::group([
 	'middleware' => ['web', 'auth'],
-	'prefix' => 'account-management',
-	'namespace' => 'IlBronza\AccountManager\Http\Controllers'
+	'prefix' => 'account-management'
 	],
 	function()
 	{
-		Route::get('edit-account', 'EditAccountController@edit')->name('accountManager.account');
-		Route::put('update-account', 'EditAccountController@update')->name('accountManager.update');
+		Route::get('edit-account', [
+			AccountManager::getController('editAccount'),
+				'edit'
+			])
+		->name('accountManager.account');
+
+		Route::put('update-account', [
+			AccountManager::getController('editAccount'),
+				'update'
+			])
+		->name('accountManager.update');
 
 
-		Route::get('duplicate/{user}', 'DuplicateAccountController@duplicate')->name('accountManager.duplicate');
-		Route::get('restore/{user}', 'RestoreAccountController@restore')->name('accountManager.restore');
+		Route::get('duplicate/{user}', [
+			AccountManager::getController('duplicateAccount'),
+			'duplicate'
+		])
+		->name('accountManager.duplicate');
+		
+		Route::get('restore/{user}', [
+			AccountManager::getController('restoreAccount'),
+			'restore'
+		])
+		->name('accountManager.restore');
 
 		Route::group([
 				'prefix' => 'userdata',
 			],
 			function()
 			{
-				Route::get('edit', 'EditUserDataController@edit')->name('accountManager.editUserdata');
-				Route::put('update', 'EditUserDataController@update')->name('accountManager.updateUserdata');
-				Route::delete('delete-media/{media}', 'EditUserDataController@deleteMedia')->name('userdatas.deleteMedia');
+				Route::get('edit', [
+					AccountManager::getController('editUserData'),
+					'edit'
+				])
+				->name('accountManager.editUserdata');
+
+				Route::put('update', [
+					AccountManager::getController('editUserData'),
+					'update'
+				])
+				->name('accountManager.updateUserdata');
+
+				Route::delete('delete-media/{media}', [
+					AccountManager::getController('editUserData'),
+					'deleteMedia'
+				])
+				->name('userdatas.deleteMedia');
+
 			});
 
 
@@ -82,21 +114,20 @@ Route::group([
 			return redirect('/');
 		})->name('accountManager.logout');
 
-
-
-
-
 		Route::group([
 			'middleware' => ['role:superadmin|administrator'],
 			],
 			function()
 			{
-				Route::resource('users', 'UserController');
+				Route::resource('users', AccountManager::getController('user'));
 
-				Route::put('activate-users', 'UserController@activateBulk')->name('users.activate');
+				Route::put('activate-users', [
+					AccountManager::getController('user'),
+					'activateBulk'
+				])->name('users.activate');
 
-				Route::resource('roles', 'RoleController');
-				Route::resource('permissions', 'PermissionController');				
+				Route::resource('roles', AccountManager::getController('role'));
+				Route::resource('permissions', AccountManager::getController('permission'));				
 			});
 
 

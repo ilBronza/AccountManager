@@ -4,6 +4,7 @@ namespace IlBronza\AccountManager\Http\Controllers;
 
 use App\Http\Controllers\Controller;
 use Auth;
+use IlBronza\AccountManager\Models\User;
 use IlBronza\CRUD\CRUD;
 use IlBronza\CRUD\Traits\CRUDEditUpdateTrait;
 use Illuminate\Http\Request;
@@ -25,7 +26,13 @@ class EditAccountController extends CRUD
     ];
 
     public $allowedMethods = ['edit', 'update', 'index'];
-    public $modelClass = '\App\Models\User';
+    // public $modelClass = User::class;
+
+    public function setModelClass()
+    {
+        $this->modelClass = User::getProjectClassName();
+        // config('clients.models.client.class');
+    }
 
 
     public function index()

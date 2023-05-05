@@ -3,12 +3,12 @@
 namespace IlBronza\AccountManager\Http\Controllers;
 
 use App\Http\Controllers\Controller;
-use IlBronza\AccountManager\Models\User;
+
 use IlBronza\Ukn\Facades\Ukn;
 
 class DuplicateAccountController extends Controller
 {
-	public function duplicate(User $user)
+	public function duplicate($user)
 	{
 		$clone = $user->replicate();
 

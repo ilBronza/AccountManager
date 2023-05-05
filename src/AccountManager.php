@@ -3,7 +3,6 @@
 namespace IlBronza\AccountManager;
 
 use Auth;
-use IlBronza\AccountManager\Models\Role;
 use IlBronza\AccountManager\Models\User;
 
 class AccountManager
@@ -15,7 +14,7 @@ class AccountManager
             3600,
             function() use($value)
             {
-                return User::find($value);
+                return User::getProjectClassName()::find($value);
             }
         );        
     }
@@ -103,5 +102,10 @@ class AccountManager
 
             $account->setFirst();
         }
+    }
+
+    public function getController(string $key) : string
+    {
+        return config("accountmanager.controllers.{$key}");
     }
 }

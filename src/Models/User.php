@@ -9,11 +9,19 @@ use IlBronza\AccountManager\Traits\AccountManagerUserPermissionsTrait;
 use IlBronza\Buttons\Button;
 use IlBronza\CRUD\Traits\Model\CRUDModelTrait;
 use IlBronza\CRUD\Traits\Model\CRUDRelationshipModelTrait;
+use IlBronza\CRUD\Traits\Model\PackagedModelsTrait;
 use IlBronza\Notifications\Traits\ExtendedNotifiable;
 use Illuminate\Database\Eloquent\SoftDeletes;
 
 class User extends BaseUser
 {
+	use PackagedModelsTrait {
+		PackagedModelsTrait::getRouteBaseNamePrefix insteadof CRUDModelTrait;
+	}
+
+	static $packageConfigPrefix = 'accountmanager';
+	static $modelConfigPrefix = 'user';
+
 	static $deletingRelationships = [];
 
     protected $guard_name = 'web';

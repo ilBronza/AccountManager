@@ -10,7 +10,7 @@ class RestoreAccountController extends Controller
 {
 	public function restore($user)
 	{
-		$user = User::withTrashed()->find($user);
+		$user = User::getProjectClassName()::withTrashed()->find($user);
 		$user->restore();
 
 		Ukn::s(trans('auth.userRestored', ['user' => $user->name]));

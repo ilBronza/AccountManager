@@ -1,10 +1,30 @@
 <?php
 
 use App\Models\ProjectSpecific\User;
+use IlBronza\AccountManager\Http\Controllers\DuplicateAccountController;
+use IlBronza\AccountManager\Http\Controllers\EditAccountController;
+use IlBronza\AccountManager\Http\Controllers\EditUserDataController;
+use IlBronza\AccountManager\Http\Controllers\PermissionController;
+use IlBronza\AccountManager\Http\Controllers\RestoreAccountController;
+use IlBronza\AccountManager\Http\Controllers\RoleController;
+use IlBronza\AccountManager\Http\Controllers\UserController;
 
 return [
-    'user' => [
-        'class' => User::class
+    'models' => [
+        'user' => [
+            'class' => User::class,
+            'table' => 'users'
+        ],
+    ],
+
+    'controllers' => [
+        'user' => UserController::class,
+        'editUserData' => EditUserDataController::class,
+        'editAccount' => EditAccountController::class,
+        'duplicateAccount' => DuplicateAccountController::class,
+        'restoreAccount' => RestoreAccountController::class,
+        'role' => RoleController::class,
+        'permission' => PermissionController::class,
     ],
 
 	'indexFields' => [

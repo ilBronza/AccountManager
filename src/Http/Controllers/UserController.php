@@ -33,9 +33,14 @@ class UserController extends CRUD
     use CRUDRelationshipTrait;
     use CRUDBelongsToManyTrait;
 
-    public function getModelClass() : string
+    // public function getModelClass() : string
+    // {
+    //     return config('accountmanager.user.class');
+    // }
+
+    public function setModelClass()
     {
-        return config('accountmanager.user.class');
+        $this->modelClass = User::getProjectClassName();
     }
 
     public $rowSelectCheckboxes = true;
@@ -67,8 +72,8 @@ class UserController extends CRUD
 
     public function getIndexElements()
     {
-        return User::all();
-        return User::with($this->showMethodRelationships)->withTrashed()->get();
+        return User::getProjectClassName()::all();
+        // return User::getProjectClassName()::with($this->showMethodRelationships)->withTrashed()->get();
     }
 
     public function getTableFieldsGroup(string $key)
@@ -94,16 +99,25 @@ class UserController extends CRUD
 
     public function addIndexButtons()
     {
-        $this->table->addButton(User::getDeactivateSelectedButton());
+        $this->table->addButton(User::getProjectClassName()::getDeactivateSelectedButton());
     }
 
-    public function show(User $user)
+    public function getUserModel(int|string $user)
     {
+        return $this->getModelClass()::find($user);
+    }
+
+    public function show($user)
+    {
+        $user = $this->getUserModel($user);
+
         return $this->_show($user);
     }
 
-    public function edit(User $user)
+    public function edit($user)
     {
+        $user = $this->getUserModel($user);
+
         return $this->_edit($user);
     }
 
@@ -120,18 +134,24 @@ class UserController extends CRUD
     //     return $parameters;
     // }
 
-    public function update(Request $request, User $user)
+    public function update(Request $request, $user)
     {
+        $user = $this->getUserModel($user);
+
         return $this->_update($request, $user);
     }
 
-    public function destroy(User $user)
+    public function destroy($user)
     {
+        $user = $this->getUserModel($user);
+
         return $this->_destroy($user);
     }
 
-    public function delete(User $user)
+    public function delete($user)
     {
+        $user = $this->getUserModel($user);
+
         return $this->_delete($user);
     }
 }

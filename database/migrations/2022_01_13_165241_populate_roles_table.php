@@ -17,7 +17,7 @@ class PopulateRolesTable extends Migration
                 'email' => 'bronza.dogodesign@gmail.com',
                 'password' => Hash::make('qweqweqwe')]);
 
-        return User::where('name', 'bronza')->first();
+        return User::getProjectClassName()::where('name', 'bronza')->first();
     }
     /**
      * Run the migrations.
@@ -31,12 +31,12 @@ class PopulateRolesTable extends Migration
             'administrator',
             'editor'
         ] as $type)
-            $role = Role::create([
+            $role = Role::getProjectClassName()::create([
                 'name' => $type,
                 'guard_name' => 'web'
             ]);
 
-        if(! $user = User::find(1))
+        if(! $user = User::getProjectClassName()::find(1))
             $user = $this->createMainUser();
 
         $user->assignRole('superadmin');
