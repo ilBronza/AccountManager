@@ -7,6 +7,7 @@ use Auth;
 use IlBronza\AccountManager\Models\Userdata;
 use IlBronza\AccountManager\Traits\AccountManagerUserPermissionsTrait;
 use IlBronza\Buttons\Button;
+use IlBronza\CRUD\Models\Scopes\ActiveScope;
 use IlBronza\CRUD\Traits\Model\CRUDModelTrait;
 use IlBronza\CRUD\Traits\Model\CRUDRelationshipModelTrait;
 use IlBronza\CRUD\Traits\Model\PackagedModelsTrait;
@@ -32,6 +33,11 @@ class User extends BaseUser
 
 	use CRUDModelTrait;
 	use CRUDRelationshipModelTrait;
+
+	protected static function booted()
+    {
+        static::addGlobalScope(new ActiveScope);
+    }
 
 	public function userdata()
 	{

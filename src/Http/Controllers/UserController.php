@@ -5,6 +5,7 @@ namespace IlBronza\AccountManager\Http\Controllers;
 use IlBronza\AccountManager\Http\Traits\CRUDUserParametersTrait;
 use IlBronza\AccountManager\Models\User;
 use IlBronza\CRUD\CRUD;
+use IlBronza\CRUD\Models\Scopes\ActiveScope;
 use IlBronza\CRUD\Traits\CRUDBelongsToManyTrait;
 use IlBronza\CRUD\Traits\CRUDCreateStoreTrait;
 use IlBronza\CRUD\Traits\CRUDDeleteTrait;
@@ -72,7 +73,7 @@ class UserController extends CRUD
 
     public function getIndexElements()
     {
-        return User::getProjectClassName()::all();
+        return User::getProjectClassName()::withoutGlobalScope(ActiveScope::class)->get();
         // return User::getProjectClassName()::with($this->showMethodRelationships)->withTrashed()->get();
     }
 
