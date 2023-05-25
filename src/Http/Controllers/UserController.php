@@ -105,7 +105,7 @@ class UserController extends CRUD
 
     public function getUserModel(int|string $user)
     {
-        return $this->getModelClass()::find($user);
+        return $this->getModelClass()::withoutGlobalScope(ActiveScope::class)->find($user);
     }
 
     public function show($user)
