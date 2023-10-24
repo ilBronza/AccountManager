@@ -1,18 +1,12 @@
 <?php
 
-namespace IlBronza\AccountManager\Http\Controllers;
+namespace IlBronza\AccountManager\Http\Controllers\Users;
 
-use App\Http\Controllers\Controller;
-use IlBronza\AccountManager\Models\User;
-use IlBronza\CRUD\Models\Scopes\ActiveScope;
 use IlBronza\Ukn\Facades\Ukn;
 
-class DuplicateAccountController extends Controller
+class DuplicateUserController extends BaseUserPackageController
 {
-    public function getUserModel(int|string $user)
-    {
-        return User::getProjectClassName()::withoutGlobalScope(ActiveScope::class)->find($user);
-    }
+    public $allowedMethods = ['duplicate'];
 
 	public function duplicate($user)
 	{

@@ -18,7 +18,7 @@
                 <input type="hidden" name="token" value="{{ $request->route('token') }}">
 
                 <div class="uk-margin">
-                    <label class="uk-form-label" for="email">@lang('accountManager::auth.email')</label>
+                    <label class="uk-form-label" for="email">@lang('accountmanager::auth.email')</label>
                     <div class="uk-form-controls">
                         <input
                             class="uk-input @error('email') uk-form-danger @enderror"
@@ -26,7 +26,7 @@
                             id="email"
                             value="{{ old('email', $request->email) }}"
                             type="text"
-                            placeholder="@lang('accountManager::auth.email')"
+                            placeholder="@lang('accountmanager::auth.email')"
                             >
 
                         @error('email')
@@ -38,7 +38,7 @@
                 </div>
 
                 <div class="uk-margin">
-                    <label class="uk-form-label" for="password">@lang('accountManager::auth.password')</label>
+                    <label class="uk-form-label" for="password">@lang('accountmanager::auth.password')</label>
                     <div class="uk-form-controls">
                         <input
                             class="uk-input @error('password') uk-form-danger @enderror"
@@ -46,7 +46,7 @@
                             id="password"
                             name="password"
                             required autocomplete="current-password"
-                            placeholder="@lang('accountManager::auth.password')"
+                            placeholder="@lang('accountmanager::auth.password')"
                             >
                         @error('password')
                             <span class="uk-text-danger">
@@ -57,7 +57,7 @@
                 </div>
 
                 <div class="uk-margin">
-                    <label class="uk-form-label" for="password_confirmation">@lang('accountManager::auth.passwordConfirmation')</label>
+                    <label class="uk-form-label" for="password_confirmation">@lang('accountmanager::auth.passwordConfirmation')</label>
                     <div class="uk-form-controls">
                         <input
                             class="uk-input @error('password_confirmation') uk-form-danger @enderror"
@@ -65,7 +65,7 @@
                             id="password_confirmation"
                             name="password_confirmation"
                             required autocomplete="current-password"
-                            placeholder="@lang('accountManager::auth.passwordConfirmation')"
+                            placeholder="@lang('accountmanager::auth.passwordConfirmation')"
                             >
                         @error('password_confirmation')
                             <span class="uk-text-danger">
@@ -79,7 +79,7 @@
                     <button
                         type="sumbit"
                         class="uk-width-1-1 uk-button uk-button-primary uk-button-medium">
-                        @lang('accountManager::auth.resetPassword')
+                        @lang('accountmanager::auth.resetPassword')
                     </button>
                 </div>
             </form>

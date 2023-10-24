@@ -13,9 +13,11 @@ class CreateUserdatasTable extends Migration
      */
     public function up()
     {
-        Schema::create('userdatas', function (Blueprint $table) {
+        Schema::create(config('accountmanager.models.userdata.table'), function (Blueprint $table) {
 
-            $table->foreignId('user_id')->constrained();
+            $table->foreignId('user_id')->nullable()->constrained();
+
+            $table->nullableUuidMorphs('userdatable');
 
             $table->string('first_name', 64)->nullable();
             $table->string('surname', 64)->nullable();
@@ -38,6 +40,6 @@ class CreateUserdatasTable extends Migration
      */
     public function down()
     {
-        Schema::dropIfExists('userdatas');
+        Schema::dropIfExists(config('accountmanager.models.userdata.table'));
     }
 }

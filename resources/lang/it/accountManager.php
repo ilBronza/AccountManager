@@ -1,12 +1,21 @@
 <?php
 
 return [
+	'active' => 'Attivo',
+	'name' => 'Nome',
+	'first_name' => 'Nome',
+	'surname' => 'Cognome',
+	'fiscal_code' => 'Codice Fiscale',
+	'birth_date' => 'Data di nascita',
+	'gender' => 'Genere',
+	'avatar' => 'Avatar',
 	'accounts' => 'Utenze',
 	'users' => 'Utenti',
 	'roles' => 'Ruoli',
 	'permissions' => 'Permessi',
 	'email' => 'Email',
 	'password' => 'Password',
+	'password_confirmation' => 'Password confirmation',
 	'passwordConfirmation' => 'Password confirmation',
 	'rememberMe' => 'Ricordami',
 	'register' => 'Registrati',

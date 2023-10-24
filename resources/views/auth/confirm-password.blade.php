@@ -12,13 +12,13 @@
                 src="/img/login.gif"
                 alt="">
 
-            <p class="uk-text-small">{{ __('accountManager::auth.confirmPasswordText') }}</p>
+            <p class="uk-text-small">{{ __('accountmanager::auth.confirmPasswordText') }}</p>
 
             <form class="uk-form uk-form-vertical uk-text-left" method="POST" action="{{ route('password.confirm') }}">
                 @csrf
 
                 <div class="uk-margin">
-                    <label class="uk-form-label" for="password">@lang('accountManager::auth.password')</label>
+                    <label class="uk-form-label" for="password">@lang('accountmanager::auth.password')</label>
                     <div class="uk-form-controls">
                         <input
                             class="uk-input @error('password') uk-form-danger @enderror"
@@ -40,7 +40,7 @@
                     <button
                         type="sumbit"
                         class="uk-width-1-1 uk-button uk-button-primary uk-button-medium">
-                        @lang('accountManager::auth.confirm')
+                        @lang('accountmanager::auth.confirm')
                     </button>
                 </div>
             </form>

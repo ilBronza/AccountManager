@@ -19,7 +19,7 @@
                 @csrf
 
                 <div class="uk-margin">
-                    <label class="uk-form-label" for="email">@lang('accountManager::auth.email')</label>
+                    <label class="uk-form-label" for="email">@lang('accountmanager::auth.email')</label>
                     <div class="uk-form-controls">
                         <input
                             class="uk-input @error('email') uk-form-danger @enderror"
@@ -27,7 +27,7 @@
                             id="email"
                             value="{{ old('email') }}"
                             type="text"
-                            placeholder="@lang('accountManager::auth.email')"
+                            placeholder="@lang('accountmanager::auth.email')"
                             >
 
                         @error('email')
@@ -39,7 +39,7 @@
                 </div>
 
                 <div class="uk-margin">
-                    <label class="uk-form-label" for="password">@lang('accountManager::auth.password')</label>
+                    <label class="uk-form-label" for="password">@lang('accountmanager::auth.password')</label>
                     <div class="uk-form-controls">
                         <input
                             class="uk-input @error('password') uk-form-danger @enderror"
@@ -47,7 +47,7 @@
                             id="password"
                             name="password"
                             required autocomplete="current-password"
-                            placeholder="@lang('accountManager::auth.password')"
+                            placeholder="@lang('accountmanager::auth.password')"
                             >
                         @error('password')
                             <span class="uk-text-danger">
@@ -65,7 +65,7 @@
                             class="uk-checkbox"
                             name="remember" 
                             />
-                            @lang('accountManager::auth.rememberMe')
+                            @lang('accountmanager::auth.rememberMe')
                     </label>
                 </div>
 
@@ -82,7 +82,7 @@
                         <a
                             href="{{ route('password.request') }}"
                             >
-                            @lang('accountManager::auth.forgottenPassword')
+                            @lang('accountmanager::auth.forgottenPassword')
                         </a>
                     @endif
                 </div>

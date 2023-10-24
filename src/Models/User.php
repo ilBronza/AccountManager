@@ -2,17 +2,19 @@
 
 namespace IlBronza\AccountManager\Models;
 
+use Illuminate\Database\Eloquent\SoftDeletes;
 use App\Models\User as BaseUser;
-use Auth;
+use IlBronza\AccountManager\Models\Traits\UserPermissionsTrait;
+use IlBronza\AccountManager\Models\Traits\UserUserdataTrait;
 use IlBronza\AccountManager\Models\Userdata;
-use IlBronza\AccountManager\Traits\AccountManagerUserPermissionsTrait;
 use IlBronza\Buttons\Button;
+use IlBronza\CRUD\Models\Casts\ExtraField;
 use IlBronza\CRUD\Models\Scopes\ActiveScope;
+use IlBronza\CRUD\Traits\Model\CRUDModelExtraFieldsTrait;
 use IlBronza\CRUD\Traits\Model\CRUDModelTrait;
 use IlBronza\CRUD\Traits\Model\CRUDRelationshipModelTrait;
 use IlBronza\CRUD\Traits\Model\PackagedModelsTrait;
 use IlBronza\Notifications\Traits\ExtendedNotifiable;
-use Illuminate\Database\Eloquent\SoftDeletes;
 
 class User extends BaseUser
 {
@@ -20,28 +22,67 @@ class User extends BaseUser
 		PackagedModelsTrait::getRouteBaseNamePrefix insteadof CRUDModelTrait;
 	}
 
-	static $packageConfigPrefix = 'accountmanager';
-	static $modelConfigPrefix = 'user';
-
-	static $deletingRelationships = [];
-
-    protected $guard_name = 'web';
-
 	use SoftDeletes;
-
-	use AccountManagerUserPermissionsTrait;
 
 	use CRUDModelTrait;
 	use CRUDRelationshipModelTrait;
 
-	protected static function booted()
-    {
-        static::addGlobalScope(new ActiveScope);
-    }
 
-	public function userdata()
+
+	use UserPermissionsTrait;
+	use UserUserdataTrait;
+
+
+
+	static $packageConfigPrefix = 'accountmanager';
+	static $modelConfigPrefix = 'user';
+
+	static $deletingRelationships = [
+		'userdata'
+	];
+
+	protected $guard_name = 'web';
+
+
+
+	use CRUDModelExtraFieldsTrait;
+
+
+
+
+	public function getExtraFieldsClass() : string
 	{
-		return $this->hasOne(Userdata::class);
+		return Userdata::getProjectClassName();
+	}
+
+	protected $casts = [
+		'first_name' => ExtraField::class,
+		'surname' => ExtraField::class,
+
+		'fiscal_code' => ExtraField::class,
+		'birth_date' => ExtraField::class,
+		'gender' => ExtraField::class,
+
+		'avatar' => ExtraField::class
+	];
+
+	protected static function boot()
+	{
+		parent::boot();
+
+		static::saving(function ($user)
+		{
+			if($user->isDirty('active'))
+				if($user->active == false)
+					if($user->getKey() == \Auth::id())
+						abort(403, 'Non puoi disattivare te stesso');
+
+		});
+	}
+
+	protected static function booted()
+	{
+		static::addGlobalScope(new ActiveScope);
 	}
 
 	public function setPasswordAttribute($value)
@@ -60,60 +101,13 @@ class User extends BaseUser
 		]);
 	}
 
-	public function getAvatarImage()
-	{
-		if(! $userdata = $this->getUserData())
-			return 'https://randomuser.me/api/portraits/men/97.jpg';
-
-		return $userdata->getAvatarImage();
-	}
-
-	public function refreshUserdata()
-	{
-		return Userdata::find(Auth::id());
-	}
-
-	public function getUserData()
-	{
-		if($userdata = session('userdata', null))
-			return $userdata;
-
-			// return Userdata::hydrate($parameters);
-		if($userdata = Userdata::find(Auth::id()))
-			return $userdata;
-
-		Auth::user()->userdata()->save(Userdata::make());
-
-		return $this->getUserData();
-	}
-	// use ExtendedNotifiable;
-
 	public function routeNotificationForSlack($notification)
-    {
-        return 'https://hooks.slack.com/services/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';
-    }
+	{
+		return 'https://hooks.slack.com/services/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';
+	}
 
-    public function getDuplicateUrl()
-    {
-    	return route('accountManager.duplicate', ['user' => $this]);
-    }
-
-    public function getRestoreUrl()
-    {
-    	return route('accountManager.restore', ['user' => $this]);
-    }
-
-    static function getDeactivateSelectedButton()
-    {
-        $button = Button::create([
-        	'href' => route('users.activate'),
-        	'text' => 'users.activate',
-        	'icon' => 'list'
-        ]);
-
-        //table id as parameter
-        $button->setAjaxTableButton();
-
-        return $button;    	
-    }
+	public function getDuplicateUrl()
+	{
+		return route('accountmanager.duplicate', ['user' => $this]);
+	}
 }

@@ -4,12 +4,24 @@ namespace IlBronza\AccountManager\Models;
 
 use IlBronza\CRUD\Models\BaseModel;
 use IlBronza\CRUD\Traits\Media\InteractsWithMedia;
+use IlBronza\CRUD\Traits\Model\PackagedModelsTrait;
 use Illuminate\Support\Facades\Session;
 use Spatie\MediaLibrary\HasMedia;
 
 class Userdata extends BaseModel implements HasMedia
 {
+	use PackagedModelsTrait;
+
+	public function getTable()
+	{
+		return config('accountmanager.models.userdata.table');
+	}
+
+	static $packageConfigPrefix = 'accountmanager';
+	static $modelConfigPrefix = 'userdata';
 	protected $primaryKey = 'user_id';
+
+	static $deletingRelationships = [];
 
 	use InteractsWithMedia;
 

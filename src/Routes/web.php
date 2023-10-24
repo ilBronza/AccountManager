@@ -7,7 +7,6 @@ use Illuminate\Support\Facades\Route;
 use Illuminate\Support\Str;
 use Laravel\Socialite\Facades\Socialite;
 
-
 Route::group(['middleware' => ['web']], function () {
 	Route::get('/auth/redirect', function ()
 	{
@@ -49,59 +48,32 @@ Route::group(['middleware' => ['web']], function () {
 
 Route::group([
 	'middleware' => ['web', 'auth'],
-	'prefix' => 'account-management'
+	'prefix' => 'account-management',
+	'as' => config('accountmanager.routePrefix')
 	],
 	function()
 	{
-		Route::get('edit-account', [
-			AccountManager::getController('editAccount'),
-				'edit'
-			])
-		->name('accountManager.account');
-
-		Route::put('update-account', [
-			AccountManager::getController('editAccount'),
-				'update'
-			])
-		->name('accountManager.update');
-
-
-		Route::get('duplicate/{user}', [
-			AccountManager::getController('duplicateAccount'),
-			'duplicate'
-		])
-		->name('accountManager.duplicate');
+		Route::get('edit-account', [AccountManager::getController('user', 'editAccount'), 'edit'])->name('accountmanager.account');
+		Route::put('update-account', [AccountManager::getController('user', 'updateAccount'), 'update'])->name('accountmanager.update');
 		
-		Route::get('restore/{user}', [
-			AccountManager::getController('restoreAccount'),
-			'restore'
-		])
-		->name('accountManager.restore');
-
 		Route::group([
 				'prefix' => 'userdata',
 			],
 			function()
 			{
-				Route::get('edit', [
-					AccountManager::getController('editUserData'),
-					'edit'
-				])
-				->name('accountManager.editUserdata');
+				Route::get('edit', [AccountManager::getController('userdata', 'edit'), 'edit'])
+					->name('accountmanager.editUserdata');
 
-				Route::put('update', [
-					AccountManager::getController('editUserData'),
-					'update'
-				])
-				->name('accountManager.updateUserdata');
+				Route::put('update', [AccountManager::getController('userdata', 'update'), 'update'])
+					->name('accountmanager.updateUserdata');
 
-				Route::delete('delete-media/{media}', [
-					AccountManager::getController('editUserData'),
-					'deleteMedia'
-				])
-				->name('userdatas.deleteMedia');
+				Route::delete('delete-media/{media}', [AccountManager::getController('userdata', 'deleteMedia'), 'deleteMedia'])
+					->name('userdatas.deleteMedia');
 
 			});
+
+			Route::resource('roles', AccountManager::getController('role'));
+			Route::resource('permissions', AccountManager::getController('permission'));
 
 
 		Route::get('logout', function(Request $request)
@@ -112,26 +84,24 @@ Route::group([
 			$request->session()->regenerateToken();
 
 			return redirect('/');
-		})->name('accountManager.logout');
+		})->name('accountmanager.logout');
 
 		Route::group([
+			'prefix' => 'users',
 			'middleware' => ['role:superadmin|administrator'],
 			],
 			function()
 			{
-				Route::resource('users', AccountManager::getController('user'));
+				Route::get('duplicate/{user}', [AccountManager::getController('user', 'duplicate'), 'duplicate'])
+					->name('accountmanager.duplicate');
 
-				Route::put('activate-users', [
-					AccountManager::getController('user'),
-					'activateBulk'
-				])->name('users.activate');
-
-				Route::resource('roles', AccountManager::getController('role'));
-				Route::resource('permissions', AccountManager::getController('permission'));				
+				Route::get('', [AccountManager::getController('user', 'index'), 'index'])->name('users.index');
+				Route::post('', [AccountManager::getController('user', 'store'), 'store'])->name('users.store');
+				Route::get('create', [AccountManager::getController('user', 'create'), 'create'])->name('users.create');
+				Route::get('{user}', [AccountManager::getController('user', 'show'), 'show'])->name('users.show');
+				Route::get('{user}/edit', [AccountManager::getController('user', 'edit'), 'edit'])->name('users.edit');
+				Route::put('{user}', [AccountManager::getController('user', 'update'), 'update'])->name('users.update');
+				Route::delete('{user}', [AccountManager::getController('user', 'destroy'), 'destroy'])->name('users.destroy');
 			});
-
-
-
-
 
 });

@@ -1,10 +1,10 @@
 <?php
 
-namespace IlBronza\AccountManager\Traits;
+namespace IlBronza\AccountManager\Models\Traits;
 
 use Spatie\Permission\Traits\HasRoles;
 
-trait AccountManagerUserPermissionsTrait
+trait UserPermissionsTrait
 {
 	use HasRoles;
 

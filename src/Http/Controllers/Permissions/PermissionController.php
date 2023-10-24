@@ -1,6 +1,6 @@
 <?php
 
-namespace IlBronza\AccountManager\Http\Controllers;
+namespace IlBronza\AccountManager\Http\Controllers\Permissions;
 
 use IlBronza\AccountManager\Http\Traits\CRUDPermissionParametersTrait;
 use IlBronza\AccountManager\Models\Permission as Permission;

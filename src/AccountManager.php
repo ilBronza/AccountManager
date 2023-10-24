@@ -4,9 +4,14 @@ namespace IlBronza\AccountManager;
 
 use Auth;
 use IlBronza\AccountManager\Models\User;
+use IlBronza\CRUD\Providers\RouterProvider\RoutedObjectInterface;
+use IlBronza\CRUD\Traits\IlBronzaPackages\IlBronzaPackagesTrait;
 
-class AccountManager
+class AccountManager implements RoutedObjectInterface
 {
+    use IlBronzaPackagesTrait;
+    static $packageConfigPrefix = 'accountmanager';
+
     public function getCachedUserById(string $value)
     {
         return cache()->remember(
@@ -34,22 +39,22 @@ class AccountManager
         $button->setFirst();
 
         $authButton = $menu->createButton([
-            'name' => 'accountManager',
+            'name' => 'accountmanager',
             'icon' => 'user-gear',
-            'text' => 'accountManager.accounts'
+            'text' => 'accountmanager.accounts'
         ]);
 
         $usersButton = $menu->createButton([
             'name' => 'users.index',
             'icon' => 'users',
-            'text' => 'accountManager.users',
+            'text' => 'accountmanager.users',
             'href' => route('users.index'),
             'permissions' => ['users.index']
         ]);
 
         $rolesButton = $menu->createButton([
             'name' => 'roles.index',
-            'text' => 'accountManager.roles',
+            'text' => 'accountmanager.roles',
             'icon' => 'graduation-cap',
             'href' => route('roles.index'),
             'permissions' => ['roles.index']
@@ -57,7 +62,7 @@ class AccountManager
 
         $permissionsButton = $menu->createButton([
             'name' => 'permissions.index',
-            'text' => 'accountManager.permissions',
+            'text' => 'accountmanager.permissions',
             'icon' => 'user-lock',
             'href' => route('permissions.index'),
             'permissions' => ['permissions.index']
@@ -74,24 +79,25 @@ class AccountManager
         {
             $account = $menu->provideButton([
                 'name' => 'account',
+                'image' => (($avatar = Auth::user()->getAvatarImage()) ? $avatar : null),
                 'translatedText' => Auth::user()->getName(),
                 'href' => route('users.show', [Auth::user()]),
                 'children' => [
                     [
-                        'text' => 'accountManager.edit',
-                        'href' => route('users.edit', [Auth::user()])
+                        'text' => 'accountmanager.edit',
+                        'href' => route('accountmanager.account')
                     ],
                     [
-                        'text' => 'accountManager.editUserdata',
-                        'href' => route('accountManager.editUserdata')
+                        'text' => 'accountmanager.editUserdata',
+                        'href' => route('accountmanager.editUserdata')
                     ],
                     [
-                        'text' => 'accountManager.editPassword',
+                        'text' => 'accountmanager.resetPassword',
                         'href' => route('password.request')
                     ],
                     [
-                        'text' => 'accountManager.logout',
-                        'href' => route('accountManager.logout'),
+                        'text' => 'accountmanager.logout',
+                        'href' => route('accountmanager.logout'),
                     ]
                 ]
             ]);
@@ -102,10 +108,5 @@ class AccountManager
 
             $account->setFirst();
         }
-    }
-
-    public function getController(string $key) : string
-    {
-        return config("accountmanager.controllers.{$key}");
     }
 }

@@ -12,13 +12,13 @@
                 src="/img/login.gif"
                 alt="">
 
-            <p class="uk-text-small">{{ __('accountManager::auth.resetPasswordDescription') }}</p>
+            <p class="uk-text-small">{{ __('accountmanager::auth.resetPasswordDescription') }}</p>
 
             <form class="uk-form uk-form-vertical uk-text-left" method="POST" action="{{ route('password.email') }}">
                 @csrf
 
                 <div class="uk-margin">
-                    <label class="uk-form-label" for="email">@lang('accountManager::auth.email')</label>
+                    <label class="uk-form-label" for="email">@lang('accountmanager::auth.email')</label>
                     <div class="uk-form-controls">
                         <input
                             class="uk-input @error('email') uk-form-danger @enderror"
@@ -41,7 +41,7 @@
                     <button
                         type="sumbit"
                         class="uk-width-1-1 uk-button uk-button-primary uk-button-medium">
-                        @lang('accountManager::auth.sendResetPasswordLink')
+                        @lang('accountmanager::auth.sendResetPasswordLink')
                     </button>
                 </div>
             </form>

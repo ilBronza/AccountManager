@@ -12,11 +12,11 @@
                 src="/img/login.gif"
                 alt="">
 
-            <p>@lang('accountManager::auth.thanksForSigninEmailConfirmationText')</p>
+            <p>@lang('accountmanager::auth.thanksForSigninEmailConfirmationText')</p>
 
             @if (session('status') == 'verification-link-sent')
             <div class="uk-alert uk-alert-success">
-                @lang('accountManager::auth.aNewConfirmationLinkHasBeenSent')
+                @lang('accountmanager::auth.aNewConfirmationLinkHasBeenSent')
             </div>
             @endif
 
@@ -28,7 +28,7 @@
                     <button
                         type="sumbit"
                         class="uk-width-1-1 uk-button uk-button-primary uk-button-medium">
-                        @lang('accountManager::auth.resendVerificationEmail')
+                        @lang('accountmanager::auth.resendVerificationEmail')
                     </button>
                 </div>
             </form>
@@ -40,7 +40,7 @@
                     <button
                         type="sumbit"
                         class="uk-width-1-1 uk-button uk-button-primary uk-button-medium">
-                        @lang('accountManager::auth.logout')
+                        @lang('accountmanager::auth.logout')
                     </button>
                 </div>
             </form>

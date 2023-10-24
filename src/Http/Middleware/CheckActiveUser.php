@@ -21,7 +21,7 @@ class CheckActiveUser
     {
         if(Auth::check() && (Auth::user()->active == 0))
         {
-            Ukn::e(__('accountManager.userNotActive'));
+            Ukn::e(__('accountmanager.userNotActive'));
             
             Auth::logout();
 

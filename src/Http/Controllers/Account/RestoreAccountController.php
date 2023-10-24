@@ -1,6 +1,6 @@
 <?php
 
-namespace IlBronza\AccountManager\Http\Controllers;
+namespace IlBronza\AccountManager\Http\Controllers\Account;
 
 use App\Http\Controllers\Controller;
 use IlBronza\AccountManager\Models\User;

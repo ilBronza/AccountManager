@@ -1,6 +1,6 @@
 <?php
 
-namespace IlBronza\AccountManager\Http\Controllers;
+namespace IlBronza\AccountManager\Http\Controllers\Roles;
 
 use Auth;
 use IlBronza\AccountManager\Http\Traits\CRUDRoleParametersTrait;
