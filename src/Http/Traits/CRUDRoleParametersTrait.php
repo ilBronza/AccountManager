@@ -4,30 +4,6 @@ namespace IlBronza\AccountManager\Http\Traits;
 
 trait CRUDRoleParametersTrait
 {
-    public static $tables = [
-
-        'index' => [
-            'fields' => 
-            [
-                'mySelfEdit' => 'links.edit',
-                'mySelfSee' => 'links.see',
-                'name' => 'flat',
-                'guard_name' => 'flat',
-                'permissions' => 'relations.belongsToMany'
-            ]
-        ],
-        'related' => [
-            'fields' => 
-            [
-                'mySelfEdit' => 'links.edit',
-                'mySelfSee' => 'links.see',
-                'name' => 'flat',
-                'guard_name' => 'flat',
-                'permissions' => 'relations.belongsToMany'
-            ]
-        ]
-    ];
-
     static $formFields = [
         'common' => [
             'default' => [

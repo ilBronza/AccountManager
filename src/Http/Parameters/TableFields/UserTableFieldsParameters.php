@@ -15,6 +15,7 @@ class UserTableFieldsParameters extends FieldsGroupParametersFile
                     'type' => 'dates.date',
                     'filterRange' => true
                 ],
+                'mySelfShow' => 'links.see',
                 'mySelfEdit' => 'links.edit',
                 'name' => [
                     'type' => 'flat',

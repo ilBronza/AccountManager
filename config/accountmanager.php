@@ -4,24 +4,30 @@ use App\Models\ProjectSpecific\User;
 use IlBronza\AccountManager\Http\Controllers\Account\EditAccountController;
 use IlBronza\AccountManager\Http\Controllers\Permissions\PermissionController;
 use IlBronza\AccountManager\Http\Controllers\Roles\RoleController;
+use IlBronza\AccountManager\Http\Controllers\Userdata\EditUserDataController;
+use IlBronza\AccountManager\Http\Controllers\Userdata\UserDataDeleteMediaController;
 use IlBronza\AccountManager\Http\Controllers\Users\CreateUserController;
 use IlBronza\AccountManager\Http\Controllers\Users\DestroyUserController;
 use IlBronza\AccountManager\Http\Controllers\Users\DuplicateUserController;
 use IlBronza\AccountManager\Http\Controllers\Users\EditUserController;
 use IlBronza\AccountManager\Http\Controllers\Users\IndexUserController;
 use IlBronza\AccountManager\Http\Controllers\Users\ShowUserController;
-use IlBronza\AccountManager\Http\Controllers\Userdata\EditUserDataController;
-use IlBronza\AccountManager\Http\Controllers\Userdata\UserDataDeleteMediaController;
 use IlBronza\AccountManager\Http\Parameters\FieldsetsParameters\UserAccountEditFieldsetsParameters;
 use IlBronza\AccountManager\Http\Parameters\FieldsetsParameters\UserCreateFieldsetsParameters;
 use IlBronza\AccountManager\Http\Parameters\FieldsetsParameters\UserEditFieldsetsParameters;
 use IlBronza\AccountManager\Http\Parameters\FieldsetsParameters\UserShowFieldsetsParameters;
 use IlBronza\AccountManager\Http\Parameters\FieldsetsParameters\UserdataEditFieldsetsParameters;
 use IlBronza\AccountManager\Http\Parameters\RelationshipsManagers\UserRelationshipsManager;
+use IlBronza\AccountManager\Http\Parameters\TableFields\PermissionTableFieldsParameters;
+use IlBronza\AccountManager\Http\Parameters\TableFields\RoleTableFieldsParameters;
+use IlBronza\AccountManager\Http\Parameters\TableFields\RoleTableFieldsRelatedParameters;
 use IlBronza\AccountManager\Http\Parameters\TableFields\UserTableFieldsParameters;
+use IlBronza\AccountManager\Models\Permission;
+use IlBronza\AccountManager\Models\Role;
 use IlBronza\AccountManager\Models\Userdata;
 
 return [
+    'routePrefix' => 'accountmanager',
     'models' => [
         'userdata' => [
             'class' => Userdata::class,
@@ -37,11 +43,21 @@ return [
         ],
         'role' => [
             'class' => Role::class,
+            'table' => 'roles',
             'controller' => RoleController::class,
+            'fieldsGroupsFiles' => [
+                'index' => RoleTableFieldsParameters::class,
+                'related' => RoleTableFieldsRelatedParameters::class,
+            ],
         ],
         'permission' => [
             'class' => Permission::class,
+            'table' => 'permissions',
             'controller' => PermissionController::class,
+            'fieldsGroupsFiles' => [
+                'index' => PermissionTableFieldsParameters::class,
+                'related' => PermissionTableFieldsParameters::class,
+            ],
         ],
         'user' => [
             'class' => User::class,

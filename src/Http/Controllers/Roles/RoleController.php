@@ -44,6 +44,17 @@ class RoleController extends CRUD
         'permissions' => '\IlBronza\AccountManager\Http\Controllers\PermissionController'
     ];
 
+
+    public function getIndexFieldsArray()
+    {
+        return config('accountmanager.models.role.fieldsGroupsFiles.index')::getFieldsGroup();
+    }
+
+    public function getRelatedFieldsArray()
+    {
+        return config('accountmanager.models.role.fieldsGroupsFiles.related')::getFieldsGroup();
+    }
+
     public function getIndexElements()
     {
         if(Auth::user()->hasRole('superadmin'))

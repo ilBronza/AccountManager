@@ -4,6 +4,7 @@ namespace IlBronza\AccountManager;
 
 use Auth;
 use IlBronza\AccountManager\Models\User;
+use IlBronza\CRUD\Providers\RouterProvider\IbRouter;
 use IlBronza\CRUD\Providers\RouterProvider\RoutedObjectInterface;
 use IlBronza\CRUD\Traits\IlBronzaPackages\IlBronzaPackagesTrait;
 
@@ -48,7 +49,7 @@ class AccountManager implements RoutedObjectInterface
             'name' => 'users.index',
             'icon' => 'users',
             'text' => 'accountmanager.users',
-            'href' => route('users.index'),
+            'href' => IbRouter::route($this, 'users.index'),
             'permissions' => ['users.index']
         ]);
 
@@ -56,7 +57,7 @@ class AccountManager implements RoutedObjectInterface
             'name' => 'roles.index',
             'text' => 'accountmanager.roles',
             'icon' => 'graduation-cap',
-            'href' => route('roles.index'),
+            'href' => IbRouter::route($this, 'roles.index'),
             'permissions' => ['roles.index']
         ]);
 
@@ -64,7 +65,7 @@ class AccountManager implements RoutedObjectInterface
             'name' => 'permissions.index',
             'text' => 'accountmanager.permissions',
             'icon' => 'user-lock',
-            'href' => route('permissions.index'),
+            'href' => IbRouter::route($this, 'permissions.index'),
             'permissions' => ['permissions.index']
         ]);
 
@@ -81,15 +82,16 @@ class AccountManager implements RoutedObjectInterface
                 'name' => 'account',
                 'image' => (($avatar = Auth::user()->getAvatarImage()) ? $avatar : null),
                 'translatedText' => Auth::user()->getName(),
-                'href' => route('users.show', [Auth::user()]),
+                'href' => IbRouter::route($this, 'users.show', [Auth::user()]),
+
                 'children' => [
                     [
                         'text' => 'accountmanager.edit',
-                        'href' => route('accountmanager.account')
+                        'href' => IbRouter::route($this, 'accountmanager.account')
                     ],
                     [
                         'text' => 'accountmanager.editUserdata',
-                        'href' => route('accountmanager.editUserdata')
+                        'href' => IbRouter::route($this, 'accountmanager.editUserdata')
                     ],
                     [
                         'text' => 'accountmanager.resetPassword',
@@ -97,7 +99,7 @@ class AccountManager implements RoutedObjectInterface
                     ],
                     [
                         'text' => 'accountmanager.logout',
-                        'href' => route('accountmanager.logout'),
+                        'href' => IbRouter::route($this, 'accountmanager.logout')
                     ]
                 ]
             ]);

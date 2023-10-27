@@ -43,6 +43,16 @@ class PermissionController extends CRUD
         'roles' => '\IlBronza\AccountManager\Http\Controllers\RoleController'
     ];
 
+    public function getIndexFieldsArray()
+    {
+        return config('accountmanager.models.permission.fieldsGroupsFiles.index')::getFieldsGroup();
+    }
+
+    public function getRelatedFieldsArray()
+    {
+        return config('accountmanager.models.permission.fieldsGroupsFiles.related')::getFieldsGroup();
+    }
+
     public function getIndexElements()
     {
         return Permission::all();
