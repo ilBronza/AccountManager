@@ -4,12 +4,14 @@ namespace IlBronza\AccountManager\Models;
 
 use IlBronza\CRUD\Models\BaseModel;
 use IlBronza\CRUD\Traits\Media\InteractsWithMedia;
+use IlBronza\CRUD\Traits\Model\CRUDUseUuidTrait;
 use IlBronza\CRUD\Traits\Model\PackagedModelsTrait;
 use Illuminate\Support\Facades\Session;
 use Spatie\MediaLibrary\HasMedia;
 
 class Userdata extends BaseModel implements HasMedia
 {
+	use CRUDUseUuidTrait;
 	use PackagedModelsTrait;
 
 	public function getTable()

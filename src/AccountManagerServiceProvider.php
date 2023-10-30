@@ -17,7 +17,7 @@ class AccountManagerServiceProvider extends ServiceProvider
     {
         $this->loadTranslationsFrom(__DIR__.'/../resources/lang', 'accountmanager');
         $this->loadViewsFrom(__DIR__.'/../resources/views', 'accountmanager');
-        // $this->loadMigrationsFrom(__DIR__.'/../database/migrations');
+        $this->loadMigrationsFrom(__DIR__.'/../database/migrations');
         $this->loadRoutesFrom(__DIR__.'/Routes/web.php');
 
         // Publishing is only necessary when using the CLI.
