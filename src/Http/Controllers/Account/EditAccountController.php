@@ -40,7 +40,8 @@ class EditAccountController extends CRUD
 
 	public function getUpdateModelAction()
 	{
-		return route('accountmanager.update');
+		return IbRouter::route(app('accountmanager'), 'accountmanager.update');
+		// return route('accountmanager.update');
 	}
 
 	public function sendUpdateSuccessMessage()

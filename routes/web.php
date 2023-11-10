@@ -67,6 +67,11 @@ Route::group([
 				Route::put('update', [AccountManager::getController('userdata', 'update'), 'update'])
 					->name('accountmanager.updateUserdata');
 
+				Route::get('edit-avatar', [AccountManager::getController('userdata', 'editAvatar'), 'edit'])
+					->name('accountmanager.editAvatar');
+				Route::put('update-avatar', [AccountManager::getController('userdata', 'updateAvatar'), 'update'])
+					->name('accountmanager.updateAvatar');
+
 				Route::delete('delete-media/{media}', [AccountManager::getController('userdata', 'deleteMedia'), 'deleteMedia'])
 					->name('userdatas.deleteMedia');
 

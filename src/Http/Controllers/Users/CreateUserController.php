@@ -2,6 +2,7 @@
 
 namespace IlBronza\AccountManager\Http\Controllers\Users;
 
+use IlBronza\CRUD\Providers\RouterProvider\IbRouter;
 use IlBronza\CRUD\Traits\CRUDCreateStoreTrait;
 
 class CreateUserController extends BaseUserPackageController
@@ -13,5 +14,15 @@ class CreateUserController extends BaseUserPackageController
     public function getGenericParametersFile() : ? string
     {
         return config('accountmanager.models.user.parametersFiles.create');
+    }
+
+    public function getStoreModelAction()
+    {
+        return IbRouter::route(app('accountmanager'), 'users.store');
+    }
+
+    public function getAfterStoredRedirectUrl()
+    {
+        return IbRouter::route(app('accountmanager'), 'users.index');
     }
 }

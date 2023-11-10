@@ -8,7 +8,7 @@ class UserEditFieldsetsParameters extends FieldsetParametersFile
 {
     public function _getFieldsetsParameters() : array
     {
-        return [
+        $result = [
             'base' => [
                 'translationPrefix' => 'accountmanager',
                 'fields' => [
@@ -46,5 +46,10 @@ class UserEditFieldsetsParameters extends FieldsetParametersFile
                 'width' => ['1-2@m']
             ]
         ];
+
+        if(! config('app.usesPermissions', true))
+            unset($result['roles']['fields']['permissions']);
+
+        return $result;
     }
 }

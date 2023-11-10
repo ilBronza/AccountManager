@@ -12,7 +12,7 @@
                 src="/img/login.gif"
                 alt="">
 
-            <p class="uk-text-small">{{ __('accountmanager::auth.resetPasswordDescription') }}</p>
+            <p class="uk-text-small">{{ trans('accountmanager::auth.resetPasswordDescription') }}</p>
 
             <form class="uk-form uk-form-vertical uk-text-left" method="POST" action="{{ route('password.email') }}">
                 @csrf

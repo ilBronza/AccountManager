@@ -1,6 +1,9 @@
 <?php
 
 return [
+	'editAvatar' => 'Modifica immagine',
+	'guard_name' => 'Guard Name (inserire \'web\')',
+	'base' => 'Dati base',
 	'active' => 'Attivo',
 	'name' => 'Nome',
 	'first_name' => 'Nome',
@@ -14,6 +17,8 @@ return [
 	'roles' => 'Ruoli',
 	'permissions' => 'Permessi',
 	'email' => 'Email',
+	'resetPassword' => 'Resetta password',
+	'old_password' => 'Password precedente',
 	'password' => 'Password',
 	'password_confirmation' => 'Password confirmation',
 	'passwordConfirmation' => 'Password confirmation',

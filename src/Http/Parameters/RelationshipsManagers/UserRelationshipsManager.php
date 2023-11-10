@@ -7,7 +7,7 @@ use IlBronza\CRUD\Providers\RelationshipsManager\RelationshipsManager;
 
 class UserRelationshipsManager Extends RelationshipsManager
 {
-	public function getAllRelationsParameters() : array
+	public  function getAllRelationsParameters() : array
 	{
 		$result =  [
 			'show' => [
@@ -17,8 +17,15 @@ class UserRelationshipsManager Extends RelationshipsManager
 			]
 		];
 
-		if(app('contacts'))
-			$result['show']['relations']['contacts'] = config('contacts.models.contact.controllers.index');
+		try
+		{
+			if(app('contacts'))
+				$result['show']['relations']['contacts'] = config('contacts.models.contact.controllers.index');			
+		}
+		catch(\Exception $e)
+		{
+			
+		}
 
 		return $result;
 	}

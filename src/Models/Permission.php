@@ -5,12 +5,15 @@ namespace IlBronza\AccountManager\Models;
 use IlBronza\CRUD\Traits\Model\CRUDModelTrait;
 use IlBronza\CRUD\Traits\Model\CRUDRelationshipModelTrait;
 use IlBronza\CRUD\Traits\Model\PackagedModelsTrait;
+use Illuminate\Database\Eloquent\SoftDeletes;
 use Spatie\Permission\Models\Permission as SpatiePermission;
 
 class Permission extends SpatiePermission
 {
 	use CRUDModelTrait;
 	use CRUDRelationshipModelTrait;
+
+	use SoftDeletes;
 
 	use PackagedModelsTrait {
 		PackagedModelsTrait::getRouteBaseNamePrefix insteadof CRUDModelTrait;

@@ -2,9 +2,9 @@
 
 namespace IlBronza\AccountManager\Http\Controllers\Userdata;
 
-use Illuminate\Http\Request;
-
+use IlBronza\CRUD\Providers\RouterProvider\IbRouter;
 use IlBronza\CRUD\Traits\CRUDEditUpdateTrait;
+use Illuminate\Http\Request;
 
 class EditUserDataController extends BaseUserdataPackageController
 {
@@ -26,7 +26,7 @@ class EditUserDataController extends BaseUserdataPackageController
 
 	public function getUpdateModelAction()
 	{
-		return route('accountmanager.updateUserdata');
+		return IbRouter::route(app('accountmanager'), 'accountmanager.updateUserdata');
 	}
 
 	public function update(Request $request)

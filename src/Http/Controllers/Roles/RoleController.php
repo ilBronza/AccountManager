@@ -3,10 +3,9 @@
 namespace IlBronza\AccountManager\Http\Controllers\Roles;
 
 use Auth;
-use IlBronza\AccountManager\Http\Traits\CRUDRoleParametersTrait;
 use IlBronza\AccountManager\Models\Role as Role;
-use Illuminate\Http\Request;
 use IlBronza\CRUD\CRUD;
+use IlBronza\CRUD\Providers\RouterProvider\IbRouter;
 use IlBronza\CRUD\Traits\CRUDBelongsToManyTrait;
 use IlBronza\CRUD\Traits\CRUDCreateStoreTrait;
 use IlBronza\CRUD\Traits\CRUDDeleteTrait;
@@ -16,10 +15,10 @@ use IlBronza\CRUD\Traits\CRUDIndexTrait;
 use IlBronza\CRUD\Traits\CRUDPlainIndexTrait;
 use IlBronza\CRUD\Traits\CRUDRelationshipTrait;
 use IlBronza\CRUD\Traits\CRUDShowTrait;
+use Illuminate\Http\Request;
 
 class RoleController extends CRUD
 {
-    use CRUDRoleParametersTrait;
 
     use CRUDShowTrait;
 
@@ -36,14 +35,7 @@ class RoleController extends CRUD
 
     public $modelClass = 'IlBronza\AccountManager\Models\Role';
 
-    public $allowedMethods = ['index', 'show', 'edit', 'update', 'create', 'store', 'delete'];
-
-    public $guardedShowDBFields = ['id', 'created_at', 'updated_at'];
-
-    protected $relationshipsControllers = [
-        'permissions' => '\IlBronza\AccountManager\Http\Controllers\PermissionController'
-    ];
-
+    public $allowedMethods = ['index', 'show', 'edit', 'update', 'create', 'store', 'delete', 'destroy'];
 
     public function getIndexFieldsArray()
     {
@@ -53,6 +45,11 @@ class RoleController extends CRUD
     public function getRelatedFieldsArray()
     {
         return config('accountmanager.models.role.fieldsGroupsFiles.related')::getFieldsGroup();
+    }
+
+    public function getGenericParametersFile() : ? string
+    {
+        return config('accountmanager.models.role.parametersFiles.edit');
     }
 
     public function getIndexElements()
@@ -73,6 +70,28 @@ class RoleController extends CRUD
         return $this->_edit($role);
     }
 
+    public function getUpdateModelAction()
+    {
+        return IbRouter::route(app('accountmanager'), 'roles.update', ['role' => $this->getModel()->getKey()]);
+        // return route('accountmanager.update');
+    }
+
+    public function getStoreModelAction()
+    {
+        return IbRouter::route(app('accountmanager'), 'roles.store');
+        // return route('accountmanager.update');
+    }
+
+    public function getAfterStoredRedirectUrl()
+    {
+        return IbRouter::route(app('accountmanager'), 'roles.index');
+    }
+
+    public function getAfterUpdatedRedirectUrl()
+    {
+        return IbRouter::route(app('accountmanager'), 'roles.index');
+    }
+
     public function update(Request $request, Role $role)
     {
         return $this->_update($request, $role);
@@ -81,5 +100,10 @@ class RoleController extends CRUD
     public function delete(Role $role)
     {
         return $this->_delete($role);
+    }
+
+    public function destroy(Role $role)
+    {
+        return $this->_destroy($role);
     }
 }

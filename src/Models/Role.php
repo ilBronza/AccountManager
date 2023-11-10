@@ -6,12 +6,16 @@ use IlBronza\CRUD\Traits\Model\CRUDModelTrait;
 use IlBronza\CRUD\Traits\Model\CRUDRelationshipModelTrait;
 use IlBronza\CRUD\Traits\Model\PackagedModelsTrait;
 use IlBronza\Notifications\Traits\ExtendedNotifiable;
+use Illuminate\Database\Eloquent\SoftDeletes;
 use Spatie\Permission\Models\Role as SpatieRole;
 
 class Role extends SpatieRole
 {
 	use CRUDModelTrait;
 	use CRUDRelationshipModelTrait;
+	use SoftDeletes;
+
+	static $deletingRelationships = [];
 
 	use PackagedModelsTrait {
 		PackagedModelsTrait::getRouteBaseNamePrefix insteadof CRUDModelTrait;

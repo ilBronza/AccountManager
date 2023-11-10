@@ -8,7 +8,7 @@ class UserTableFieldsParameters extends FieldsGroupParametersFile
 {
 	static function getFieldsGroup() : array
 	{
-		return [
+        $result = [
             'translationPrefix' => 'accountmanager',
             'fields' => [
                 'created_at' => [
@@ -22,7 +22,10 @@ class UserTableFieldsParameters extends FieldsGroupParametersFile
                     'filterRange' => 'alphabetical'
                 ],
                 'active' => 'editor.toggle',
-                'email' => 'flat',
+                'email' => [
+                    'type' => 'flat',
+                    'width' => '250px'
+                ],
                 'roles' => [
                     'type' => 'relations.belongsToMany',
                     'allowedForRoles' => ['superadmin', 'administrator'],
@@ -41,5 +44,10 @@ class UserTableFieldsParameters extends FieldsGroupParametersFile
                 'mySelfDelete' => 'links.delete'
             ]
         ];
+
+        if(! config('app.usesPermissions', true))
+            unset($result['fields']['permissions']);
+
+		return $result;
 	}
 }

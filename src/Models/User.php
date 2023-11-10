@@ -2,7 +2,6 @@
 
 namespace IlBronza\AccountManager\Models;
 
-use Illuminate\Database\Eloquent\SoftDeletes;
 use App\Models\User as BaseUser;
 use IlBronza\AccountManager\Models\Traits\UserPermissionsTrait;
 use IlBronza\AccountManager\Models\Traits\UserUserdataTrait;
@@ -10,11 +9,13 @@ use IlBronza\AccountManager\Models\Userdata;
 use IlBronza\Buttons\Button;
 use IlBronza\CRUD\Models\Casts\ExtraField;
 use IlBronza\CRUD\Models\Scopes\ActiveScope;
+use IlBronza\CRUD\Providers\RouterProvider\IbRouter;
 use IlBronza\CRUD\Traits\Model\CRUDModelExtraFieldsTrait;
 use IlBronza\CRUD\Traits\Model\CRUDModelTrait;
 use IlBronza\CRUD\Traits\Model\CRUDRelationshipModelTrait;
 use IlBronza\CRUD\Traits\Model\PackagedModelsTrait;
 use IlBronza\Notifications\Traits\ExtendedNotifiable;
+use Illuminate\Database\Eloquent\SoftDeletes;
 
 class User extends BaseUser
 {
@@ -101,6 +102,19 @@ class User extends BaseUser
 		]);
 	}
 
+	public function getEmail() : string
+	{
+		return $this->email;
+	}
+
+	public function getFullName() : string
+	{
+		if($userdata = $this->getUserdata())
+			return $userdata->getName();
+
+		return $this->getName();
+	}
+
 	public function routeNotificationForSlack($notification)
 	{
 		return 'https://hooks.slack.com/services/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';
@@ -108,6 +122,7 @@ class User extends BaseUser
 
 	public function getDuplicateUrl()
 	{
+		return IbRouter::route(app('accountmanager'), 'accountmanager.duplicate', ['user' => $this]);
 		return route('accountmanager.duplicate', ['user' => $this]);
 	}
 }

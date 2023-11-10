@@ -4,6 +4,7 @@ use App\Models\ProjectSpecific\User;
 use IlBronza\AccountManager\Http\Controllers\Account\EditAccountController;
 use IlBronza\AccountManager\Http\Controllers\Permissions\PermissionController;
 use IlBronza\AccountManager\Http\Controllers\Roles\RoleController;
+use IlBronza\AccountManager\Http\Controllers\Userdata\EditUserDataAvatarController;
 use IlBronza\AccountManager\Http\Controllers\Userdata\EditUserDataController;
 use IlBronza\AccountManager\Http\Controllers\Userdata\UserDataDeleteMediaController;
 use IlBronza\AccountManager\Http\Controllers\Users\CreateUserController;
@@ -16,6 +17,7 @@ use IlBronza\AccountManager\Http\Parameters\FieldsetsParameters\UserAccountEditF
 use IlBronza\AccountManager\Http\Parameters\FieldsetsParameters\UserCreateFieldsetsParameters;
 use IlBronza\AccountManager\Http\Parameters\FieldsetsParameters\UserEditFieldsetsParameters;
 use IlBronza\AccountManager\Http\Parameters\FieldsetsParameters\UserShowFieldsetsParameters;
+use IlBronza\AccountManager\Http\Parameters\FieldsetsParameters\UserdataAvatarEditFieldsetsParameters;
 use IlBronza\AccountManager\Http\Parameters\FieldsetsParameters\UserdataEditFieldsetsParameters;
 use IlBronza\AccountManager\Http\Parameters\RelationshipsManagers\UserRelationshipsManager;
 use IlBronza\AccountManager\Http\Parameters\TableFields\PermissionTableFieldsParameters;
@@ -27,6 +29,11 @@ use IlBronza\AccountManager\Models\Role;
 use IlBronza\AccountManager\Models\Userdata;
 
 return [
+    'usesUserdata' => false,
+    'canResetPassword' => false,
+    'usesUserdata' => true,
+    'usesAvatar' => true,
+
     'routePrefix' => 'accountmanager',
     'models' => [
         'userdata' => [
@@ -35,10 +42,13 @@ return [
             'controllers' => [
                 'edit' => EditUserDataController::class,
                 'update' => EditUserDataController::class,
+                'editAvatar' => EditUserDataAvatarController::class,
+                'updateAvatar' => EditUserDataAvatarController::class,
                 'deleteMedia' => UserDataDeleteMediaController::class
             ],
             'parametersFiles' => [
                 'edit' => UserdataEditFieldsetsParameters::class,
+                'editAvatar' => UserdataAvatarEditFieldsetsParameters::class
             ],
         ],
         'role' => [

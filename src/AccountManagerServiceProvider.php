@@ -18,7 +18,7 @@ class AccountManagerServiceProvider extends ServiceProvider
         $this->loadTranslationsFrom(__DIR__.'/../resources/lang', 'accountmanager');
         $this->loadViewsFrom(__DIR__.'/../resources/views', 'accountmanager');
         $this->loadMigrationsFrom(__DIR__.'/../database/migrations');
-        $this->loadRoutesFrom(__DIR__.'/Routes/web.php');
+        $this->loadRoutesFrom(__DIR__.'/../routes/web.php');
 
         // Publishing is only necessary when using the CLI.
         if ($this->app->runningInConsole()) {
@@ -41,6 +41,8 @@ class AccountManagerServiceProvider extends ServiceProvider
     public function register()
     {
         $this->mergeConfigFrom(__DIR__.'/../config/accountmanager.php', 'accountmanager');
+
+        $this->loadTranslationsFrom(__DIR__.'/../resources/lang', 'accountmanager');
 
         // Register the service the package provides.
         $this->app->singleton('accountmanager', function ($app) {
