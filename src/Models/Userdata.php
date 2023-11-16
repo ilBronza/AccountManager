@@ -75,12 +75,12 @@ class Userdata extends BaseModel implements HasMedia
 		return $this->belongsTo(User::getProjectClassName())->withoutGlobalScope(ActiveScope::class);
 	}
 
-	public function getFirstName() : string
+	public function getFirstName() : ? string
 	{
 		return $this->first_name;
 	}
 
-	public function getSurname() : string
+	public function getSurname() : ? string
 	{
 		return $this->surname;
 	}
@@ -93,5 +93,28 @@ class Userdata extends BaseModel implements HasMedia
 	public function getUser() : ? User
 	{
 		return $this->user;
+	}
+
+	static function getByUser($user) : Userdata
+	{
+		if(class_basename($user) == 'User')
+			$user = $user->getKey();
+
+		return static::where('user_id', $user)->first();
+	}
+
+	public function getUserKey() : string
+	{
+		return $this->user_id;
+	}
+
+	public function getEditURL(array $data = [])
+	{
+		return app('accountmanager')->route('userdatas.edit', ['user' => $this->getUserKey()]);		
+	}
+
+	public function getIndexUrl(array $data = []) : string
+	{
+		return app('accountmanager')->route('users.index');
 	}
 }

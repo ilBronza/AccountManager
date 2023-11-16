@@ -11,6 +11,7 @@ use IlBronza\CRUD\Traits\IlBronzaPackages\IlBronzaPackagesTrait;
 class AccountManager implements RoutedObjectInterface
 {
     use IlBronzaPackagesTrait;
+
     static $packageConfigPrefix = 'accountmanager';
 
     public function getCachedUserById(string $value)

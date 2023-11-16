@@ -10,17 +10,17 @@ class UserCreateFieldsetsParameters extends FieldsetParametersFile
     {
         $result = [
             'base' => [
-                'translationPrefix' => 'accountmanager',
+                'translationPrefix' => 'accountmanager::accountmanager',
                 'fields' => [
                     'name' => ['text' => 'string|required|max:191'],
-                    'email' => ['email' => 'email|required|max:191'],
+                    'email' => ['email' => 'email|required|max:191|unique:users,email'],
                     'password' => ['password' => 'string|required|confirmed|max:191'],
                     'password_confirmation' => ['password' => 'string|required'],
                 ],
                 'width' => ['1-2@m']
             ],
             'roles' => [
-                'translationPrefix' => 'accountmanager',
+                'translationPrefix' => 'accountmanager::accountmanager',
                 'fields' => [
                     'active' => [
                         'type' => 'boolean',

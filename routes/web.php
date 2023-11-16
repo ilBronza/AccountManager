@@ -49,7 +49,8 @@ Route::group(['middleware' => ['web']], function () {
 Route::group([
 	'middleware' => ['web', 'auth'],
 	'prefix' => 'account-management',
-	'as' => config('accountmanager.routePrefix')
+	'as' => config('accountmanager.routePrefix'),
+	'routeTranslationPrefix' => 'accountmanager::routes.'
 	],
 	function()
 	{
@@ -107,6 +108,17 @@ Route::group([
 				Route::get('{user}/edit', [AccountManager::getController('user', 'edit'), 'edit'])->name('users.edit');
 				Route::put('{user}', [AccountManager::getController('user', 'update'), 'update'])->name('users.update');
 				Route::delete('{user}', [AccountManager::getController('user', 'destroy'), 'destroy'])->name('users.destroy');
+			});
+
+		Route::group([
+			'prefix' => 'userdata',
+			'middleware' => ['role:superadmin|administrator'],
+			],
+			function()
+			{
+				Route::get('{userdata}', [AccountManager::getController('userdata', 'admin'), 'show'])->name('userdatas.show');
+				Route::get('{user}/edit', [AccountManager::getController('userdata', 'admin'), 'edit'])->name('userdatas.edit');
+				Route::put('{user}', [AccountManager::getController('userdata', 'admin'), 'update'])->name('userdatas.update');
 			});
 
 });

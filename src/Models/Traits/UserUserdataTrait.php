@@ -7,6 +7,13 @@ use IlBronza\AccountManager\Models\Userdata;
 
 trait UserUserdataTrait
 {
+	public function getEditUserdataUrl() : string
+	{
+		return app('accountmanager')->route('userdatas.edit', [
+			'user' => $this->getKey()
+		]);
+	}
+
 	public function userdata()
 	{
 		return $this->hasOne(Userdata::getProjectClassName());
@@ -30,7 +37,7 @@ trait UserUserdataTrait
 	public function findUserdata() : ? Userdata
 	{
 		return Userdata::getProjectClassName()::find(
-			Auth::id()
+			$this->getKey()
 		);
 	}
 
@@ -44,7 +51,7 @@ trait UserUserdataTrait
 
 	public function getUserData() : Userdata
 	{
-		if($userdata = session('userdata', null))
+		if($userdata = session('userdata' . $this->getKey(), null))
 			return $userdata;
 
 			// return Userdata::hydrate($parameters);

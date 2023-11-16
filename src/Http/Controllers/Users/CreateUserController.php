@@ -23,6 +23,6 @@ class CreateUserController extends BaseUserPackageController
 
     public function getAfterStoredRedirectUrl()
     {
-        return IbRouter::route(app('accountmanager'), 'users.index');
+        return $this->getModel()->getEditUserdataUrl();
     }
 }

@@ -4,6 +4,7 @@ use App\Models\ProjectSpecific\User;
 use IlBronza\AccountManager\Http\Controllers\Account\EditAccountController;
 use IlBronza\AccountManager\Http\Controllers\Permissions\PermissionController;
 use IlBronza\AccountManager\Http\Controllers\Roles\RoleController;
+use IlBronza\AccountManager\Http\Controllers\Userdata\AdminUserDataController;
 use IlBronza\AccountManager\Http\Controllers\Userdata\EditUserDataAvatarController;
 use IlBronza\AccountManager\Http\Controllers\Userdata\EditUserDataController;
 use IlBronza\AccountManager\Http\Controllers\Userdata\UserDataDeleteMediaController;
@@ -40,6 +41,7 @@ return [
             'class' => Userdata::class,
             'table' => 'users__userdata',
             'controllers' => [
+                'admin' => AdminUserDataController::class,
                 'edit' => EditUserDataController::class,
                 'update' => EditUserDataController::class,
                 'editAvatar' => EditUserDataAvatarController::class,

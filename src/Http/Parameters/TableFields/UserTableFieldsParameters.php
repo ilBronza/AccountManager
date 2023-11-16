@@ -9,7 +9,7 @@ class UserTableFieldsParameters extends FieldsGroupParametersFile
 	static function getFieldsGroup() : array
 	{
         $result = [
-            'translationPrefix' => 'accountmanager',
+            'translationPrefix' => 'accountmanager::accountmanager',
             'fields' => [
                 'created_at' => [
                     'type' => 'dates.date',
@@ -17,6 +17,11 @@ class UserTableFieldsParameters extends FieldsGroupParametersFile
                 ],
                 'mySelfShow' => 'links.see',
                 'mySelfEdit' => 'links.edit',
+                'mySelfEditUserdata' => [
+                    'type' => 'links.link',
+                    'function' => 'getEditUserdataUrl',
+                    'icon' => 'user'
+                ],
                 'name' => [
                     'type' => 'flat',
                     'filterRange' => 'alphabetical'
