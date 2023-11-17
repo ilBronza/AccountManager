@@ -10,7 +10,7 @@ class UserdataEditFieldsetsParameters extends FieldsetParametersFile
     {
         return [
             'base' => [
-                'translationPrefix' => 'accountmanager::accountmanager',
+                'translationPrefix' => 'accountmanager::fields',
                 'fields' => [
                     'first_name' => ['text' => 'string|required|max:64'],
                     'surname' => ['text' => 'string|required|max:64'],

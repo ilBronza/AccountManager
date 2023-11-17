@@ -10,7 +10,7 @@ class UserAccountEditFieldsetsParameters extends FieldsetParametersFile
     {
         return [
             'base' => [
-                'translationPrefix' => 'accountmanager',
+                'translationPrefix' => 'accountmanager::fields',
                 'fields' => [
                     'name' => ['text' => 'string|required|max:191'],
                     'email' => ['email' => 'email|required|max:191'],

@@ -10,7 +10,7 @@ class UserdataAvatarEditFieldsetsParameters extends FieldsetParametersFile
     {
         return [
             'base' => [
-                'translationPrefix' => 'accountmanager',
+                'translationPrefix' => 'accountmanager::fields',
                 'fields' => [
                     'avatar' => [
                         'type' => 'file',

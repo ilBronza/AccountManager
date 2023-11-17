@@ -9,7 +9,7 @@ class PermissionTableFieldsParameters extends FieldsGroupParametersFile
 	static function getFieldsGroup() : array
 	{
 		return [
-            'translationPrefix' => 'accountmanager',
+            'translationPrefix' => 'accountmanager::fields',
             'fields' => [
                 'mySelfEdit' => 'links.edit',
                 'mySelfSee' => 'links.see',

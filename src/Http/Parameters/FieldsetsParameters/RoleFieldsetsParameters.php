@@ -10,7 +10,7 @@ class RoleFieldsetsParameters extends FieldsetParametersFile
     {
         $result = [
             'base' => [
-                'translationPrefix' => 'accountmanager',
+                'translationPrefix' => 'accountmanager::fields',
                 'fields' => [
                     'name' => ['text' => 'string|required|max:255'],
                     'guard_name' => ['text' => 'string|required|max:255'],

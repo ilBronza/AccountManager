@@ -10,7 +10,7 @@ class UserEditFieldsetsParameters extends FieldsetParametersFile
     {
         $result = [
             'base' => [
-                'translationPrefix' => 'accountmanager',
+                'translationPrefix' => 'accountmanager::fields',
                 'fields' => [
                     'name' => ['text' => 'string|required|max:191'],
                     'email' => ['email' => 'email|required|max:191'],
@@ -21,7 +21,7 @@ class UserEditFieldsetsParameters extends FieldsetParametersFile
                 'width' => ['1-2@m']
             ],
             'roles' => [
-                'translationPrefix' => 'accountmanager',
+                'translationPrefix' => 'accountmanager::fields',
                 'fields' => [
                     'active' => [
                         'type' => 'boolean',

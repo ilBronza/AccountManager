@@ -9,7 +9,7 @@ class UserTableFieldsParameters extends FieldsGroupParametersFile
 	static function getFieldsGroup() : array
 	{
         $result = [
-            'translationPrefix' => 'accountmanager::accountmanager',
+            'translationPrefix' => 'accountmanager::fields',
             'fields' => [
                 'created_at' => [
                     'type' => 'dates.date',

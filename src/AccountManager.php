@@ -62,13 +62,14 @@ class AccountManager implements RoutedObjectInterface
             'permissions' => ['roles.index']
         ]);
 
-        $permissionsButton = $menu->createButton([
-            'name' => 'permissions.index',
-            'text' => 'accountmanager::accountmanager.permissions',
-            'icon' => 'user-lock',
-            'href' => IbRouter::route($this, 'permissions.index'),
-            'permissions' => ['permissions.index']
-        ]);
+        if(config('app.usesPermissions', true))
+            $permissionsButton = $menu->createButton([
+                'name' => 'permissions.index',
+                'text' => 'accountmanager::accountmanager.permissions',
+                'icon' => 'user-lock',
+                'href' => IbRouter::route($this, 'permissions.index'),
+                'permissions' => ['permissions.index']
+            ]);
 
         $button->addChild($authButton);
 

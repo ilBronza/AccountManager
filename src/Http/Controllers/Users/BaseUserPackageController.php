@@ -22,4 +22,15 @@ class BaseUserPackageController extends CRUD
         return $this->getBaseUserQuery()->find($user);
     }
 
+    public function getFindModelQuery(string $key, array $relations = []) : Builder
+    {
+        $query = $this->getBaseUserQuery();
+
+        foreach($relations as $relation)
+            $query->with($relation);
+
+        return $query;
+    }
+
+
 }

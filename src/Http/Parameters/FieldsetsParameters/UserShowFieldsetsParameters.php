@@ -13,7 +13,7 @@ class UserShowFieldsetsParameters extends FieldsetParametersFile
                 'view' => [
                     'name' => 'accountmanager::userdata._avatar',
                 ],
-                'translationPrefix' => 'accountmanager',
+                'translationPrefix' => 'accountmanager::fields',
                 'fields' => [
                     'name' => ['text' => 'string|required|max:191'],
                     'email' => ['email' => 'email|required|max:191'],
@@ -21,7 +21,7 @@ class UserShowFieldsetsParameters extends FieldsetParametersFile
                 'width' => ['1-2@m']
             ],
             'userdata' => [
-                'translationPrefix' => 'accountmanager',
+                'translationPrefix' => 'accountmanager::fields',
                 'fields' => [
                     'first_name' => ['text' => 'string|required|max:64'],
                     'surname' => ['text' => 'string|required|max:64'],

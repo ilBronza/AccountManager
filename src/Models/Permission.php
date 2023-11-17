@@ -2,22 +2,13 @@
 
 namespace IlBronza\AccountManager\Models;
 
-use IlBronza\CRUD\Traits\Model\CRUDModelTrait;
-use IlBronza\CRUD\Traits\Model\CRUDRelationshipModelTrait;
-use IlBronza\CRUD\Traits\Model\PackagedModelsTrait;
-use Illuminate\Database\Eloquent\SoftDeletes;
+use IlBronza\AccountManager\Models\Traits\PackageAccountModelsTrait;
+
 use Spatie\Permission\Models\Permission as SpatiePermission;
 
 class Permission extends SpatiePermission
 {
-	use CRUDModelTrait;
-	use CRUDRelationshipModelTrait;
-
-	use SoftDeletes;
-
-	use PackagedModelsTrait {
-		PackagedModelsTrait::getRouteBaseNamePrefix insteadof CRUDModelTrait;
-	}
+	use PackageAccountModelsTrait;
 
 	static $packageConfigPrefix = 'accountmanager';
 	static $modelConfigPrefix = 'permission';

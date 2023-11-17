@@ -3,6 +3,7 @@
 namespace IlBronza\AccountManager\Models;
 
 use App\Models\User as BaseUser;
+use IlBronza\AccountManager\Models\Traits\PackageAccountModelsTrait;
 use IlBronza\AccountManager\Models\Traits\UserPermissionsTrait;
 use IlBronza\AccountManager\Models\Traits\UserUserdataTrait;
 use IlBronza\AccountManager\Models\Userdata;
@@ -11,29 +12,17 @@ use IlBronza\CRUD\Models\Casts\ExtraField;
 use IlBronza\CRUD\Models\Scopes\ActiveScope;
 use IlBronza\CRUD\Providers\RouterProvider\IbRouter;
 use IlBronza\CRUD\Traits\Model\CRUDModelExtraFieldsTrait;
-use IlBronza\CRUD\Traits\Model\CRUDModelTrait;
-use IlBronza\CRUD\Traits\Model\CRUDRelationshipModelTrait;
 use IlBronza\CRUD\Traits\Model\PackagedModelsTrait;
 use IlBronza\Notifications\Traits\ExtendedNotifiable;
-use Illuminate\Database\Eloquent\SoftDeletes;
 
 class User extends BaseUser
 {
-	use PackagedModelsTrait {
-		PackagedModelsTrait::getRouteBaseNamePrefix insteadof CRUDModelTrait;
-	}
+	use PackageAccountModelsTrait;
 
-	use SoftDeletes;
-
-	use CRUDModelTrait;
-	use CRUDRelationshipModelTrait;
-
-
+	use CRUDModelExtraFieldsTrait;
 
 	use UserPermissionsTrait;
 	use UserUserdataTrait;
-
-
 
 	static $packageConfigPrefix = 'accountmanager';
 	static $modelConfigPrefix = 'user';
@@ -43,13 +32,6 @@ class User extends BaseUser
 	];
 
 	protected $guard_name = 'web';
-
-
-
-	use CRUDModelExtraFieldsTrait;
-
-
-
 
 	public function getExtraFieldsClass() : string
 	{
@@ -79,11 +61,6 @@ class User extends BaseUser
 						abort(403, 'Non puoi disattivare te stesso');
 
 		});
-	}
-
-	protected static function booted()
-	{
-		static::addGlobalScope(new ActiveScope);
 	}
 
 	public function setPasswordAttribute($value)

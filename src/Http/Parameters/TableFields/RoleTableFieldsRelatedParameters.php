@@ -9,7 +9,7 @@ class RoleTableFieldsRelatedParameters extends FieldsGroupParametersFile
 	static function getFieldsGroup() : array
 	{
 		return [
-            'translationPrefix' => 'accountmanager',
+            'translationPrefix' => 'accountmanager::fields',
             'fields' => [
                 'mySelfSee' => 'links.see',
                 'name' => 'flat',
