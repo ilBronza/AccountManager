@@ -31,75 +31,79 @@ class AccountManager implements RoutedObjectInterface
         if(! $menu = app('menu'))
             return;
 
-        $button = $menu->provideButton([
-                'text' => 'generals.settings',
-                'name' => 'settings',
-                'icon' => 'gear',
-                'roles' => ['administrator']
-            ]);
-
-        $button->setFirst();
-
-        $authButton = $menu->createButton([
-            'name' => 'accountmanager',
-            'icon' => 'user-gear',
-            'text' => 'accountmanager::accountmanager.accounts'
-        ]);
-
-        $usersButton = $menu->createButton([
-            'name' => 'users.index',
-            'icon' => 'users',
-            'text' => 'accountmanager::accountmanager.users',
-            'href' => IbRouter::route($this, 'users.index'),
-            'permissions' => ['users.index']
-        ]);
-
-        $rolesButton = $menu->createButton([
-            'name' => 'roles.index',
-            'text' => 'accountmanager::accountmanager.roles',
-            'icon' => 'graduation-cap',
-            'href' => IbRouter::route($this, 'roles.index'),
-            'permissions' => ['roles.index']
-        ]);
-
-        if(config('app.usesPermissions', true))
-            $permissionsButton = $menu->createButton([
-                'name' => 'permissions.index',
-                'text' => 'accountmanager::accountmanager.permissions',
-                'icon' => 'user-lock',
-                'href' => IbRouter::route($this, 'permissions.index'),
-                'permissions' => ['permissions.index']
-            ]);
-
-        $button->addChild($authButton);
-
-        $authButton->addChild($usersButton);
-        $authButton->addChild($rolesButton);
-
-        if(config('app.usesPermissions', true))
-            $authButton->addChild($permissionsButton);
-
-        try
+        if(config('accountmanager.enabled', false))
         {
-            if(app('mailer')&&(config('mailer.active', true)))
-            {
-                $mailersButton = $menu->createButton([
-                    'name' => 'mailers.index',
-                    'text' => 'mailer::mailer.index',
-                    'icon' => 'user-lock',
-                    'href' => route('usermailers.index'),
+            $button = $menu->provideButton([
+                    'text' => 'generals.settings',
+                    'name' => 'settings',
+                    'icon' => 'gear',
                     'roles' => ['administrator']
                 ]);
 
-                $authButton->addChild($mailersButton);
+            $button->setFirst();
 
+            $authButton = $menu->createButton([
+                'name' => 'accountmanager',
+                'icon' => 'user-gear',
+                'text' => 'accountmanager::accountmanager.accounts'
+            ]);
+
+            $usersButton = $menu->createButton([
+                'name' => 'users.index',
+                'icon' => 'users',
+                'text' => 'accountmanager::accountmanager.users',
+                'href' => IbRouter::route($this, 'users.index'),
+                'permissions' => ['users.index']
+            ]);
+
+            $rolesButton = $menu->createButton([
+                'name' => 'roles.index',
+                'text' => 'accountmanager::accountmanager.roles',
+                'icon' => 'graduation-cap',
+                'href' => IbRouter::route($this, 'roles.index'),
+                'permissions' => ['roles.index']
+            ]);
+
+            if(config('app.usesPermissions', true))
+                $permissionsButton = $menu->createButton([
+                    'name' => 'permissions.index',
+                    'text' => 'accountmanager::accountmanager.permissions',
+                    'icon' => 'user-lock',
+                    'href' => IbRouter::route($this, 'permissions.index'),
+                    'permissions' => ['permissions.index']
+                ]);
+
+            $button->addChild($authButton);
+
+            $authButton->addChild($usersButton);
+            $authButton->addChild($rolesButton);
+
+            if(config('app.usesPermissions', true))
+                $authButton->addChild($permissionsButton);
+
+            try
+            {
+                if(app('mailer')&&(config('mailer.active', true)))
+                {
+                    $mailersButton = $menu->createButton([
+                        'name' => 'mailers.index',
+                        'text' => 'mailer::mailer.index',
+                        'icon' => 'user-lock',
+                        'href' => route('usermailers.index'),
+                        'roles' => ['administrator']
+                    ]);
+
+                    $authButton->addChild($mailersButton);
+
+                }
             }
-        }
-        catch(\Exception $e)
-        {
-            // dd($e->getMessage());
-        }
+            catch(\Exception $e)
+            {
+                // dd($e->getMessage());
+            }
 
+
+        }
 
         if(Auth::user())
         {

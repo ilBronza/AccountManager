@@ -34,6 +34,7 @@ return [
     'canResetPassword' => false,
     'usesUserdata' => true,
     'usesAvatar' => true,
+    'accountmanager' => true,
 
     'routePrefix' => 'accountmanager',
     'models' => [
