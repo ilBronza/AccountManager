@@ -57,7 +57,7 @@ class User extends BaseUser
 		{
 			if($user->isDirty('active'))
 				if($user->active == false)
-					if($user->getKey() == \Auth::id())
+					if(((\Auth::id())&&($user->getKey() == \Auth::id()))||($user->getKey() == 1))
 						abort(403, 'Non puoi disattivare te stesso');
 
 		});

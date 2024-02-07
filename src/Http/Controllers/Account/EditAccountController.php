@@ -23,7 +23,7 @@ class EditAccountController extends CRUD
 
     public function getGenericParametersFile() : ? string
     {
-    	return config('accountmanager.models.user.parametersFiles.editAccount');
+		return config('accountmanager.models.user.parametersFiles.editAccount');
     }
 
     public function setModelClass()
