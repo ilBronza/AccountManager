@@ -16,10 +16,6 @@ class AdDSoftdeletesToRolesAndPermissions extends Migration
         Schema::table('permissions', function (Blueprint $table) {
             $table->softDeletes();
         });
-
-        Schema::table('roles', function (Blueprint $table) {
-            $table->softDeletes();
-        });
     }
 
     /**
@@ -29,12 +25,5 @@ class AdDSoftdeletesToRolesAndPermissions extends Migration
      */
     public function down()
     {
-        Schema::table('permissions', function (Blueprint $table) {
-            $table->dropColumn('deleted_at');
-        });
-
-        Schema::table('roles', function (Blueprint $table) {
-            $table->dropColumn('deleted_at');
-        });
     }
 }

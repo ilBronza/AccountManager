@@ -85,9 +85,22 @@ class Userdata extends BaseModel implements HasMedia
 		return $this->surname;
 	}
 
-	public function getName() : string
+	public function getName() : ? string
 	{
 		return "{$this->getFirstName()} {$this->getSurname()}";
+	}
+
+	public function getShortName(bool $force = false) : ? string
+	{
+		if(($this->short_name)||($force))
+			return $this->short_name;
+
+		if(($firstName = $this->getFirstName())&&($surname = $this->getSurname()))
+			return ucfirst(substr($firstName, 0, 2)) . ucfirst(substr($surname, 0, 2));
+
+		$pieces = explode(" ", $this->getUser()->getName());
+
+		return ucfirst(substr($pieces[0], 0, 2)) . ucfirst(substr($pieces[1] ?? $pieces[0], 0, 2));
 	}
 
 	public function getUser() : ? User

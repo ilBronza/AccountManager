@@ -14,6 +14,8 @@ use Illuminate\Support\Facades\Hash;
 
 class EditAccountController extends CRUD
 {
+    public $returnBack = true;
+
     use CRUDEditUpdateTrait;
 
     public $allowedMethods = [

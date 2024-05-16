@@ -14,6 +14,7 @@ class PopulateRolesTable extends Migration
         DB::table('users')
             ->insert([
                 'name' => 'bronza',
+                'active' => true,
                 'email' => 'bronza.dogodesign@gmail.com',
                 'password' => Hash::make('qweqweqwe')]);
 
@@ -26,6 +27,11 @@ class PopulateRolesTable extends Migration
      */
     public function up()
     {
+        Schema::table('roles', function (Blueprint $table) {
+            $table->softDeletes();
+        });
+
+
         foreach([
             'superadmin',
             'administrator',

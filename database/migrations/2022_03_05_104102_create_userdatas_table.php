@@ -22,6 +22,8 @@ class CreateUserdatasTable extends Migration
             $table->string('first_name', 64)->nullable();
             $table->string('surname', 64)->nullable();
 
+            $table->string('short_name', 12)->nullable();
+
             $table->string('fiscal_code', 16)->nullable();
             $table->date('birth_date')->nullable();
             $table->enum('gender', ['m', 'f', 'nd'])->nullable();

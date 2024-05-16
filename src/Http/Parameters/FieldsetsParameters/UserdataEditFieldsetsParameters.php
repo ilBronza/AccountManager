@@ -14,6 +14,7 @@ class UserdataEditFieldsetsParameters extends FieldsetParametersFile
                 'fields' => [
                     'first_name' => ['text' => 'string|required|max:64'],
                     'surname' => ['text' => 'string|required|max:64'],
+                    'short_name' => ['text' => 'string|required|max:12'],
 
                     'fiscal_code' => ['text' => 'string|nullable|max:16'],
                     'birth_date' => ['date' => 'date|nullable'],

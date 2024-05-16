@@ -6,6 +6,7 @@ return [
 	'guard_name' => 'Guard Name (inserire \'web\')',
 	'base' => 'Dati base',
 	'active' => 'Attivo',
+	'short_name' => 'Sigla',
 	'name' => 'Nome',
 	'first_name' => 'Nome',
 	'surname' => 'Cognome',

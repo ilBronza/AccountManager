@@ -63,6 +63,28 @@ class User extends BaseUser
 		});
 	}
 
+	public function scopeByRoles($query, array $roles = [])
+	{
+		if(! count($roles))
+			return null;
+		
+		$query->whereHas('roles', function($query) use($roles)
+		{
+			$query->whereIn('name', $roles);
+		});
+	}
+
+	public function scopeByRolesIds($query, array $rolesIds = [])
+	{
+		if(! count($rolesIds))
+			return null;
+		
+		$query->whereHas('roles', function($query) use($rolesIds)
+		{
+			$query->whereIn('id', $rolesIds);
+		});
+	}
+
 	public function setPasswordAttribute($value)
 	{
 		if($value)
@@ -87,9 +109,18 @@ class User extends BaseUser
 	public function getFullName() : string
 	{
 		if($userdata = $this->getUserdata())
-			return $userdata->getName();
+			if($name = trim($userdata->getName()))
+				return $name;
 
 		return $this->getName();
+	}
+
+	public function getShortName()
+	{
+		if(! $userdata = $this->getUserdata())
+			return $this->getName();
+		
+		return $userdata->getShortName();
 	}
 
 	public function routeNotificationForSlack($notification)
