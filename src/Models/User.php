@@ -11,6 +11,7 @@ use IlBronza\Buttons\Button;
 use IlBronza\CRUD\Models\Casts\ExtraField;
 use IlBronza\CRUD\Models\Scopes\ActiveScope;
 use IlBronza\CRUD\Providers\RouterProvider\IbRouter;
+use IlBronza\CRUD\Traits\Model\CRUDCacheTrait;
 use IlBronza\CRUD\Traits\Model\CRUDModelExtraFieldsTrait;
 use IlBronza\CRUD\Traits\Model\PackagedModelsTrait;
 use IlBronza\Notifications\Traits\ExtendedNotifiable;
@@ -23,6 +24,7 @@ class User extends BaseUser
 
 	use UserPermissionsTrait;
 	use UserUserdataTrait;
+	use CRUDCacheTrait;
 
 	static $packageConfigPrefix = 'accountmanager';
 	static $modelConfigPrefix = 'user';
@@ -30,6 +32,8 @@ class User extends BaseUser
 	static $deletingRelationships = [
 		'userdata'
 	];
+
+	protected $with = ['userdata'];
 
 	protected $guard_name = 'web';
 

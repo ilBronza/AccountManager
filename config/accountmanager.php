@@ -8,6 +8,7 @@ use IlBronza\AccountManager\Http\Controllers\Userdata\AdminUserDataController;
 use IlBronza\AccountManager\Http\Controllers\Userdata\EditUserDataAvatarController;
 use IlBronza\AccountManager\Http\Controllers\Userdata\EditUserDataController;
 use IlBronza\AccountManager\Http\Controllers\Userdata\UserDataDeleteMediaController;
+use IlBronza\AccountManager\Http\Controllers\Users\CreateSlimUserController;
 use IlBronza\AccountManager\Http\Controllers\Users\CreateUserController;
 use IlBronza\AccountManager\Http\Controllers\Users\DestroyUserController;
 use IlBronza\AccountManager\Http\Controllers\Users\DuplicateUserController;
@@ -16,6 +17,7 @@ use IlBronza\AccountManager\Http\Controllers\Users\IndexUserController;
 use IlBronza\AccountManager\Http\Controllers\Users\ShowUserController;
 use IlBronza\AccountManager\Http\Parameters\FieldsetsParameters\UserAccountEditFieldsetsParameters;
 use IlBronza\AccountManager\Http\Parameters\FieldsetsParameters\UserCreateFieldsetsParameters;
+use IlBronza\AccountManager\Http\Parameters\FieldsetsParameters\UserCreateSlimFieldsetsParameters;
 use IlBronza\AccountManager\Http\Parameters\FieldsetsParameters\UserEditFieldsetsParameters;
 use IlBronza\AccountManager\Http\Parameters\FieldsetsParameters\UserShowFieldsetsParameters;
 use IlBronza\AccountManager\Http\Parameters\FieldsetsParameters\UserdataAvatarEditFieldsetsParameters;
@@ -30,6 +32,7 @@ use IlBronza\AccountManager\Models\Role;
 use IlBronza\AccountManager\Models\Userdata;
 
 return [
+    'enabled' => false,
     'usesUserdata' => false,
     'canResetPassword' => false,
     'usesUserdata' => true,
@@ -83,6 +86,8 @@ return [
                 'show' => ShowUserController::class,
                 'create' => CreateUserController::class,
                 'store' => CreateUserController::class,
+                'createSlim' => CreateSlimUserController::class,
+                'storeSlim' => CreateSlimUserController::class,
                 'destroy' => DestroyUserController::class,
                 'index' => IndexUserController::class
             ],
@@ -95,6 +100,7 @@ return [
             'parametersFiles' => [
                 'editAccount' => UserAccountEditFieldsetsParameters::class,
                 'create' => UserCreateFieldsetsParameters::class,
+                'createSlim' => UserCreateSlimFieldsetsParameters::class,
                 'edit' => UserEditFieldsetsParameters::class,
                 'show' => UserShowFieldsetsParameters::class,
             ],

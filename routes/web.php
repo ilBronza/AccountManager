@@ -101,6 +101,9 @@ Route::group([
 				Route::get('duplicate/{user}', [AccountManager::getController('user', 'duplicate'), 'duplicate'])
 					->name('accountmanager.duplicate');
 
+				Route::get('create-slim', [AccountManager::getController('user', 'createSlim'), 'create'])->name('users.createSlim');
+				Route::post('store-slim', [AccountManager::getController('user', 'storeSlim'), 'store'])->name('users.storeSlim');
+
 				Route::get('', [AccountManager::getController('user', 'index'), 'index'])->name('users.index');
 				Route::post('', [AccountManager::getController('user', 'store'), 'store'])->name('users.store');
 				Route::get('create', [AccountManager::getController('user', 'create'), 'create'])->name('users.create');

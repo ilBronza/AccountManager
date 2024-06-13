@@ -29,15 +29,29 @@ trait UserUserdataTrait
 
 	public function createUserdata() : Userdata
 	{
-		return Auth::user()->userdata()->save(
-			Userdata::getProjectClassName()::make()
+		return cache()->remember(
+			$this->cacheKey('userdata'),
+			3600,
+			function()
+			{
+				return Auth::user()->userdata()->save(
+					Userdata::getProjectClassName()::make()
+				);
+			}
 		);
 	}
 
 	public function findUserdata() : ? Userdata
 	{
-		return Userdata::getProjectClassName()::find(
-			$this->getKey()
+		return cache()->remember(
+			$this->cacheKey('userdata'),
+			3600,
+			function()
+			{
+				return Userdata::getProjectClassName()::find(
+					$this->getKey()
+				);
+			}
 		);
 	}
 
@@ -51,7 +65,11 @@ trait UserUserdataTrait
 
 	public function getUserData() : Userdata
 	{
-		if($userdata = session('userdata' . $this->getKey(), null))
+		if($this->relationLoaded('userdata'))
+			if($this->userdata)
+				return $this->userdata;
+
+		if($userdata = cache('userdata' . $this->getKey(), null))
 			return $userdata;
 
 			// return Userdata::hydrate($parameters);

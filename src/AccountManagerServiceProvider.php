@@ -4,6 +4,8 @@ namespace IlBronza\AccountManager;
 
 use IlBronza\AccountManager\Http\Middleware\CheckActiveUser;
 use IlBronza\AccountManager\Http\Middleware\ManageRolesAndPermissionsMiddleware;
+use IlBronza\AccountManager\Models\User;
+use Illuminate\Database\Eloquent\Relations\Relation;
 use Illuminate\Support\ServiceProvider;
 
 class AccountManagerServiceProvider extends ServiceProvider
@@ -15,6 +17,10 @@ class AccountManagerServiceProvider extends ServiceProvider
      */
     public function boot()
     {
+        Relation::morphMap([
+            'User' => User::getProjectClassname(),
+        ]);
+
         $this->loadTranslationsFrom(__DIR__.'/../resources/lang', 'accountmanager');
         $this->loadViewsFrom(__DIR__.'/../resources/views', 'accountmanager');
         $this->loadMigrationsFrom(__DIR__.'/../database/migrations');
