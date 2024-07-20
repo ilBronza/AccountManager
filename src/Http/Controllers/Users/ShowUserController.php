@@ -22,10 +22,10 @@ class ShowUserController extends BaseUserPackageController
         return config("accountmanager.models.user.relationshipsManagerClasses.show");
     }
 
-    public function show(string $type)
+    public function show(string $user)
     {
-        $type = $this->findModel($type);
+        $user = $this->findModel($user);
 
-        return $this->_show($type);
+        return $this->_show($user);
     }
 }
