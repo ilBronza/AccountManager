@@ -62,7 +62,7 @@ class Userdata extends BaseModel implements HasMedia
 		return 'public';
 	}
 
-	public function getAvatarImage()
+	public function getAvatarImage() : ? string
 	{
 		foreach($this->media as $media)
 			return $media->getFullUrl();

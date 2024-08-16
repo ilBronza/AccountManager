@@ -19,7 +19,7 @@ trait UserUserdataTrait
 		return $this->hasOne(Userdata::getProjectClassName());
 	}
 
-	public function getAvatarImage() : string
+	public function getAvatarImage() : ? string
 	{
 		if(! $userdata = $this->getUserData())
 			return 'https://randomuser.me/api/portraits/men/97.jpg';
