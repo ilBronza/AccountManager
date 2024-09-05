@@ -40,6 +40,7 @@ return [
     'accountmanager' => true,
 
     'routePrefix' => 'accountmanager',
+	'fakeEmailDomain' => 'fake' . (str_replace('http://', '', str_replace('https://', '', env('APP_URL')))),
     'models' => [
         'userdata' => [
             'class' => Userdata::class,

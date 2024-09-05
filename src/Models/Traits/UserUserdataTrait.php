@@ -29,15 +29,8 @@ trait UserUserdataTrait
 
 	public function createUserdata() : Userdata
 	{
-		return cache()->remember(
-			$this->cacheKey('userdata'),
-			3600,
-			function()
-			{
-				return Auth::user()->userdata()->save(
-					Userdata::getProjectClassName()::make()
-				);
-			}
+		return $this->userdata()->save(
+			Userdata::getProjectClassName()::make()
 		);
 	}
 
