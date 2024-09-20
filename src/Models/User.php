@@ -123,6 +123,16 @@ public function getEmail() : ?string
 	return $this->email;
 }
 
+public function getSurname() : ? string
+{
+	return $this->surname;
+}
+
+public function getFirstName() : ? string
+{
+	return $this->first_name;
+}
+
 public function getFullName() : string
 {
 	if ($userdata = $this->getUserdata())

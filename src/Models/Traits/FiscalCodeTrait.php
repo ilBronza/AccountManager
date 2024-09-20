@@ -6,12 +6,17 @@ use Carbon\Carbon;
 
 use IlBronza\Addresses\Models\City;
 
+use function dd;
 use function in_array;
 use function is_numeric;
+use function preg_match;
+use function strtoupper;
 use function substr;
 
 trait FiscalCodeTrait
 {
+	public $fiscalCodeRegexPattern = '/^(?:[B-DF-HJ-NP-TV-Z](?:[AEIOU]{2}|[AEIOU]X)|[AEIOU]{2}X|[B-DF-HJ-NP-TV-Z]{2}[A-Z]){2}[\dLMNP-V]{2}(?:[A-EHLMPR-T](?:[04LQ][1-9MNP-V]|[1256LMRS][\dLMNP-V])|[DHPS][37PT][0L]|[ACELMRT][37PT][01LM])(?:[A-MZ][1-9MNP-V][\dLMNP-V]{2}|[A-M][0L](?:[\dLMNP-V][1-9MNP-V]|[1-9MNP-V][0L]))[A-Z]$/i';
+
 	static array $months = [
 		'A' => 1,
 		'B' => 2,
@@ -27,9 +32,17 @@ trait FiscalCodeTrait
 		'T' => 12
 	];
 
+	public function getFiscalCodeRegexPattern() : string
+	{
+		return $this->fiscalCodeRegexPattern;
+	}
+
 	public function getFiscalCode() : ?string
 	{
-		return $this->fiscal_code;
+		if(preg_match($this->getFiscalCodeRegexPattern(), $this->fiscal_code))
+			return $this->fiscal_code;
+
+		return null;
 	}
 
 	public function getSexAttribute() : ?string
@@ -52,7 +65,9 @@ trait FiscalCodeTrait
 
 	public function getBirthDateMonthByFiscalCode($fiscalCode) : ?int
 	{
-		$month = substr($fiscalCode, 8, 1);
+		$month = strtoupper(
+			substr($fiscalCode, 8, 1)
+		);
 
 		return self::$months[$month] ?? null;
 	}
@@ -77,7 +92,7 @@ trait FiscalCodeTrait
 		return City::getProjectClassName()::where('belfiore', $cityCode)->first();
 	}
 
-	public function getBirthCity() : ?City
+	public function getBirthCityModel() : ?City
 	{
 		if (! $fiscalCode = $this->getFiscalCode())
 			return null;
@@ -87,15 +102,20 @@ trait FiscalCodeTrait
 
 	public function getBirthCityAttribute() : ?string
 	{
-		if (! $city = $this->getBirthCity())
+		if (! $city = $this->getBirthCityModel())
 			return null;
 
 		return $city->name;
 	}
 
+	public function getBirthCity() : ? string
+	{
+		return $this->birth_city;
+	}
+
 	public function getBirthZipAttribute() : ?string
 	{
-		if (! $city = $this->getBirthCity())
+		if (! $city = $this->getBirthCityModel())
 			return null;
 
 		return $city->zip;
@@ -116,10 +136,15 @@ trait FiscalCodeTrait
 
 	public function getBirthProvinceAttribute() : ?string
 	{
-		if (! $city = $this->getBirthCity())
+		if (! $city = $this->getBirthCityModel())
 			return null;
 
 		return $city->province_slug;
+	}
+
+	public function getBirthProvince() : ? string
+	{
+		return $this->birth_province;
 	}
 
 	public function getBirthDateAttribute() : ?Carbon
@@ -128,6 +153,11 @@ trait FiscalCodeTrait
 			return null;
 
 		return $this->getBirthDateByFiscalCode($fiscalCode);
+	}
+
+	public function getBirthDate() :  ? Carbon
+	{
+		return $this->birth_date;
 	}
 
 	/**
@@ -153,7 +183,7 @@ trait FiscalCodeTrait
 		if ($stateChar != 'Z')
 			return 'Italia';
 
-		if (! $city = $this->getBirthCity())
+		if (! $city = $this->getBirthCityModel())
 			return 'Estero';
 
 		return $city->name;
