@@ -12,7 +12,6 @@ trait PackageAccountModelsTrait
 	use CRUDModelTrait;
 	use PackagedModelsTrait {
 		PackagedModelsTrait::getRouteBaseNamePrefix insteadof CRUDModelTrait;
-		PackagedModelsTrait::getPluralTranslatedClassname insteadof CRUDModelTrait;
 		PackagedModelsTrait::getTranslatedClassname insteadof CRUDModelTrait;
 	}
 
