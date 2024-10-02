@@ -62,6 +62,7 @@ Route::group([
 			],
 			function()
 			{
+//				IlBronza\AccountManager\Http\Controllers\Userdata\EditUserDataController
 				Route::get('edit', [AccountManager::getController('userdata', 'edit'), 'edit'])
 					->name('accountmanager.editUserdata');
 
@@ -105,6 +106,8 @@ Route::group([
 				Route::post('store-slim', [AccountManager::getController('user', 'storeSlim'), 'store'])->name('users.storeSlim');
 
 				Route::get('', [AccountManager::getController('user', 'index'), 'index'])->name('users.index');
+
+//				IlBronza\AccountManager\Http\Controllers\Users\CreateUserController
 				Route::post('', [AccountManager::getController('user', 'store'), 'store'])->name('users.store');
 				Route::get('create', [AccountManager::getController('user', 'create'), 'create'])->name('users.create');
 				Route::get('{user}', [AccountManager::getController('user', 'show'), 'show'])->name('users.show');
@@ -120,8 +123,8 @@ Route::group([
 			function()
 			{
 				Route::get('{userdata}', [AccountManager::getController('userdata', 'admin'), 'show'])->name('userdatas.show');
-				Route::get('{user}/edit', [AccountManager::getController('userdata', 'admin'), 'edit'])->name('userdatas.edit');
-				Route::put('{user}', [AccountManager::getController('userdata', 'admin'), 'update'])->name('userdatas.update');
+				Route::get('{userdata}/edit', [AccountManager::getController('userdata', 'admin'), 'edit'])->name('userdatas.edit');
+				Route::put('{userdata}', [AccountManager::getController('userdata', 'admin'), 'update'])->name('userdatas.update');
 			});
 
 });

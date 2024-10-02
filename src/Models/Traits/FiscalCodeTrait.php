@@ -194,7 +194,7 @@ trait FiscalCodeTrait
 		return in_array(strtolower($state), $this->getEuStatesArray());
 	}
 
-	public function isBornInEu(?bool $default = true) : ?bool
+	public function isBornInEu(? bool $default = null) : ? bool
 	{
 		if (! $state = $this->getBirthState())
 			return $default;
@@ -202,8 +202,11 @@ trait FiscalCodeTrait
 		return $this->stateIsEuState($state);
 	}
 
-	public function isNotBornInEu(bool $default = null)
+	public function isNotBornInEu(bool $default = null) : ? bool
 	{
+		if(is_null($this->isBornInEu($default)))
+			return null;
+
 		return ! $this->isBornInEu($default);
 	}
 

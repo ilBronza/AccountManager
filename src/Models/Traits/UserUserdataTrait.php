@@ -10,7 +10,7 @@ trait UserUserdataTrait
 	public function getEditUserdataUrl() : string
 	{
 		return app('accountmanager')->route('userdatas.edit', [
-			'user' => $this->getKey()
+			'userdata' => $this->getUserdata()->getKey()
 		]);
 	}
 

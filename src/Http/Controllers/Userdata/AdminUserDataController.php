@@ -42,7 +42,8 @@ class AdminUserDataController extends BaseUserdataPackageController
 
 	public function getUpdateModelAction()
 	{
-		return app('accountmanager')->route('userdatas.update', ['user' => $this->user]);
+		return $this->getModel()->getUpdateUrl();
+//		return app('accountmanager')->route('userdatas.update', ['userdata' => $this->user]);
 	}
 
 	public function getAfterUpdatedRedirectUrl()
