@@ -120,7 +120,8 @@ class AccountManager implements RoutedObjectInterface
                         'text' => 'accountmanager::accountmanager.editUserdata',
                         'href' => IbRouter::route($this, 'accountmanager.editUserdata')
                     ];
-            elseif(config('accountmanager.usesAvatar', true))
+
+			if(config('accountmanager.usesAvatar', true))
                 $userAreaChildren[] = 
                     [
                         'text' => 'accountmanager::accountmanager.editAvatar',

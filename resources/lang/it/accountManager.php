@@ -20,5 +20,6 @@ return [
 	'edit' => 'Modifica account',
 	'editUserdata' => 'Modifica dati utente',
 	'editPassword' => 'Modifica password',
+	'editAvatar' => 'Modifica avatar',
 	'logout' => 'Logout'
 ];

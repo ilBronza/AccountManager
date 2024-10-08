@@ -18,6 +18,7 @@ class Userdata extends BaseModel implements HasMedia
 
 	static $packageConfigPrefix = 'accountmanager';
 	use PackagedModelsTrait;
+
 	static $modelConfigPrefix = 'userdata';
 	static $deletingRelationships = [];
 	protected $keyType = 'string';
@@ -35,7 +36,7 @@ class Userdata extends BaseModel implements HasMedia
 		if (class_basename($user) == 'User')
 			$user = $user->getKey();
 
-		if($result = static::where('user_id', $user)->first())
+		if ($result = static::where('user_id', $user)->first())
 			return $result;
 
 		$userdata = Userdata::getProjectClassName()::make();
@@ -68,7 +69,7 @@ class Userdata extends BaseModel implements HasMedia
 		});
 	}
 
-	public function getTable()
+	public function getTable() : string
 	{
 		return config('accountmanager.models.userdata.table');
 	}
@@ -124,10 +125,10 @@ class Userdata extends BaseModel implements HasMedia
 		return $this->user;
 	}
 
-//	public function getEditURL(array $data = [])
-//	{
-//		return app('accountmanager')->route('userdatas.edit', ['user' => $this->getUserKey()]);
-//	}
+	//	public function getEditURL(array $data = [])
+	//	{
+	//		return app('accountmanager')->route('userdatas.edit', ['user' => $this->getUserKey()]);
+	//	}
 
 	public function getUserKey() : string
 	{
