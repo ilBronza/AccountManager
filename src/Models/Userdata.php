@@ -117,7 +117,7 @@ class Userdata extends BaseModel implements HasMedia
 
 	public function getName() : ?string
 	{
-		return "{$this->getFirstName()} {$this->getSurname()}";
+		return "{$this->getSurname()} {$this->getFirstName()}";
 	}
 
 	public function getUser() : ?User
@@ -130,13 +130,13 @@ class Userdata extends BaseModel implements HasMedia
 	//		return app('accountmanager')->route('userdatas.edit', ['user' => $this->getUserKey()]);
 	//	}
 
-	public function getUserKey() : string
-	{
-		return $this->user_id;
-	}
-
 	public function getIndexUrl(array $data = []) : string
 	{
 		return app('accountmanager')->route('users.index');
+	}
+
+	public function getUserKey() : string
+	{
+		return $this->user_id;
 	}
 }
