@@ -31,22 +31,27 @@ class AccountManager implements RoutedObjectInterface
         if(! $menu = app('menu'))
             return;
 
+		if(! (($user = Auth::user())?->isAdministrator())&&(! ($user = Auth::user())?->isSuperadmin()))
+			return ;
+
         if(config('accountmanager.enabled', false))
         {
-            $button = $menu->provideButton([
+            $settingsButton = $menu->provideButton([
                     'text' => 'generals.settings',
                     'name' => 'settings',
                     'icon' => 'gear',
                     'roles' => ['administrator']
                 ]);
 
-            $button->setFirst();
+            $settingsButton->setFirst();
 
             $authButton = $menu->createButton([
                 'name' => 'accountmanager',
                 'icon' => 'user-gear',
                 'text' => 'accountmanager::accountmanager.accounts'
             ]);
+
+            $settingsButton->addChild($authButton);
 
             $usersButton = $menu->createButton([
                 'name' => 'users.index',
@@ -56,56 +61,60 @@ class AccountManager implements RoutedObjectInterface
                 'permissions' => ['users.index']
             ]);
 
-            $rolesButton = $menu->createButton([
-                'name' => 'roles.index',
-                'text' => 'accountmanager::accountmanager.roles',
-                'icon' => 'graduation-cap',
-                'href' => IbRouter::route($this, 'roles.index'),
-                'permissions' => ['roles.index']
-            ]);
+            $authButton->addChild($usersButton);
 
-            if(config('app.usesPermissions', true))
-                $permissionsButton = $menu->createButton([
-                    'name' => 'permissions.index',
-                    'text' => 'accountmanager::accountmanager.permissions',
-                    'icon' => 'user-lock',
-                    'href' => IbRouter::route($this, 'permissions.index'),
-                    'permissions' => ['permissions.index']
+            if($user->isSuperadmin())
+            {
+                $rolesButton = $menu->createButton([
+                    'name' => 'roles.index',
+                    'text' => 'accountmanager::accountmanager.roles',
+                    'icon' => 'graduation-cap',
+                    'href' => IbRouter::route($this, 'roles.index'),
+                    'permissions' => ['roles.index']
                 ]);
 
-            $button->addChild($authButton);
-
-            $authButton->addChild($usersButton);
-            $authButton->addChild($rolesButton);
-
-            if(config('app.usesPermissions', true))
-                $authButton->addChild($permissionsButton);
-
-            try
-            {
-                if(app('mailer')&&(config('mailer.active', true)))
-                {
-                    $mailersButton = $menu->createButton([
-                        'name' => 'mailers.index',
-                        'text' => 'mailer::mailer.index',
+                if(config('app.usesPermissions', true))
+                    $permissionsButton = $menu->createButton([
+                        'name' => 'permissions.index',
+                        'text' => 'accountmanager::accountmanager.permissions',
                         'icon' => 'user-lock',
-                        'href' => route('usermailers.index'),
-                        'roles' => ['administrator']
-                    ]);
+                        'href' => IbRouter::route($this, 'permissions.index'),
+                        'permissions' => ['permissions.index']
+                    ]);                
 
-                    $authButton->addChild($mailersButton);
+                $authButton->addChild($rolesButton);
 
+                if(config('app.usesPermissions', true))
+                    $authButton->addChild($permissionsButton);
+
+
+                try
+                {
+                    if(app('mailer')&&(config('mailer.active', true)))
+                    {
+                        $mailersButton = $menu->createButton([
+                            'name' => 'mailers.index',
+                            'text' => 'mailer::mailer.index',
+                            'icon' => 'user-lock',
+                            'href' => route('usermailers.index'),
+                            'roles' => ['administrator']
+                        ]);
+
+                        $authButton->addChild($mailersButton);
+
+                    }
                 }
-            }
-            catch(\Exception $e)
-            {
-                // dd($e->getMessage());
-            }
+                catch(\Exception $e)
+                {
+                    // dd($e->getMessage());
+                }
 
+
+            }
 
         }
 
-        if(Auth::user())
+        if($user)
         {
             $userAreaChildren = [
                     [

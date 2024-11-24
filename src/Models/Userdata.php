@@ -120,6 +120,12 @@ class Userdata extends BaseModel implements HasMedia
 		return "{$this->getSurname()} {$this->getFirstName()}";
 	}
 
+	public function getSignatureName() : ?string
+	{
+		return "{$this->getFirstName()} {$this->getSurname()}";
+	}
+
+
 	public function getUser() : ?User
 	{
 		return $this->user;

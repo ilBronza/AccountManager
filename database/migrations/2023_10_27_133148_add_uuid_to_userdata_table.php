@@ -12,26 +12,27 @@ return new class extends Migration
      */
     public function up(): void
     {
-        Schema::table(config('accountmanager.models.userdata.table'), function (Blueprint $table) {
-            $table->uuid('id')->first()->nullable();
-            //
-        });
-
-        foreach(config('accountmanager.models.userdata.class')::all() as $userdata)
-        {
-            $userdata->id = Str::uuid()->toString();
-            $userdata->save();            
-        }
-
-        Schema::table(config('accountmanager.models.userdata.table'), function (Blueprint $table) {
-            $table->uuid('id')->first()->nullable(false)->change();
-            //
-        });
-
-        Schema::table(config('accountmanager.models.userdata.table'), function (Blueprint $table) {
-            $table->uuid('id')->primary()->change();
-            //
-        });
+		return ;
+//        Schema::table(config('accountmanager.models.userdata.table'), function (Blueprint $table) {
+//            $table->uuid('id')->first()->nullable();
+//            //
+//        });
+//
+//        foreach(config('accountmanager.models.userdata.class')::all() as $userdata)
+//        {
+//            $userdata->id = Str::uuid()->toString();
+//            $userdata->save();
+//        }
+//
+//        Schema::table(config('accountmanager.models.userdata.table'), function (Blueprint $table) {
+//            $table->uuid('id')->first()->nullable(false)->change();
+//            //
+//        });
+//
+//        Schema::table(config('accountmanager.models.userdata.table'), function (Blueprint $table) {
+//            $table->uuid('id')->primary()->change();
+//            //
+//        });
     }
 
     /**

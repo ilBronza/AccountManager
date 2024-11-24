@@ -79,8 +79,8 @@ Route::group([
 
 			});
 
-			Route::resource('roles', AccountManager::getController('role'));
-			Route::resource('permissions', AccountManager::getController('permission'));
+			Route::resource('roles', AccountManager::getController('role'))->middleware(['role:superadmin']);
+			Route::resource('permissions', AccountManager::getController('permission'))->middleware(['role:superadmin']);
 
 
 		Route::get('logout', function(Request $request)
@@ -112,6 +112,8 @@ Route::group([
 				Route::get('create', [AccountManager::getController('user', 'create'), 'create'])->name('users.create');
 				Route::get('{user}', [AccountManager::getController('user', 'show'), 'show'])->name('users.show');
 				Route::get('{user}/edit', [AccountManager::getController('user', 'edit'), 'edit'])->name('users.edit');
+
+				//EditUserController
 				Route::put('{user}', [AccountManager::getController('user', 'update'), 'update'])->name('users.update');
 				Route::delete('{user}', [AccountManager::getController('user', 'destroy'), 'destroy'])->name('users.destroy');
 			});

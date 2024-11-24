@@ -2,6 +2,8 @@
 
 namespace IlBronza\AccountManager\Http\Controllers\Users;
 
+use Auth;
+use IlBronza\AccountManager\Models\Role;
 use IlBronza\CRUD\Models\Scopes\ActiveScope;
 use IlBronza\CRUD\Providers\RouterProvider\IbRouter;
 use IlBronza\CRUD\Traits\CRUDEditUpdateTrait;
@@ -44,8 +46,22 @@ class EditUserController extends BaseUserPackageController
         // return route('accountmanager.update');
     }
 
+    public function avoidSuperadminAssignment(Request $request)
+    {
+        $superadminRoles = Role::select('id')->where('name', 'superadmin')->pluck('id');
+
+        $idsString = $superadminRoles->implode(',');
+
+        $request->validate([
+            'roles.*' => 'nullable|notIn:' . $idsString
+        ], ['roles.*.not_in' => ';-)']);
+    }
+
     public function update(Request $request, $user)
     {
+        if(! Auth::user()->isSuperadmin())
+            $this->avoidSuperadminAssignment($request);
+
         $user = $this->getUserModel($user);
 
         return $this->_update($request, $user);

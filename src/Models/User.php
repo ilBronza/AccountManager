@@ -13,6 +13,8 @@ use IlBronza\CRUD\Providers\RouterProvider\IbRouter;
 use IlBronza\CRUD\Traits\Model\CRUDCacheTrait;
 use IlBronza\CRUD\Traits\Model\CRUDModelExtraFieldsTrait;
 
+use function trim;
+
 class User extends BaseUser
 {
 	use PackageAccountModelsTrait;
@@ -133,16 +135,25 @@ public function getFirstName() : ? string
 	return $this->first_name;
 }
 
-public function getFullName() : string
-{
-	if ($userdata = $this->getUserdata())
-		if ($name = trim($userdata->getName()))
-			return $name;
+	public function getFullName() : string
+	{
+		if ($userdata = $this->getUserdata())
+			if ($name = trim($userdata->getName()))
+				return $name;
 
-	return $this->getName();
-}
+		return $this->getName();
+	}
 
-public function getShortName()
+	public function getSignatureFullName() : string
+	{
+		if ($userdata = $this->getUserdata())
+			if ($name = trim($userdata->getSignatureName()))
+				return $name;
+
+		return $this->getName();
+	}
+
+	public function getShortName()
 {
 	if (! $userdata = $this->getUserdata())
 		return $this->getName();

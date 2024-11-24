@@ -12,4 +12,9 @@ trait UserPermissionsTrait
 	{
 		return $this->hasRole('superadmin');
 	}
+
+	public function isAdministrator()
+	{
+		return $this->hasRole('administrator');
+	}
 }
