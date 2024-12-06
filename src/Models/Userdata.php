@@ -115,9 +115,13 @@ class Userdata extends BaseModel implements HasMedia
 		return $this->surname;
 	}
 
+	public function getInvertedName() : ? string
+	{
+		return trim("{$this->getFirstName()} {$this->getSurname()}");
+	}
 	public function getName() : ?string
 	{
-		return "{$this->getSurname()} {$this->getFirstName()}";
+		return trim("{$this->getSurname()} {$this->getFirstName()}");
 	}
 
 	public function getSignatureName() : ?string

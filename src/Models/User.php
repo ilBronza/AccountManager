@@ -135,6 +135,15 @@ public function getFirstName() : ? string
 	return $this->first_name;
 }
 
+public function getFullInvertedName() : string
+{
+	if ($userdata = $this->getUserdata())
+		if ($name = trim($userdata->getInvertedName()))
+			return $name;
+
+	return $this->getName();
+
+}
 	public function getFullName() : string
 	{
 		if ($userdata = $this->getUserdata())
