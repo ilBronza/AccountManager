@@ -85,11 +85,11 @@ trait FiscalCodeTrait
 		return $year = '20' . $year;
 	}
 
-	public function getBirtyCityByFiscalCode(string $fiscalCode) : ?City
+	public function getBirtyCityByFiscalCode(string $fiscalCode) : ? City
 	{
 		$cityCode = substr($fiscalCode, 11, 4);
 
-		return City::getProjectClassName()::where('belfiore', $cityCode)->first();
+		return City::gpc()::findCachedByField('belfiore', $cityCode)->first();
 	}
 
 	public function getBirthCityModel() : ?City
