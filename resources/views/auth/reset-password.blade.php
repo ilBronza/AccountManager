@@ -2,89 +2,92 @@
 
 @section('content')
 
-<div uk-height-viewport>
-    <div class="uk-position-center">
-        <div class="uk-width-medium">
-            
-            <img
-                class="uk-margin-bottom"
-                width="100%"
-                src="/img/login.gif"
-                alt="">
+	asd
+	<div class="login-container uk-flex uk-flex-middle reset-password">
+		<div class="uk-margin-auto">
+			<div class="uk-width-medium">
 
-            <form class="uk-form uk-form-vertical uk-text-left" method="POST" action="{{ route('password.update') }}">
-                @csrf
+				<img
+						class="uk-margin-bottom"
+						width="100%"
+						src="{{ config('mail.logo.path', config('menu.logo.path')) }}"
+						alt="">
 
-                <input type="hidden" name="token" value="{{ $request->route('token') }}">
+				<form class="uk-form uk-form-vertical uk-text-left" method="POST"
+					  action="{{ route('password.store') }}">
+					@csrf
 
-                <div class="uk-margin">
-                    <label class="uk-form-label" for="email">@lang('accountmanager::auth.email')</label>
-                    <div class="uk-form-controls">
-                        <input
-                            class="uk-input @error('email') uk-form-danger @enderror"
-                            name="email"
-                            id="email"
-                            value="{{ old('email', $request->email) }}"
-                            type="text"
-                            placeholder="@lang('accountmanager::auth.email')"
-                            >
+					<input type="hidden" name="token" value="{{ $request->route('token') }}">
 
-                        @error('email')
-                            <span class="uk-text-danger">
+					<div class="uk-margin">
+						<label class="uk-form-label" for="email">@lang('accountmanager::auth.email')</label>
+						<div class="uk-form-controls">
+							<input
+									class="uk-input @error('email') uk-form-danger @enderror"
+									name="email"
+									id="email"
+									value="{{ old('email', $request->email) }}"
+									type="text"
+									placeholder="@lang('accountmanager::auth.email')"
+							>
+
+							@error('email')
+							<span class="uk-text-danger">
                                 <strong>{{ $message }}</strong>
                             </span>
-                        @enderror
-                    </div>
-                </div>
+							@enderror
+						</div>
+					</div>
 
-                <div class="uk-margin">
-                    <label class="uk-form-label" for="password">@lang('accountmanager::auth.password')</label>
-                    <div class="uk-form-controls">
-                        <input
-                            class="uk-input @error('password') uk-form-danger @enderror"
-                            type="password"
-                            id="password"
-                            name="password"
-                            required autocomplete="current-password"
-                            placeholder="@lang('accountmanager::auth.password')"
-                            >
-                        @error('password')
-                            <span class="uk-text-danger">
+					<div class="uk-margin">
+						<label class="uk-form-label" for="password">@lang('accountmanager::auth.password')</label>
+						<div class="uk-form-controls">
+							<input
+									class="uk-input @error('password') uk-form-danger @enderror"
+									type="password"
+									id="password"
+									name="password"
+									required autocomplete="current-password"
+									placeholder="@lang('accountmanager::auth.password')"
+							>
+							@error('password')
+							<span class="uk-text-danger">
                                 <strong>{{ $message }}</strong>
                             </span>
-                        @enderror
-                    </div>
-                </div>
+							@enderror
+						</div>
+					</div>
 
-                <div class="uk-margin">
-                    <label class="uk-form-label" for="password_confirmation">@lang('accountmanager::auth.passwordConfirmation')</label>
-                    <div class="uk-form-controls">
-                        <input
-                            class="uk-input @error('password_confirmation') uk-form-danger @enderror"
-                            type="password"
-                            id="password_confirmation"
-                            name="password_confirmation"
-                            required autocomplete="current-password"
-                            placeholder="@lang('accountmanager::auth.passwordConfirmation')"
-                            >
-                        @error('password_confirmation')
-                            <span class="uk-text-danger">
+					<div class="uk-margin">
+						<label class="uk-form-label"
+							   for="password_confirmation">@lang('accountmanager::auth.passwordConfirmation')</label>
+						<div class="uk-form-controls">
+							<input
+									class="uk-input @error('password_confirmation') uk-form-danger @enderror"
+									type="password"
+									id="password_confirmation"
+									name="password_confirmation"
+									required autocomplete="current-password"
+									placeholder="@lang('accountmanager::auth.passwordConfirmation')"
+							>
+							@error('password_confirmation')
+							<span class="uk-text-danger">
                                 <strong>{{ $message }}</strong>
                             </span>
-                        @enderror
-                    </div>
-                </div>
+							@enderror
+						</div>
+					</div>
 
-                <div>
-                    <button
-                        type="sumbit"
-                        class="uk-width-1-1 uk-button uk-button-primary uk-button-medium">
-                        @lang('accountmanager::auth.resetPassword')
-                    </button>
-                </div>
-            </form>
-        </div>
-    </div>
-</div>
+					<div>
+						<button
+								type="sumbit"
+								class="uk-width-1-1 uk-button uk-button-primary uk-button-medium">
+							@lang('accountmanager::auth.resetPassword')
+						</button>
+					</div>
+				</form>
+			</div>
+		</div>
+	</div>
 
 @endsection

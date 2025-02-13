@@ -13,6 +13,8 @@ class EditUserController extends BaseUserPackageController
 {
     use CRUDEditUpdateTrait;
 
+	public ?bool $updateEditor = false;
+
     public $allowedMethods = [
         'edit',
         'update'

@@ -49,7 +49,7 @@ class RoleController extends CRUD
 
     public function getGenericParametersFile() : ? string
     {
-        return config('accountmanager.models.role.parametersFiles.edit');
+        return config('accountmanager.models.role.parametersFiles.create');
     }
 
     public function getIndexElements()

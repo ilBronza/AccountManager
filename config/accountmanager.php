@@ -15,6 +15,7 @@ use IlBronza\AccountManager\Http\Controllers\Users\DuplicateUserController;
 use IlBronza\AccountManager\Http\Controllers\Users\EditUserController;
 use IlBronza\AccountManager\Http\Controllers\Users\IndexUserController;
 use IlBronza\AccountManager\Http\Controllers\Users\ShowUserController;
+use IlBronza\AccountManager\Http\Parameters\FieldsetsParameters\RoleFieldsetsParameters;
 use IlBronza\AccountManager\Http\Parameters\FieldsetsParameters\UserAccountEditFieldsetsParameters;
 use IlBronza\AccountManager\Http\Parameters\FieldsetsParameters\UserCreateFieldsetsParameters;
 use IlBronza\AccountManager\Http\Parameters\FieldsetsParameters\UserCreateSlimFieldsetsParameters;
@@ -66,6 +67,9 @@ return [
                 'index' => RoleTableFieldsParameters::class,
                 'related' => RoleTableFieldsRelatedParameters::class,
             ],
+	        'parametersFiles' => [
+		        'create' => RoleFieldsetsParameters::class,
+	        ],
         ],
         'permission' => [
             'class' => Permission::class,

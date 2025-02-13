@@ -1,0 +1,15 @@
+{
+  "Hello!": "Buongiorno",
+  "Verify Email Address": "Verifica indirizzo email",
+  "If you did not create an account, no further action is required.": "Se non hai creato un account, ignora e cancella questa email senza fare altro.",
+  "Please click the button below to verify your email address.": "Per favore clicca il pulsante sottostante per verificare il tuo indirizzo email.",
+  "Reset Password Notification": "Richiesta di reimpostazione della password",
+  "You are receiving this email because we received a password reset request for your account.": "Ti abbiamo inviato questo messaggio perché abbiamo ricevuto una richiesta di reimpostazione della password per il tuo profilo.",
+  "Reset Password": "Reimposta la password",
+  "This password reset link will expire in :count minutes.": "Il link alla reimpostazione scadrà tra :count minuti.",
+  "Regards": "Grazie, buona giornata",
+  "If you did not request a password reset, no further action is required.": "Se non hai richiesto il reset della tua password, ignora pure questo messaggio.",
+  "If you're having trouble clicking the \":actionText\" button, copy and paste the URL below\ninto your web browser:": "Se hai problemi nel click del pulsante \":actionText\", copia e incolla il seguente link nel browser: ",
+  "All rights reserved.": "",
+  "actionText": "Reimposta la password"
+}

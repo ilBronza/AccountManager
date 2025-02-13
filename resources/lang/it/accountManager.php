@@ -3,6 +3,7 @@
 return [
 	'permissions' => 'Permessi',
 	'users' => 'Utenti',
+	'user' => 'Utente',
 	'roles' => 'Ruoli',
 	'accounts' => 'Utenze',
 	'passwordConfirmation' => 'Password confirmation',

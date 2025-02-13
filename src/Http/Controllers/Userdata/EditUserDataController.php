@@ -8,6 +8,8 @@ use Illuminate\Http\Request;
 
 class EditUserDataController extends BaseUserdataPackageController
 {
+	public ?bool $updateEditor = false;
+	
     use CRUDEditUpdateTrait;
 
     public $allowedMethods = ['edit', 'update'];

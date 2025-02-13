@@ -54,6 +54,7 @@ Route::group([
 	],
 	function()
 	{
+		//IlBronza\AccountManager\Http\Controllers\Account\EditAccountController
 		Route::get('edit-account', [AccountManager::getController('user', 'editAccount'), 'edit'])->name('accountmanager.account');
 		Route::put('update-account', [AccountManager::getController('user', 'updateAccount'), 'update'])->name('accountmanager.update');
 		

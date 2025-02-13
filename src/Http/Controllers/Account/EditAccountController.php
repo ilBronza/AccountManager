@@ -16,6 +16,8 @@ class EditAccountController extends CRUD
 {
     public $returnBack = true;
 
+	public ?bool $updateEditor = false;
+
     use CRUDEditUpdateTrait;
 
     public $allowedMethods = [

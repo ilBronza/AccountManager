@@ -13,6 +13,7 @@ use IlBronza\CRUD\Providers\RouterProvider\IbRouter;
 use IlBronza\CRUD\Traits\Model\CRUDCacheTrait;
 use IlBronza\CRUD\Traits\Model\CRUDModelExtraFieldsTrait;
 
+use function is_null;
 use function trim;
 
 class User extends BaseUser
@@ -142,8 +143,8 @@ public function getFullInvertedName() : string
 			return $name;
 
 	return $this->getName();
-
 }
+
 	public function getFullName() : string
 	{
 		if ($userdata = $this->getUserdata())
@@ -181,4 +182,20 @@ public function getDuplicateUrl()
 
 	return route('accountmanager.duplicate', ['user' => $this]);
 }
+
+	public function userCanUpdate(User $user = null)
+	{
+		if(is_null($user))
+			$user = Auth::user();
+
+		if($user->getKey() == $this->getKey())
+			return true;
+		
+		if(! is_null($result = $this->getBaseUserRightsResult($user)))
+			return $result;
+
+		return $this->user_id == $user->getKey();
+	}
+
+
 }

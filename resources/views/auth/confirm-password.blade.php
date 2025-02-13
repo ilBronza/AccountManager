@@ -1,52 +1,27 @@
-@extends('app')
-
-@section('content')
-
-<div uk-height-viewport>
-    <div class="uk-position-center">
-        <div class="uk-width-medium">
-            
-            <img
-                class="uk-margin-bottom"
-                width="100%"
-                src="/img/login.gif"
-                alt="">
-
-            <p class="uk-text-small">{{ __('accountmanager::auth.confirmPasswordText') }}</p>
-
-            <form class="uk-form uk-form-vertical uk-text-left" method="POST" action="{{ route('password.confirm') }}">
-                @csrf
-
-                <div class="uk-margin">
-                    <label class="uk-form-label" for="password">@lang('accountmanager::auth.password')</label>
-                    <div class="uk-form-controls">
-                        <input
-                            class="uk-input @error('password') uk-form-danger @enderror"
-                            type="password"
-                            id="password"
-                            name="password"
-                            required autocomplete="current-password"
-                            placeholder="{{ __('Password') }}"
-                            >
-                        @error('password')
-                            <span class="uk-text-danger">
-                                <strong>{{ $message }}</strong>
-                            </span>
-                        @enderror
-                    </div>
-                </div>
-
-                <div>
-                    <button
-                        type="sumbit"
-                        class="uk-width-1-1 uk-button uk-button-primary uk-button-medium">
-                        @lang('accountmanager::auth.confirm')
-                    </button>
-                </div>
-            </form>
-
-        </div>
+<x-guest-layout>
+    <div class="mb-4 text-sm text-gray-600">
+        {{ __('This is a secure area of the application. Please confirm your password before continuing.') }}
     </div>
-</div>
 
-@endsection
+    <form method="POST" action="{{ route('password.confirm') }}">
+        @csrf
+
+        <!-- Password -->
+        <div>
+            <x-input-label for="password" :value="__('Password')" />
+
+            <x-text-input id="password" class="block mt-1 w-full"
+                            type="password"
+                            name="password"
+                            required autocomplete="current-password" />
+
+            <x-input-error :messages="$errors->get('password')" class="mt-2" />
+        </div>
+
+        <div class="flex justify-end mt-4">
+            <x-primary-button>
+                {{ __('Confirm') }}
+            </x-primary-button>
+        </div>
+    </form>
+</x-guest-layout>

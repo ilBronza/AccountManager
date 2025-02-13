@@ -89,7 +89,7 @@ trait FiscalCodeTrait
 	{
 		$cityCode = substr($fiscalCode, 11, 4);
 
-		return City::gpc()::findCachedByField('belfiore', $cityCode)->first();
+		return City::gpc()::findCachedByField('belfiore', $cityCode);
 	}
 
 	public function getBirthCityModel() : ?City

@@ -18,5 +18,6 @@ return [
 	'edit' => 'Modifica account',
 	'editUserData' => 'Modifica dati utente',
 	'editPassword' => 'Modifica password',
-	'logout' => 'Logout'
+	'logout' => 'Logout',
+	'resetPassword' => 'Resetta password'
 ];

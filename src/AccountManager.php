@@ -8,6 +8,9 @@ use IlBronza\CRUD\Providers\RouterProvider\IbRouter;
 use IlBronza\CRUD\Providers\RouterProvider\RoutedObjectInterface;
 use IlBronza\CRUD\Traits\IlBronzaPackages\IlBronzaPackagesTrait;
 
+use function config;
+use function route;
+
 class AccountManager implements RoutedObjectInterface
 {
     use IlBronzaPackagesTrait;
@@ -31,7 +34,61 @@ class AccountManager implements RoutedObjectInterface
         if(! $menu = app('menu'))
             return;
 
-		if(! (($user = Auth::user())?->isAdministrator())&&(! ($user = Auth::user())?->isSuperadmin()))
+	    if($user = Auth::user())
+	    {
+		    $userAreaChildren = [
+			    [
+				    'text' => 'accountmanager::accountmanager.edit',
+				    'href' => IbRouter::route($this, 'accountmanager.account')
+			    ]
+		    ];
+
+		    if(config('accountmanager.usesUserdata', true))
+			    $userAreaChildren[] =
+				    [
+					    'text' => 'accountmanager::accountmanager.editUserdata',
+					    'href' => IbRouter::route($this, 'accountmanager.editUserdata')
+				    ];
+
+		    if(config('accountmanager.usesAvatar', true))
+			    $userAreaChildren[] =
+				    [
+					    'text' => 'accountmanager::accountmanager.editAvatar',
+					    'href' => IbRouter::route($this, 'accountmanager.editAvatar')
+				    ];
+
+		    if(config('accountmanager.canResetPassword', true))
+			    $userAreaChildren[] =
+				    [
+					    'text' => 'accountmanager::accountmanager.resetPassword',
+					    'href' => route('password.request')
+				    ];
+
+		    $userAreaChildren[] =
+			    [
+				    'text' => 'accountmanager::accountmanager.logout',
+				    'href' => IbRouter::route($this, 'accountmanager.logout')
+			    ];
+
+		    $userAreaParameters = [
+			    'name' => 'account',
+			    'image' => (($avatar = Auth::user()->getAvatarImage()) ? $avatar : null),
+			    'translatedText' => Auth::user()->getName(),
+			    'href' => IbRouter::route($this, 'users.show', [Auth::user()]),
+
+			    'children' => $userAreaChildren
+		    ];
+
+		    $account = $menu->provideButton($userAreaParameters);
+
+		    $destra = $menu->provideMainRightBar();
+
+		    $menu->addToNavbar($account, $destra);
+
+		    $account->setFirst();
+	    }
+
+		if(! ($user?->isAdministrator())&&(! ($user = Auth::user())?->isSuperadmin()))
 			return ;
 
         if(config('accountmanager.enabled', false))
@@ -113,59 +170,5 @@ class AccountManager implements RoutedObjectInterface
             }
 
         }
-
-        if($user)
-        {
-            $userAreaChildren = [
-                    [
-                        'text' => 'accountmanager::accountmanager.edit',
-                        'href' => IbRouter::route($this, 'accountmanager.account')
-                    ]
-            ];
-
-            if(config('accountmanager.usesUserdata', true))
-                $userAreaChildren[] = 
-                    [
-                        'text' => 'accountmanager::accountmanager.editUserdata',
-                        'href' => IbRouter::route($this, 'accountmanager.editUserdata')
-                    ];
-
-			if(config('accountmanager.usesAvatar', true))
-                $userAreaChildren[] = 
-                    [
-                        'text' => 'accountmanager::accountmanager.editAvatar',
-                        'href' => IbRouter::route($this, 'accountmanager.editAvatar')
-                    ];
-
-            if(config('accountmanager.canResetPassword', true))
-                $userAreaChildren[] = 
-                    [
-                        'text' => 'accountmanager::accountmanager.resetPassword',
-                        'href' => route('password.request')
-                    ];
-
-                $userAreaChildren[] = 
-                    [
-                        'text' => 'accountmanager::accountmanager.logout',
-                        'href' => IbRouter::route($this, 'accountmanager.logout')
-                    ];
-
-            $userAreaParameters = [
-                'name' => 'account',
-                'image' => (($avatar = Auth::user()->getAvatarImage()) ? $avatar : null),
-                'translatedText' => Auth::user()->getName(),
-                'href' => IbRouter::route($this, 'users.show', [Auth::user()]),
-
-                'children' => $userAreaChildren
-            ];
-
-            $account = $menu->provideButton($userAreaParameters);
-
-            $destra = $menu->provideMainRightBar();
-
-            $menu->addToNavbar($account, $destra);
-
-            $account->setFirst();
-        }
-    }
+	}
 }

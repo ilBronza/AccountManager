@@ -18,7 +18,7 @@ class PopulateRolesTable extends Migration
                 'email' => 'bronza.dogodesign@gmail.com',
                 'password' => Hash::make('qweqweqwe')]);
 
-        return User::getProjectClassName()::where('name', 'bronza')->first();
+        return User::gpc()::where('name', 'bronza')->first();
     }
     /**
      * Run the migrations.

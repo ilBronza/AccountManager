@@ -14,7 +14,7 @@ class CreateUserdatasTable extends Migration
     public function up()
     {
         Schema::create(config('accountmanager.models.userdata.table'), function (Blueprint $table) {
-
+			$table->uuid('id')->primary();
             $table->foreignId('user_id')->nullable()->constrained();
 
             $table->nullableUuidMorphs('userdatable');
