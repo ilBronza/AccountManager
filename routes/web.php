@@ -63,6 +63,10 @@ Route::group([
 			],
 			function()
 			{
+				//EditUserDataAvatarController
+				Route::get('{user}/edit-avatar', [AccountManager::getController('userdata', 'editAvatar'), 'userEdit'])->name('accountmanager.user.editAvatar');
+				Route::put('{user}/update-avatar', [AccountManager::getController('userdata', 'updateAvatar'), 'userUpdate'])->name('accountmanager.user.updateAvatar');
+
 //				IlBronza\AccountManager\Http\Controllers\Userdata\EditUserDataController
 				Route::get('edit', [AccountManager::getController('userdata', 'edit'), 'edit'])
 					->name('accountmanager.editUserdata');

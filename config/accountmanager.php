@@ -40,6 +40,8 @@ return [
     'usesAvatar' => true,
     'accountmanager' => true,
 
+	'defaultAvatar' => 'https://randomuser.me/api/portraits/men/97.jpg',
+
     'routePrefix' => 'accountmanager',
 	'fakeEmailDomain' => 'fake' . (str_replace('http://', '', str_replace('https://', '', env('APP_URL')))),
     'models' => [

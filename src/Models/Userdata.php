@@ -12,6 +12,8 @@ use Illuminate\Support\Facades\Session;
 use Ramsey\Uuid\Uuid;
 use Spatie\MediaLibrary\HasMedia;
 
+use function config;
+
 class Userdata extends BaseModel implements HasMedia
 {
 	use CRUDUseUuidTrait;
@@ -69,6 +71,16 @@ class Userdata extends BaseModel implements HasMedia
 		});
 	}
 
+	public function getName() : ?string
+	{
+		return trim("{$this->getSurname()} {$this->getFirstName()}");
+	}
+
+	public function getIndexUrl(array $data = []) : string
+	{
+		return app('accountmanager')->route('users.index');
+	}
+
 	public function getTable() : string
 	{
 		return config('accountmanager.models.userdata.table');
@@ -84,7 +96,7 @@ class Userdata extends BaseModel implements HasMedia
 		foreach ($this->media as $media)
 			return $media->getFullUrl();
 
-		return 'https://randomuser.me/api/portraits/men/97.jpg';
+		return config('accountmanager.defaultAvatar');
 	}
 
 	public function user()
@@ -115,13 +127,9 @@ class Userdata extends BaseModel implements HasMedia
 		return $this->surname;
 	}
 
-	public function getInvertedName() : ? string
+	public function getInvertedName() : ?string
 	{
 		return trim("{$this->getFirstName()} {$this->getSurname()}");
-	}
-	public function getName() : ?string
-	{
-		return trim("{$this->getSurname()} {$this->getFirstName()}");
 	}
 
 	public function getSignatureName() : ?string
@@ -129,20 +137,14 @@ class Userdata extends BaseModel implements HasMedia
 		return "{$this->getFirstName()} {$this->getSurname()}";
 	}
 
-
-	public function getUser() : ?User
-	{
-		return $this->user;
-	}
-
 	//	public function getEditURL(array $data = [])
 	//	{
 	//		return app('accountmanager')->route('userdatas.edit', ['user' => $this->getUserKey()]);
 	//	}
 
-	public function getIndexUrl(array $data = []) : string
+	public function getUser() : ?User
 	{
-		return app('accountmanager')->route('users.index');
+		return $this->user;
 	}
 
 	public function getUserKey() : string

@@ -176,6 +176,13 @@ public function routeNotificationForSlack($notification)
 	return 'https://hooks.slack.com/services/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';
 }
 
+public function getRolesString() : string
+{
+	return cache()->remember($this->cacheKey('rolesstring'), 3600, function (){
+		return $this->roles->pluck('name')->implode(' ');
+	});
+}
+
 public function getDuplicateUrl()
 {
 	return IbRouter::route(app('accountmanager'), 'accountmanager.duplicate', ['user' => $this]);

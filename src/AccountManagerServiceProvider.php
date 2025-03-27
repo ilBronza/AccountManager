@@ -6,11 +6,13 @@ use IlBronza\AccountManager\Http\Middleware\CheckActiveUser;
 use IlBronza\AccountManager\Http\Middleware\ManageRolesAndPermissionsMiddleware;
 use IlBronza\AccountManager\Models\User;
 use IlBronza\AccountManager\Models\Userdata;
+use IlBronza\CRUD\Traits\IlBronzaPackages\IlBronzaServiceProviderPackagesTrait;
 use Illuminate\Database\Eloquent\Relations\Relation;
 use Illuminate\Support\ServiceProvider;
 
 class AccountManagerServiceProvider extends ServiceProvider
 {
+	use IlBronzaServiceProviderPackagesTrait;
 	/**
 	 * Perform post-registration booting of services.
 	 *

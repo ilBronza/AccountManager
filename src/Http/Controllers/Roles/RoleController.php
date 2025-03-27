@@ -17,6 +17,8 @@ use IlBronza\CRUD\Traits\CRUDRelationshipTrait;
 use IlBronza\CRUD\Traits\CRUDShowTrait;
 use Illuminate\Http\Request;
 
+use function config;
+
 class RoleController extends CRUD
 {
 

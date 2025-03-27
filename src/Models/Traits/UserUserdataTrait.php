@@ -5,6 +5,8 @@ namespace IlBronza\AccountManager\Models\Traits;
 use Auth;
 use IlBronza\AccountManager\Models\Userdata;
 
+use function config;
+
 trait UserUserdataTrait
 {
 	public function getEditUserdataUrl() : string
@@ -22,7 +24,7 @@ trait UserUserdataTrait
 	public function getAvatarImage() : ? string
 	{
 		if(! $userdata = $this->getUserData())
-			return 'https://randomuser.me/api/portraits/men/97.jpg';
+			return config('accountmanager.defaultAvatar');
 
 		return $userdata->getAvatarImage();
 	}
