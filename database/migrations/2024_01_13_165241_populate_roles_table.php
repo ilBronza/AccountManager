@@ -27,6 +27,8 @@ class PopulateRolesTable extends Migration
      */
     public function up()
     {
+	    $user = User::getProjectClassName()::find(1);
+
         Schema::table('roles', function (Blueprint $table) {
             $table->softDeletes();
         });
@@ -42,7 +44,7 @@ class PopulateRolesTable extends Migration
                 'guard_name' => 'web'
             ]);
 
-        if(! $user = User::getProjectClassName()::find(1))
+        if(! $user)
             $user = $this->createMainUser();
 
         $user->assignRole('superadmin');
