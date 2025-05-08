@@ -3,6 +3,7 @@
 namespace IlBronza\AccountManager\Http\Controllers\Userdata;
 
 use IlBronza\AccountManager\Http\Controllers\Userdata\BaseUserdataPackageController;
+use IlBronza\AccountManager\Models\User;
 use IlBronza\AccountManager\Models\Userdata;
 use IlBronza\CRUD\Traits\CRUDEditUpdateTrait;
 use IlBronza\CRUD\Traits\CRUDRelationshipTrait;
@@ -26,6 +27,9 @@ class AdminUserDataController extends BaseUserdataPackageController
 
 	public function edit($user)
 	{
+		if(is_string($user))
+			$user = User::gpc()::find($user);
+
 		$this->user = $user;
 
 		return $this->_edit(
