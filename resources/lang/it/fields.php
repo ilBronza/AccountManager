@@ -27,5 +27,7 @@ return [
   'password_confirmation' => 'Password confirmation',
   'created_at' => 'Creato il',
   'mySelfDuplicate' => 'Duplica',
+  'contacts' => 'Contatti',
   'mySelfEditUserdata' => 'Modifica dati utente',
+
 ];

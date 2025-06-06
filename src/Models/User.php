@@ -16,8 +16,10 @@ use IlBronza\CRUD\Traits\Model\CRUDModelExtraFieldsTrait;
 use function is_null;
 use function trim;
 
+use Illuminate\Database\Eloquent\Factories\HasFactory;
 class User extends BaseUser
 {
+	use HasFactory;
 	use PackageAccountModelsTrait;
 
 	use CRUDModelExtraFieldsTrait;
@@ -78,11 +80,23 @@ protected static function boot()
 	});
 }
 
+/**
+ * Restituisce il nome della classe per i campi extra dell'utente.
+ *
+ * @return string
+ */
 public function getExtraFieldsClass() : string
 {
 	return Userdata::getProjectClassName();
 }
 
+/**
+ * Scope per filtrare gli utenti in base ai nomi dei ruoli.
+ *
+ * @param \Illuminate\Database\Eloquent\Builder $query
+ * @param array $roles
+ * @return \Illuminate\Database\Eloquent\Builder|null
+ */
 public function scopeByRoles($query, array $roles = [])
 {
 	if (! count($roles))
@@ -94,6 +108,13 @@ public function scopeByRoles($query, array $roles = [])
 	});
 }
 
+/**
+ * Scope per filtrare gli utenti in base agli ID dei ruoli.
+ *
+ * @param \Illuminate\Database\Eloquent\Builder $query
+ * @param array $rolesIds
+ * @return \Illuminate\Database\Eloquent\Builder|null
+ */
 public function scopeByRolesIds($query, array $rolesIds = [])
 {
 	if (! count($rolesIds))
@@ -105,12 +126,23 @@ public function scopeByRolesIds($query, array $rolesIds = [])
 	});
 }
 
+/**
+ * Imposta la password dell'utente senza modificarla se vuota.
+ *
+ * @param string|null $value
+ * @return void
+ */
 public function setPasswordAttribute($value)
 {
 	if ($value)
 		$this->attributes['password'] = $value;
 }
 
+/**
+ * Restituisce una forma breve del nome utente per scopi di privacy.
+ *
+ * @return string
+ */
 public function getShortPrivacyName()
 {
 	$pieces = explode(" ", $this->name);
@@ -121,21 +153,41 @@ public function getShortPrivacyName()
 	]);
 }
 
+/**
+ * Restituisce email dell'utente.
+ *
+ * @return string|null
+ */
 public function getEmail() : ?string
 {
 	return $this->email;
 }
 
+/**
+ * Restituisce surname dell'utente.
+ *
+ * @return string|null
+ */
 public function getSurname() : ? string
 {
 	return $this->surname;
 }
 
+/**
+ * Restituisce first name dell'utente.
+ *
+ * @return string|null
+ */
 public function getFirstName() : ? string
 {
 	return $this->first_name;
 }
 
+/**
+ * Restituisce il nome completo invertito (es. Cognome Nome).
+ *
+ * @return string
+ */
 public function getFullInvertedName() : string
 {
 	if ($userdata = $this->getUserdata())
@@ -145,25 +197,40 @@ public function getFullInvertedName() : string
 	return $this->getName();
 }
 
-	public function getFullName() : string
-	{
-		if ($userdata = $this->getUserdata())
-			if ($name = trim($userdata->getName()))
-				return $name;
+/**
+ * Restituisce il nome completo dell'utente.
+ *
+ * @return string
+ */
+public function getFullName() : string
+{
+	if ($userdata = $this->getUserdata())
+		if ($name = trim($userdata->getName()))
+			return $name;
 
-		return $this->getName();
-	}
+	return $this->getName();
+}
 
-	public function getSignatureFullName() : string
-	{
-		if ($userdata = $this->getUserdata())
-			if ($name = trim($userdata->getSignatureName()))
-				return $name;
+/**
+ * Restituisce il nome completo in formato firma.
+ *
+ * @return string
+ */
+public function getSignatureFullName() : string
+{
+	if ($userdata = $this->getUserdata())
+		if ($name = trim($userdata->getSignatureName()))
+			return $name;
 
-		return $this->getName();
-	}
+	return $this->getName();
+}
 
-	public function getShortName()
+/**
+ * Restituisce una forma abbreviata del nome dell'utente.
+ *
+ * @return string
+ */
+public function getShortName()
 {
 	if (! $userdata = $this->getUserdata())
 		return $this->getName();
@@ -171,11 +238,22 @@ public function getFullInvertedName() : string
 	return $userdata->getShortName();
 }
 
+/**
+ * Restituisce l'URL Slack per le notifiche.
+ *
+ * @param mixed $notification
+ * @return string
+ */
 public function routeNotificationForSlack($notification)
 {
 	return 'https://hooks.slack.com/services/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';
 }
 
+/**
+ * Restituisce una stringa con tutti i ruoli dell'utente.
+ *
+ * @return string
+ */
 public function getRolesString() : string
 {
 	return cache()->remember($this->cacheKey('rolesstring'), 3600, function (){
@@ -183,6 +261,11 @@ public function getRolesString() : string
 	});
 }
 
+/**
+ * Restituisce l'URL per duplicare l'utente.
+ *
+ * @return string
+ */
 public function getDuplicateUrl()
 {
 	return IbRouter::route(app('accountmanager'), 'accountmanager.duplicate', ['user' => $this]);
@@ -190,19 +273,36 @@ public function getDuplicateUrl()
 	return route('accountmanager.duplicate', ['user' => $this]);
 }
 
-	public function userCanUpdate(User $user = null)
-	{
-		if(is_null($user))
-			$user = Auth::user();
+/**
+ * Determina se l'utente passato può aggiornare questo utente.
+ *
+ * @param User|null $user
+ * @return bool
+ */
+public function userCanUpdate(User $user = null)
+{
+	if(is_null($user))
+		$user = Auth::user();
 
-		if($user->getKey() == $this->getKey())
-			return true;
-		
-		if(! is_null($result = $this->getBaseUserRightsResult($user)))
-			return $result;
+	if($user->getKey() == $this->getKey())
+		return true;
 
-		return $this->user_id == $user->getKey();
-	}
+	if(! is_null($result = $this->getBaseUserRightsResult($user)))
+		return $result;
+
+	return $this->user_id == $user->getKey();
+}
+
+
+    /**
+     * Restituisce la factory per il model User.
+     *
+     * @return \Illuminate\Database\Eloquent\Factories\Factory
+     */
+    public static function newFactory()
+    {
+        return \IlBronza\AccountManager\Database\Factories\UserFactory::new();
+    }
 
 
 }
