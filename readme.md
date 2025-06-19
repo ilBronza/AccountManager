@@ -22,6 +22,12 @@ Install laravel breeze
 
 Via Composer
 
+This package also requires the Laravel UI scaffolding package. Install it first with:
+
+```bash
+composer require laravel/ui
+```
+
 ``` bash
 
 composer require ilbronza/accountmanager
@@ -29,7 +35,14 @@ composer require ilbronza/accountmanager
 $ php artisan vendor:publish --tag=accountmanager.migrations
 $ php artisan migrate
 $ php artisan vendor:publish --tag=accountmanager.views --force
+$ php artisan vendor:publish --tag=accountmanager.authControllers
 
+```
+
+Add the default Laravel authentication routes in your **routes/web.php** file:
+
+```php
+Auth::routes();
 ```
 
 Edit config.permissions
@@ -50,10 +63,25 @@ Edit config.auth
 
 
 
+
 Edit App\Models\User, add AccountManagerUserPermissionsTrait 
 ``` bash
     use AccountManagerUserPermissionsTrait;
 ```
+
+Edit bootstrap/app.php
+
+```php
+$middleware->alias([
+    'role' => \Spatie\Permission\Middleware\RoleMiddleware::class,
+    'permission' => \Spatie\Permission\Middleware\PermissionMiddleware::class,
+    'role_or_permission' => \Spatie\Permission\Middleware\RoleOrPermissionMiddleware::class,
+]);
+$middleware->append(StartSession::class);
+$middleware->append(IframeCheckerMiddleware::class);
+//
+```
+
 
 ## Usage
 

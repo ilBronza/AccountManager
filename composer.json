@@ -12,6 +12,7 @@
     "homepage": "https://github.com/ilbronza/accountmanager",
     "keywords": ["Laravel", "AccountManager"],
     "require": {
+        "laravel/ui": "^4.6"
     },
     "require-dev": {
     },

@@ -91,6 +91,10 @@ class AccountManagerServiceProvider extends ServiceProvider
 
 		// Publishing the views.
 		$this->publishes([
+			__DIR__ . '/Http/Controllers/Auth' => base_path('app/Http/Controllers/Auth'),
+		], 'accountmanager.authControllers');
+
+		$this->publishes([
 			__DIR__ . '/../resources/views' => base_path('resources/views'),
 		], 'accountmanager.views');
 

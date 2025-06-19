@@ -19,7 +19,7 @@
 						<label class="uk-form-label" for="name">@lang('accountmanager::auth.name')</label>
 						<div class="uk-form-controls">
 							<input
-									class="uk-input @error('name') uk-form-danger @enderror"
+									class="uk-input @if(isset($errors)) @error('name') uk-form-danger @enderror @endif"
 									name="name"
 									id="name"
 									value="{{ old('name') }}"
@@ -27,11 +27,13 @@
 									placeholder="@lang('accountmanager::auth.name')"
 							>
 
-							@error('name')
+							@if(isset($errors))
+								@error('name')
 							<span class="uk-text-danger">
                                 <strong>{{ $message }}</strong>
                             </span>
 							@enderror
+								@endif
 						</div>
 					</div>
 
@@ -39,7 +41,7 @@
 						<label class="uk-form-label" for="email">@lang('accountmanager::auth.email')</label>
 						<div class="uk-form-controls">
 							<input
-									class="uk-input @error('email') uk-form-danger @enderror"
+									class="uk-input @if(isset($errors)) @error('email') uk-form-danger @enderror @endif"
 									name="email"
 									id="email"
 									value="{{ old('email') }}"
@@ -47,11 +49,13 @@
 									placeholder="@lang('accountmanager::auth.email')"
 							>
 
+							@if(isset($errors))
 							@error('email')
 							<span class="uk-text-danger">
                                 <strong>{{ $message }}</strong>
                             </span>
 							@enderror
+								@endif
 						</div>
 					</div>
 
@@ -66,11 +70,13 @@
 									required autocomplete="current-password"
 									placeholder="@lang('accountmanager::auth.password')"
 							>
+							@if(isset($errors))
 							@error('password')
 							<span class="uk-text-danger">
                                 <strong>{{ $message }}</strong>
                             </span>
 							@enderror
+							@endif
 						</div>
 					</div>
 
@@ -86,11 +92,13 @@
 									required autocomplete="current-password"
 									placeholder="@lang('accountmanager::auth.passwordConfirmation')"
 							>
+							@if(isset($errors))
 							@error('password_confirmation')
 							<span class="uk-text-danger">
                                 <strong>{{ $message }}</strong>
                             </span>
 							@enderror
+							@endif
 						</div>
 					</div>
 

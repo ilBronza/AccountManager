@@ -22,7 +22,7 @@
 						<label class="uk-form-label" for="email">@lang('accountmanager::auth.email')</label>
 						<div class="uk-form-controls">
 							<input
-									class="uk-input @error('email') uk-form-danger @enderror"
+									class="uk-input @if(isset($errors)) @error('email') uk-form-danger @enderror @endif"
 									name="email"
 									id="email"
 									value="{{ old('email') }}"
@@ -30,11 +30,13 @@
 									placeholder="{{ __('Email') }}"
 							>
 
-							@error('email')
+							@if(isset($errors)) @error('email')
 							<span class="uk-text-danger">
                                 <strong>{{ $message }}</strong>
                             </span>
 							@enderror
+
+								@endif
 						</div>
 					</div>
 
