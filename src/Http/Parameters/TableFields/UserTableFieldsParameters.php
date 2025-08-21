@@ -27,10 +27,7 @@ class UserTableFieldsParameters extends FieldsGroupParametersFile
                     'filterRange' => 'alphabetical'
                 ],
                 'active' => 'editor.toggle',
-                'email' => [
-                    'type' => 'flat',
-                    'width' => '250px'
-                ],
+                'email' => 'links.email',
                 'roles' => [
                     'type' => 'relations.belongsToMany',
                     'allowedForRoles' => ['superadmin', 'administrator'],

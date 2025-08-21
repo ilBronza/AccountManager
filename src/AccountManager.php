@@ -143,31 +143,29 @@ class AccountManager implements RoutedObjectInterface
 
                 if(config('app.usesPermissions', true))
                     $authButton->addChild($permissionsButton);
-
-
-                try
-                {
-                    if(app('mailer')&&(config('mailer.active', true)))
-                    {
-                        $mailersButton = $menu->createButton([
-                            'name' => 'mailers.index',
-                            'text' => 'mailer::mailer.index',
-                            'icon' => 'user-lock',
-                            'href' => route('usermailers.index'),
-                            'roles' => ['administrator']
-                        ]);
-
-                        $authButton->addChild($mailersButton);
-
-                    }
-                }
-                catch(\Exception $e)
-                {
-                    // dd($e->getMessage());
-                }
-
-
             }
+
+            try
+            {
+                if(app('mailer')&&(config('mailer.active', true)))
+                {
+                    $mailersButton = $menu->createButton([
+                        'name' => 'mailers.index',
+                        'text' => 'mailer::mailer.index',
+                        'icon' => 'user-lock',
+                        'href' => route('usermailers.index'),
+                        'roles' => ['administrator']
+                    ]);
+
+                    $authButton->addChild($mailersButton);
+
+                }
+            }
+            catch(\Exception $e)
+            {
+                // dd($e->getMessage());
+            }
+
 
         }
 	}
