@@ -94,7 +94,7 @@ class AccountManager implements RoutedObjectInterface
         if(config('accountmanager.enabled', false))
         {
             $settingsButton = $menu->provideButton([
-                    'text' => 'generals.settings',
+                    'text' => 'menu::menu.settings',
                     'name' => 'settings',
                     'icon' => 'gear',
                     'roles' => ['administrator']
@@ -110,11 +110,22 @@ class AccountManager implements RoutedObjectInterface
 
             $settingsButton->addChild($authButton);
 
+            $userChildren = [];
+
+            if(config('accountmanager.trashedUsers', false))
+                $userChildren[] = [
+                        'name' => 'users.deleted',
+                        'icon' => 'trash',
+                        'text' => 'accountmanager::accountmanager.trashedUsers',
+                        'href' => IbRouter::route($this, 'users.trashed'),
+                    ];
+
             $usersButton = $menu->createButton([
                 'name' => 'users.index',
                 'icon' => 'users',
                 'text' => 'accountmanager::accountmanager.users',
                 'href' => IbRouter::route($this, 'users.index'),
+                'children' => $userChildren,
                 'permissions' => ['users.index']
             ]);
 

@@ -2,11 +2,16 @@
 
 namespace IlBronza\AccountManager\Http\Controllers\Users;
 
-use Illuminate\Database\Eloquent\Builder;
 use IlBronza\CRUD\CRUD;
+use IlBronza\CRUD\Http\Controllers\BasePackageTrait;
+use Illuminate\Database\Eloquent\Builder;
 
 class BaseUserPackageController extends CRUD
 {
+    use BasePackageTrait;
+
+    static $packageConfigPrefix = 'accountmanager';
+
     public function setModelClass()
     {
         $this->modelClass = config("accountmanager.models.user.class");

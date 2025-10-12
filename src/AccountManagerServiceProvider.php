@@ -26,8 +26,8 @@ class AccountManagerServiceProvider extends ServiceProvider
 		 **/
 
 		Relation::morphMap([
-			'User' => User::getProjectClassName(),
-			'Userdata' => Userdata::getProjectClassName(),
+			'User' => User::gpc(),
+			'Userdata' => Userdata::gpc(),
 		]);
 
 		$this->loadTranslationsFrom(__DIR__ . '/../resources/lang', 'accountmanager');

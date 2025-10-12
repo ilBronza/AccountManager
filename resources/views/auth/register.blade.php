@@ -1,10 +1,10 @@
-@extends('app')
+@extends('uikittemplate::app')
 
 @section('content')
 
 	<div class="login-container uk-flex uk-flex-middle register">
 		<div class="uk-margin-auto">
-			<div class="uk-width-medium">
+			<div class="uk-width-medium uk-text-center">
 
 				<img
 						class="uk-margin-bottom"

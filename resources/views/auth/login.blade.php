@@ -1,4 +1,4 @@
-@extends('app')
+@extends('uikittemplate::app')
 
 @section('content')
 
@@ -7,7 +7,7 @@
 			@if(session('errors'))
 				<p class="uk-text-danger">{{session('errors')->first('error');}}</p>
 			@endif
-			<div class="uk-width-medium">
+			<div class="uk-width-medium uk-text-center">
 
 				<img
 						class="uk-margin-bottom"

@@ -14,6 +14,7 @@ use IlBronza\AccountManager\Http\Controllers\Users\DestroyUserController;
 use IlBronza\AccountManager\Http\Controllers\Users\DuplicateUserController;
 use IlBronza\AccountManager\Http\Controllers\Users\EditUserController;
 use IlBronza\AccountManager\Http\Controllers\Users\IndexUserController;
+use IlBronza\AccountManager\Http\Controllers\Users\TrashedIndexUserController;
 use IlBronza\AccountManager\Http\Controllers\Users\ShowUserController;
 use IlBronza\AccountManager\Http\Parameters\FieldsetsParameters\RoleFieldsetsParameters;
 use IlBronza\AccountManager\Http\Parameters\FieldsetsParameters\UserAccountEditFieldsetsParameters;
@@ -39,6 +40,9 @@ return [
     'usesUserdata' => true,
     'usesAvatar' => true,
     'accountmanager' => true,
+
+
+    'trashedUsers' => true,
 
 	'defaultAvatar' => 'https://randomuser.me/api/portraits/men/97.jpg',
 
@@ -96,7 +100,8 @@ return [
                 'createSlim' => CreateSlimUserController::class,
                 'storeSlim' => CreateSlimUserController::class,
                 'destroy' => DestroyUserController::class,
-                'index' => IndexUserController::class
+                'index' => IndexUserController::class,
+                'trashed' => TrashedIndexUserController::class
             ],
             'fieldsGroupsFiles' => [
                 'index' => UserTableFieldsParameters::class

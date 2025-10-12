@@ -11,7 +11,16 @@ class DestroyUserController extends BaseUserPackageController
     use CRUDDestroyTrait;
     use CRUDDeleteTrait;
 
-    public $allowedMethods = ['destroy'];
+    public $allowedMethods = ['destroy', 'restore'];
+
+    public function restore($user)
+    {
+        $model = $this->getModelClass()::onlyTrashed()->find($user);
+
+        $model->restore();
+
+        dd($model);
+    }
 
     public function destroy($user)
     {

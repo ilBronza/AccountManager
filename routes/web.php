@@ -104,6 +104,9 @@ Route::group([
 			],
 			function()
 			{
+
+				Route::get('trashed', [AccountManager::getController('user', 'trashed'), 'index'])->name('users.trashed');
+
 				Route::get('duplicate/{user}', [AccountManager::getController('user', 'duplicate'), 'duplicate'])
 					->name('accountmanager.duplicate');
 
@@ -120,7 +123,11 @@ Route::group([
 
 				//EditUserController
 				Route::put('{user}', [AccountManager::getController('user', 'update'), 'update'])->name('users.update');
+
+				//DestroyUserController
+				Route::delete('restore/{user}', [AccountManager::getController('user', 'destroy'), 'restore'])->name('users.restore');
 				Route::delete('{user}', [AccountManager::getController('user', 'destroy'), 'destroy'])->name('users.destroy');
+
 			});
 
 		Route::group([
