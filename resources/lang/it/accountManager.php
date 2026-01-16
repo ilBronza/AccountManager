@@ -24,4 +24,8 @@ return [
 	'editAvatar' => 'Modifica avatar',
 	'logout' => 'Logout',
   	'userdata' => 'Dati utente',
+	
+	'accounts' => 'Utenti',
+
+	'trashedUsers' => 'Utenti Cestinati',
 ];
