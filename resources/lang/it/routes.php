@@ -43,7 +43,11 @@ return [
 		'update' => 'Modifica utente',
 		'destroy' => 'Elimina utente',
 		'edit' => 'Mostra utente',
-	]
+	],
+	'operatorsoperators' => [
+		'edit' => ':model'
+	],
+
 
 
 	// 'accountmanagerpermissions' => [

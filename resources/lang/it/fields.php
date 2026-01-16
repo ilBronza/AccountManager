@@ -2,11 +2,13 @@
 
 return [
   'userdata' => 'Dati personali',
+  'accessData' => 'Dati di accesso',
   'editAvatar' => 'Modifica immagine',
   'guard_name' => 'Guard Name (inserire \'web\')',
   'base' => 'Dati base',
   'active' => 'Attivo',
   'short_name' => 'Sigla',
+  'client_id' => 'Azienda',
   'name' => 'Nome',
   'first_name' => 'Nome',
   'surname' => 'Cognome',

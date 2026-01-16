@@ -7,7 +7,6 @@ use Auth;
 use IlBronza\AccountManager\Models\Traits\PackageAccountModelsTrait;
 use IlBronza\AccountManager\Models\Traits\UserPermissionsTrait;
 use IlBronza\AccountManager\Models\Traits\UserUserdataTrait;
-use IlBronza\CRUD\Models\Casts\CastFieldPrice;
 use IlBronza\CRUD\Models\Casts\ExtraField;
 use IlBronza\CRUD\Providers\RouterProvider\IbRouter;
 use IlBronza\CRUD\Traits\Model\CRUDCacheTrait;
