@@ -5,7 +5,7 @@ namespace IlBronza\AccountManager\Http\Middleware;
 
 use Auth;
 use Closure;
-use IlBronza\Ukn\Facades\Ukn;
+use IlBronza\Ukn\Ukn;
 use Illuminate\Http\Request;
 
 class CheckActiveUser

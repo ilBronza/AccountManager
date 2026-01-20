@@ -8,7 +8,7 @@ use IlBronza\AccountManager\Models\User;
 use IlBronza\CRUD\CRUD;
 use IlBronza\CRUD\Providers\RouterProvider\IbRouter;
 use IlBronza\CRUD\Traits\CRUDEditUpdateTrait;
-use IlBronza\Ukn\Facades\Ukn;
+use IlBronza\Ukn\Ukn;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Hash;
 

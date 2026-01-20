@@ -2,7 +2,7 @@
 
 namespace IlBronza\AccountManager\Http\Controllers\Users;
 
-use IlBronza\Ukn\Facades\Ukn;
+use IlBronza\Ukn\Ukn;
 
 class DuplicateUserController extends BaseUserPackageController
 {
