@@ -45,12 +45,12 @@ class PermissionController extends CRUD
 
     public function getIndexFieldsArray()
     {
-        return config('accountmanager.models.permission.fieldsGroupsFiles.index')::getFieldsGroup();
+        return config('accountmanager.models.permission.fieldsGroupsFiles.index')::getTracedFieldsGroup();
     }
 
     public function getRelatedFieldsArray()
     {
-        return config('accountmanager.models.permission.fieldsGroupsFiles.related')::getFieldsGroup();
+        return config('accountmanager.models.permission.fieldsGroupsFiles.related')::getTracedFieldsGroup();
     }
 
     public function getIndexElements()

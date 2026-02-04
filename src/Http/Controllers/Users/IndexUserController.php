@@ -26,6 +26,6 @@ class IndexUserController extends BaseUserPackageController
 
     public function getIndexFieldsArray()
     {
-        return config('accountmanager.models.user.fieldsGroupsFiles.index')::getFieldsGroup();
+        return config('accountmanager.models.user.fieldsGroupsFiles.index')::getTracedFieldsGroup();
     }
 }

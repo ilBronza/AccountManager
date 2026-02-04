@@ -16,7 +16,7 @@ class TrashedIndexUserController extends IndexUserController
 
     public function getIndexFieldsArray()
     {
-        $result = config('accountmanager.models.user.fieldsGroupsFiles.index')::getFieldsGroup();
+        $result = config('accountmanager.models.user.fieldsGroupsFiles.index')::getTracedFieldsGroup();
 
         unset($result['fields']['mySelfDelete']);
         unset($result['fields']['mySelfEdit']);

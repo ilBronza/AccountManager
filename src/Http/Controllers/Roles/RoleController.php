@@ -41,12 +41,12 @@ class RoleController extends CRUD
 
     public function getIndexFieldsArray()
     {
-        return config('accountmanager.models.role.fieldsGroupsFiles.index')::getFieldsGroup();
+        return config('accountmanager.models.role.fieldsGroupsFiles.index')::getTracedFieldsGroup();
     }
 
     public function getRelatedFieldsArray()
     {
-        return config('accountmanager.models.role.fieldsGroupsFiles.related')::getFieldsGroup();
+        return config('accountmanager.models.role.fieldsGroupsFiles.related')::getTracedFieldsGroup();
     }
 
     public function getGenericParametersFile() : ? string
