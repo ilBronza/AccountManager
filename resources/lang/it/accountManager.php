@@ -1,31 +1,36 @@
 <?php
 
 return [
-	'permissions' => 'Permessi',
-	'users' => 'Utenti',
-	'user' => 'Utente',
-	'roles' => 'Ruoli',
-	'accounts' => 'Utenze',
-	'passwordConfirmation' => 'Password confirmation',
-	'rememberMe' => 'Ricordami',
-	'register' => 'Registrati',
-	'forgottenPassword' => 'Password dimenticata?',
-	'alreadyRegisteredGoToLogin' => 'Sei già registrato? Vai al login',
-	'sendResetPasswordLink' => 'Invia link di reset',
-	'resetPasswordDescription' => 'Inserisci l\'indirizzo email con il quale hai effettuato la registrazione. Provvederemo ad inviarti il link al quale poter resettare la passwortd',
-	'confirmPasswordText' => 'Questa è un area di sicurezza dell\'applicazione. Per favore inserisci la tua password prima di continuare.',
-	'resendVerificationEmail' => 'Invia un nuovo link di reset',
-	'logout' => 'Logout',
-	'thanksForSigninEmailConfirmationText' => 'Grazie per esserti registrato! Prima di poter iniziare, ti chiediamo di verificare il tuo indirizzo email cliccando sul link che ti abbiamo inotrato. Se non l\'hai ricevuto, premi sul link e te ne invieremo uno nuovo.',
-	'aNewConfirmationLinkHasBeenSent' => 'Un nuovo link di verifica è stato inoltrato all\'indirizzo email che hai fornito in fase di registrazione',
-	'edit' => 'Modifica account',
-	'editUserdata' => 'Modifica dati utente',
-	'editPassword' => 'Modifica password',
-	'editAvatar' => 'Modifica avatar',
-	'logout' => 'Logout',
-  	'userdata' => 'Dati utente',
-	
-	'accounts' => 'Utenti',
+    // Etichette e sezioni
+    'permissions'  => 'Permessi',
+    'users'        => 'Utenti',
+    'user'         => 'Utente',
+    'roles'        => 'Ruoli',
+    'accounts'     => 'Utenze',
+    'userdata'     => 'Dati utente',
+    'trashedUsers' => 'Utenti cestinati',
 
-	'trashedUsers' => 'Utenti Cestinati',
+    // Testi relativi all'autenticazione (duplicati di auth.php per comodità)
+    'passwordConfirmation'             => 'Conferma password',
+    'rememberMe'                       => 'Ricordami',
+    'register'                         => 'Registrati',
+    'forgottenPassword'               => 'Password dimenticata?',
+    'alreadyRegisteredGoToLogin'      => 'Sei già registrato? Vai al login',
+    'sendResetPasswordLink'           => 'Invia link di reset',
+    'resetPasswordDescription'        => 'Inserisci l\'indirizzo email con il quale ti sei registrato. Ti invieremo un link per reimpostare la password.',
+    'confirmPasswordText'             => 'Questa è un\'area protetta dell\'applicazione. Inserisci la tua password prima di continuare.',
+    'resendVerificationEmail'         => 'Invia una nuova email di verifica',
+    'logout'                          => 'Logout',
+    'thanksForSigninEmailConfirmationText' => 'Grazie per esserti registrato! Prima di iniziare, verifica il tuo indirizzo email cliccando sul link che ti abbiamo inviato. Se non l\'hai ricevuto, clicca sul link qui sotto e te ne invieremo uno nuovo.',
+    'aNewConfirmationLinkHasBeenSent' => 'Un nuovo link di verifica è stato inviato all\'indirizzo email che hai fornito in fase di registrazione.',
+
+    // Azioni account (usate da menu/config)
+    'edit'         => 'Modifica account',
+    'editUserdata' => 'Modifica dati utente',
+    'editPassword' => 'Modifica password',
+    'editAvatar'   => 'Modifica avatar',
+
+    // Messaggi usati in middleware / controller
+    'userNotActive' => 'Il tuo account non è attivo.',
+    'userCloned'    => 'L\'utente :user è stato duplicato.',
 ];
