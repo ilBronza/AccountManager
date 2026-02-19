@@ -29,6 +29,7 @@ return [
     'editUserdata' => 'Modifica dati utente',
     'editPassword' => 'Modifica password',
     'editAvatar'   => 'Modifica avatar',
+    'resetPassword' => 'Reimposta password',
 
     // Messaggi usati in middleware / controller
     'userNotActive' => 'Il tuo account non è attivo.',
