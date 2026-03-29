@@ -84,7 +84,7 @@ protected static function boot()
  *
  * @return string
  */
-public function getExtraFieldsClass() : string
+public function getExtraFieldsClass() : ? string
 {
 	return Userdata::getProjectClassName();
 }
