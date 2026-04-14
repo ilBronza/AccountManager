@@ -84,8 +84,8 @@ Route::group([
 
 			});
 
-			Route::resource('roles', AccountManager::getController('role'))->middleware(['role:superadmin']);
-			Route::resource('permissions', AccountManager::getController('permission'))->middleware(['role:superadmin']);
+			Route::resource('roles', AccountManager::getController('role'))->middleware(['accountmanager.roles']);
+			Route::resource('permissions', AccountManager::getController('permission'))->middleware(['accountmanager.roles']);
 
 
 		Route::get('logout', function(Request $request)
@@ -100,7 +100,7 @@ Route::group([
 
 		Route::group([
 			'prefix' => 'users',
-			'middleware' => ['role:superadmin|administrator'],
+			'middleware' => ['accountmanager.roles'],
 			],
 			function()
 			{
@@ -132,7 +132,7 @@ Route::group([
 
 		Route::group([
 			'prefix' => 'userdata',
-			'middleware' => ['role:superadmin|administrator'],
+			'middleware' => ['accountmanager.roles'],
 			],
 			function()
 			{

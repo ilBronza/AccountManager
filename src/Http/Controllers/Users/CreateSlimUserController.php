@@ -29,7 +29,7 @@ class CreateSlimUserController extends CreateUserController
         return $this->getModel()->getEditUserdataUrl();
     }
 
-    public function store(Request $request)
+    public function store(Request $request, string $model = null)
     {
         $request->validate([
             'new_first_name' => 'string|required|max:191',

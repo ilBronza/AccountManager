@@ -2,6 +2,7 @@
 
 namespace IlBronza\AccountManager;
 
+use IlBronza\AccountManager\Http\Middleware\AccountManagerMiddlewareRolesPermissions;
 use IlBronza\AccountManager\Http\Middleware\CheckActiveUser;
 use IlBronza\AccountManager\Http\Middleware\ManageRolesAndPermissionsMiddleware;
 use IlBronza\AccountManager\Models\User;
@@ -34,6 +35,8 @@ class AccountManagerServiceProvider extends ServiceProvider
 		$this->loadViewsFrom(__DIR__ . '/../resources/views', 'accountmanager');
 		$this->loadMigrationsFrom(__DIR__ . '/../database/migrations');
 		$this->loadRoutesFrom(__DIR__ . '/../routes/web.php');
+
+		$this->app['router']->aliasMiddleware('accountmanager.roles', AccountManagerMiddlewareRolesPermissions::class);
 
 		// Publishing is only necessary when using the CLI.
 		if ($this->app->runningInConsole())

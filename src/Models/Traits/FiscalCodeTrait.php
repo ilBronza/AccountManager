@@ -45,6 +45,11 @@ trait FiscalCodeTrait
 		return null;
 	}
 
+	public function isMale() : bool
+	{
+		return strtolower($this->getSexAttribute()) != 'f';
+	}
+
 	public function getSexAttribute() : ?string
 	{
 		if (! $fiscalCode = $this->getFiscalCode())

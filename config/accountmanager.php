@@ -47,6 +47,29 @@ return [
 	'defaultAvatar' => 'https://randomuser.me/api/portraits/men/97.jpg',
 
     'routePrefix' => 'accountmanager',
+
+    'defaultRoles' => [
+        'superadmin',
+        'administrator',
+    ],
+
+    'routeRoles' => [
+        'accountmanager.roles.index' => ['superadmin'],
+        'accountmanager.roles.create' => ['superadmin'],
+        'accountmanager.roles.store' => ['superadmin'],
+        'accountmanager.roles.show' => ['superadmin'],
+        'accountmanager.roles.edit' => ['superadmin'],
+        'accountmanager.roles.update' => ['superadmin'],
+        'accountmanager.roles.destroy' => ['superadmin'],
+        'accountmanager.permissions.index' => ['superadmin'],
+        'accountmanager.permissions.create' => ['superadmin'],
+        'accountmanager.permissions.store' => ['superadmin'],
+        'accountmanager.permissions.show' => ['superadmin'],
+        'accountmanager.permissions.edit' => ['superadmin'],
+        'accountmanager.permissions.update' => ['superadmin'],
+        'accountmanager.permissions.destroy' => ['superadmin'],
+    ],
+
 	'fakeEmailDomain' => 'fake' . (str_replace('http://', '', str_replace('https://', '', env('APP_URL')))),
     'models' => [
         'userdata' => [
