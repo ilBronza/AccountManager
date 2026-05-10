@@ -2,7 +2,6 @@
 
 namespace IlBronza\AccountManager\Http\Controllers\Users;
 
-use IlBronza\CRUD\Models\Scopes\ActiveScope;
 use IlBronza\CRUD\Traits\CRUDDeleteTrait;
 use IlBronza\CRUD\Traits\CRUDDestroyTrait;
 

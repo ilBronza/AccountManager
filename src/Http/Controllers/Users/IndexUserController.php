@@ -20,8 +20,7 @@ class IndexUserController extends BaseUserPackageController
 
     public function getIndexElements()
     {
-        return $this->getModelClass()::withoutGlobalScope(ActiveScope::class)
-                ->with('roles', 'permissions')->get();
+        return $this->getModelClass()::with(['roles', 'permissions', 'latestAccessLog'])->get();
     }
 
     public function getIndexFieldsArray()

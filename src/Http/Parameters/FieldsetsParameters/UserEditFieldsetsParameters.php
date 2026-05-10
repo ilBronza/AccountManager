@@ -28,6 +28,19 @@ class UserEditFieldsetsParameters extends FieldsetParametersFile
                         'rules' => 'boolean|required',
                         'roles' => ['superadmin', 'administrator']
                     ],
+                    'allow_from_remote' => [
+                        'type' => 'boolean',
+                        'rules' => 'boolean|required',
+                        'roles' => ['superadmin', 'administrator']
+                    ],
+                    'allowed_ips' => [
+                        'type' => 'json',
+                        'fields' => [
+                            'ip' => ['text' => 'string|nullable|ip'],
+                        ],
+                        'rules' => 'array|nullable',
+                        'roles' => ['superadmin', 'administrator']
+                    ],
                     'roles' => [
                         'type' => 'select',
                         'multiple' => true,

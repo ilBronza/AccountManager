@@ -5,27 +5,30 @@ namespace IlBronza\AccountManager\Models;
 use App\Models\User as BaseUser;
 use Auth;
 use IlBronza\AccountManager\Models\Traits\PackageAccountModelsTrait;
+use IlBronza\AccountManager\Models\Traits\UserCastTrait;
 use IlBronza\AccountManager\Models\Traits\UserPermissionsTrait;
 use IlBronza\AccountManager\Models\Traits\UserUserdataTrait;
 use IlBronza\CRUD\Models\Casts\ExtraField;
 use IlBronza\CRUD\Providers\RouterProvider\IbRouter;
+use IlBronza\CRUD\Traits\Model\CRUDActiveScopeTrait;
 use IlBronza\CRUD\Traits\Model\CRUDCacheTrait;
 use IlBronza\CRUD\Traits\Model\CRUDModelExtraFieldsTrait;
-
+use Illuminate\Database\Eloquent\Factories\HasFactory;
+use Illuminate\Database\Eloquent\Relations\HasOne;
 use function is_null;
 use function trim;
-
-use Illuminate\Database\Eloquent\Factories\HasFactory;
 class User extends BaseUser
 {
 	use HasFactory;
 	use PackageAccountModelsTrait;
 
+	use CRUDActiveScopeTrait;
 	use CRUDModelExtraFieldsTrait;
 
 	use UserPermissionsTrait;
 	use UserUserdataTrait;
 	use CRUDCacheTrait;
+	use UserCastTrait;
 
 	static $packageConfigPrefix = 'accountmanager';
 	static $modelConfigPrefix = 'user';
@@ -46,7 +49,9 @@ class User extends BaseUser
 		'birth_date' => ExtraField::class,
 		'gender' => ExtraField::class,
 
-		'avatar' => ExtraField::class
+		'avatar' => ExtraField::class,
+
+		'allow_from_remote' => 'boolean'
 	];
 
 
@@ -65,7 +70,6 @@ class User extends BaseUser
 //	}
 //
 
-
 protected static function boot()
 {
 	parent::boot();
@@ -77,6 +81,17 @@ protected static function boot()
 				if (((Auth::id()) && ($user->getKey() == Auth::id())) || ($user->getKey() == 1))
 					abort(403, 'Non puoi disattivare te stesso');
 	});
+}
+
+public static function shouldApplyActiveScope(): bool
+{
+	if (! Auth::check()) {
+		return true;
+	}
+
+	$user = Auth::user();
+
+	return ! (method_exists($user, 'isSuperAdmin') && $user->isSuperAdmin());
 }
 
 /**
@@ -123,6 +138,21 @@ public function scopeByRolesIds($query, array $rolesIds = [])
 	{
 		$query->whereIn('id', $rolesIds);
 	});
+}
+
+public function latestAccessLog(): HasOne
+{
+	return $this->hasOne(UserAccessLog::class, 'user_id')->latestOfMany('visited_at');
+}
+
+public function getLastAccessAtAttribute(): ?\Illuminate\Support\Carbon
+{
+	return $this->latestAccessLog?->visited_at;
+}
+
+public function getLastAccessIpAttribute(): ?string
+{
+	return $this->latestAccessLog?->ip;
 }
 
 /**

@@ -15,6 +15,11 @@
         "laravel/ui": "^4.6"
     },
     "require-dev": {
+        "orchestra/testbench": "^8.0|^9.0",
+        "phpunit/phpunit": "^10.0|^11.0",
+        "spatie/laravel-permission": "^6.0",
+        "spatie/laravel-activitylog": "^4.0|^5.0",
+        "ilbronza/crud": "dev-master"
     },
     "autoload": {
         "psr-4": {
@@ -23,7 +28,8 @@
     },
     "autoload-dev": {
         "psr-4": {
-            "IlBronza\\AccountManager\\Tests\\": "tests"
+            "IlBronza\\AccountManager\\Tests\\": "tests",
+            "App\\": "tests/App/"
         }
     },
     "extra": {
@@ -35,5 +41,7 @@
                 "AccountManager": "IlBronza\\AccountManager\\Facades\\AccountManager"
             }
         }
-    }
+    },
+    "minimum-stability": "dev",
+    "prefer-stable": true
 }

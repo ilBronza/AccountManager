@@ -3,7 +3,7 @@
 namespace IlBronza\AccountManager\Models;
 
 use IlBronza\CRUD\Models\BaseModel;
-use IlBronza\CRUD\Models\Scopes\ActiveScope;
+use IlBronza\CRUD\Scopes\ActiveScope;
 use IlBronza\CRUD\Traits\Media\InteractsWithMedia;
 use IlBronza\CRUD\Traits\Model\CRUDUseUuidTrait;
 use IlBronza\CRUD\Traits\Model\PackagedModelsTrait;
@@ -101,7 +101,7 @@ class Userdata extends BaseModel implements HasMedia
 
 	public function user()
 	{
-		return $this->belongsTo(User::getProjectClassName())->withoutGlobalScope(ActiveScope::class);
+		return $this->belongsTo(User::getProjectClassName());
 	}
 
 	public function getShortName(bool $force = false) : ?string

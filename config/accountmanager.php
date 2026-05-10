@@ -8,6 +8,7 @@ use IlBronza\AccountManager\Http\Controllers\Userdata\AdminUserDataController;
 use IlBronza\AccountManager\Http\Controllers\Userdata\EditUserDataAvatarController;
 use IlBronza\AccountManager\Http\Controllers\Userdata\EditUserDataController;
 use IlBronza\AccountManager\Http\Controllers\Userdata\UserDataDeleteMediaController;
+use IlBronza\AccountManager\Http\Controllers\AccessLogs\IndexUserAccessLogController;
 use IlBronza\AccountManager\Http\Controllers\Users\CreateSlimUserController;
 use IlBronza\AccountManager\Http\Controllers\Users\CreateUserController;
 use IlBronza\AccountManager\Http\Controllers\Users\DestroyUserController;
@@ -28,12 +29,15 @@ use IlBronza\AccountManager\Http\Parameters\RelationshipsManagers\UserRelationsh
 use IlBronza\AccountManager\Http\Parameters\TableFields\PermissionTableFieldsParameters;
 use IlBronza\AccountManager\Http\Parameters\TableFields\RoleTableFieldsParameters;
 use IlBronza\AccountManager\Http\Parameters\TableFields\RoleTableFieldsRelatedParameters;
+use IlBronza\AccountManager\Http\Parameters\TableFields\UserAccessLogTableFieldsParameters;
 use IlBronza\AccountManager\Http\Parameters\TableFields\UserTableFieldsParameters;
 use IlBronza\AccountManager\Models\Permission;
 use IlBronza\AccountManager\Models\Role;
+use IlBronza\AccountManager\Models\UserAccessLog;
 use IlBronza\AccountManager\Models\Userdata;
 
 return [
+    'manzato' => 'effet',
     'enabled' => false,
     'usesUserdata' => false,
     'canResetPassword' => false,
@@ -41,6 +45,34 @@ return [
     'usesAvatar' => true,
     'accountmanager' => true,
 
+    'ipAccess' => [
+        /**
+         * Default internal networks. Override per-project if needed.
+         * Supports single IPs and CIDR ranges (IPv4/IPv6).
+         */
+        'internalCidrs' => [
+            '127.0.0.1/32',
+            '10.0.0.0/8',
+            '172.16.0.0/12',
+            '192.168.0.0/16',
+            '::1/128',
+            'fc00::/7',
+            'fe80::/10',
+        ],
+    ],
+
+    /**
+     * Log page views (non-AJAX) for authenticated users.
+     * Laravel 10: aggiungi in App\Http\Kernel il middleware alla fine dell’array `$middlewareGroups['web']`.
+     * Laravel 11+: `appendToGroup('web', \IlBronza\AccountManager\Http\Middleware\LogUserAccess::class)` in bootstrap/app.php.
+     */
+    'logUserAccess' => [
+        'enabled' => true,
+        /**
+         * Connessione database per la tabella user_access_logs (deve esistere in config/database.php).
+         */
+        'connection' => 'activityMysql',
+    ],
 
     'trashedUsers' => true,
 
@@ -48,26 +80,44 @@ return [
 
     'routePrefix' => 'accountmanager',
 
+    /***
+     * 
+     * ATTENZIONE, aggiungere ruoli solo in-app, sennò apre a tutti
+     * 
+     ***/
     'defaultRoles' => [
-        'superadmin',
-        'administrator',
+        'superadmin' => true,
+        'accountManagerUsers' => true,
     ],
 
     'routeRoles' => [
-        'accountmanager.roles.index' => ['superadmin'],
-        'accountmanager.roles.create' => ['superadmin'],
-        'accountmanager.roles.store' => ['superadmin'],
-        'accountmanager.roles.show' => ['superadmin'],
-        'accountmanager.roles.edit' => ['superadmin'],
-        'accountmanager.roles.update' => ['superadmin'],
-        'accountmanager.roles.destroy' => ['superadmin'],
-        'accountmanager.permissions.index' => ['superadmin'],
-        'accountmanager.permissions.create' => ['superadmin'],
-        'accountmanager.permissions.store' => ['superadmin'],
-        'accountmanager.permissions.show' => ['superadmin'],
-        'accountmanager.permissions.edit' => ['superadmin'],
-        'accountmanager.permissions.update' => ['superadmin'],
-        'accountmanager.permissions.destroy' => ['superadmin'],
+        'accountmanagerusers' => [
+            'index' => ['superadmin', 'accountManagerUsers'],
+            'create' => ['superadmin', 'accountManagerUsers'],
+            'store' => ['superadmin', 'accountManagerUsers'],
+            'show' => ['superadmin', 'accountManagerUsers'],
+            'edit' => ['superadmin', 'accountManagerUsers'],
+            'update' => ['superadmin', 'accountManagerUsers'],
+            'destroy' => ['superadmin', 'accountManagerUsers'],
+        ],
+        'accountmanagerroles' => [
+            'index' => ['superadmin', 'accountManagerUsers'],
+            'create' => ['superadmin'],
+            'store' => ['superadmin'],
+            'show' => ['superadmin'],
+            'edit' => ['superadmin'],
+            'update' => ['superadmin'],
+            'destroy' => ['superadmin'],
+        ],
+        'accountmanagerpermissions' => [
+            'index' => ['superadmin', 'accountManagerUsers'],
+            'create' => ['superadmin'],
+            'store' => ['superadmin'],
+            'show' => ['superadmin'],
+            'edit' => ['superadmin'],
+            'update' => ['superadmin'],
+            'destroy' => ['superadmin'],
+        ]
     ],
 
 	'fakeEmailDomain' => 'fake' . (str_replace('http://', '', str_replace('https://', '', env('APP_URL')))),
@@ -107,6 +157,16 @@ return [
             'fieldsGroupsFiles' => [
                 'index' => PermissionTableFieldsParameters::class,
                 'related' => PermissionTableFieldsParameters::class,
+            ],
+        ],
+        'accessLog' => [
+            'class' => UserAccessLog::class,
+            'table' => 'user_access_logs',
+            'controllers' => [
+                'index' => IndexUserAccessLogController::class,
+            ],
+            'fieldsGroupsFiles' => [
+                'index' => UserAccessLogTableFieldsParameters::class,
             ],
         ],
         'user' => [

@@ -9,6 +9,7 @@ return [
     'accounts'     => 'Accounts',
     'userdata'     => 'User data',
     'trashedUsers' => 'Deleted users',
+    'accessLogs'   => 'Access log',
 
     // Auth-related texts (kept for convenience)
     'passwordConfirmation'             => 'Password confirmation',

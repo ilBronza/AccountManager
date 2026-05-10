@@ -35,6 +35,9 @@ return [
 		'update' => 'Modifica utente',
 		'edit' => 'Modifica utente',
 	],
+	'accountmanageraccesslogs' => [
+		'index' => 'Registro accessi',
+	],
 	'accountmanagerusers' => [
 		'index' => 'Lista utenti',
 		'store' => 'Crea utente',

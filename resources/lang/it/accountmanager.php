@@ -9,6 +9,7 @@ return [
     'accounts'     => 'Utenze',
     'userdata'     => 'Dati utente',
     'trashedUsers' => 'Utenti cestinati',
+    'accessLogs'   => 'Registro accessi',
 
     // Testi relativi all'autenticazione (duplicati di auth.php per comodità)
     'passwordConfirmation'             => 'Conferma password',

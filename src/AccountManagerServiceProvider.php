@@ -4,6 +4,7 @@ namespace IlBronza\AccountManager;
 
 use IlBronza\AccountManager\Http\Middleware\AccountManagerMiddlewareRolesPermissions;
 use IlBronza\AccountManager\Http\Middleware\CheckActiveUser;
+use IlBronza\AccountManager\Http\Middleware\LogUserAccess;
 use IlBronza\AccountManager\Http\Middleware\ManageRolesAndPermissionsMiddleware;
 use IlBronza\AccountManager\Models\User;
 use IlBronza\AccountManager\Models\Userdata;
@@ -14,6 +15,7 @@ use Illuminate\Support\ServiceProvider;
 class AccountManagerServiceProvider extends ServiceProvider
 {
 	use IlBronzaServiceProviderPackagesTrait;
+
 	/**
 	 * Perform post-registration booting of services.
 	 *
@@ -37,6 +39,7 @@ class AccountManagerServiceProvider extends ServiceProvider
 		$this->loadRoutesFrom(__DIR__ . '/../routes/web.php');
 
 		$this->app['router']->aliasMiddleware('accountmanager.roles', AccountManagerMiddlewareRolesPermissions::class);
+		$this->app['router']->aliasMiddleware('accountmanager.logUserAccess', LogUserAccess::class);
 
 		// Publishing is only necessary when using the CLI.
 		if ($this->app->runningInConsole())

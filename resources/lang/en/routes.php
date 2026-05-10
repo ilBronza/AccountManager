@@ -39,6 +39,10 @@ return [
         'edit'        => 'Edit user',
     ],
 
+    'accountmanageraccesslogs' => [
+        'index' => 'Access log',
+    ],
+
     'accountmanagerusers' => [
         'index'   => 'User list',
         'store'   => 'Create user',

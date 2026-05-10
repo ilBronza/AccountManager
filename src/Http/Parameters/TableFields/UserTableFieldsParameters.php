@@ -27,6 +27,15 @@ class UserTableFieldsParameters extends FieldsGroupParametersFile
                     'filterRange' => 'alphabetical'
                 ],
                 'active' => 'editor.toggle',
+                'allow_from_remote' => 'boolean',
+                'last_access_at' => [
+                    'type' => 'dates.date',
+                    'filterRange' => true,
+                ],
+                'last_access_ip' => [
+                    'type' => 'flat',
+                    'filterRange' => 'alphabetical',
+                ],
                 'email' => 'links.email',
                 'roles' => [
                     'type' => 'relations.belongsToMany',

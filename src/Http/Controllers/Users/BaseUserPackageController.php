@@ -4,6 +4,7 @@ namespace IlBronza\AccountManager\Http\Controllers\Users;
 
 use IlBronza\CRUD\CRUD;
 use IlBronza\CRUD\Http\Controllers\BasePackageTrait;
+use IlBronza\CRUD\Scopes\ActiveScope;
 use Illuminate\Database\Eloquent\Builder;
 
 class BaseUserPackageController extends CRUD
@@ -19,7 +20,7 @@ class BaseUserPackageController extends CRUD
 
     public function getBaseUserQuery() : Builder
     {
-        return $this->getModelClass()::withoutGlobalScope(ActiveScope::class);
+        return $this->getModelClass()::query();
     }
 
     public function getUserModel(int|string $user)

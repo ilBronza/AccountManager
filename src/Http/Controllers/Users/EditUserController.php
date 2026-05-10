@@ -4,7 +4,7 @@ namespace IlBronza\AccountManager\Http\Controllers\Users;
 
 use Auth;
 use IlBronza\AccountManager\Models\Role;
-use IlBronza\CRUD\Models\Scopes\ActiveScope;
+use IlBronza\CRUD\Scopes\ActiveScope;
 use IlBronza\CRUD\Providers\RouterProvider\IbRouter;
 use IlBronza\CRUD\Traits\CRUDEditUpdateTrait;
 use Illuminate\Http\Request;
@@ -27,7 +27,7 @@ class EditUserController extends BaseUserPackageController
 
     public function getUserModel(int|string $user)
     {
-        return $this->getModelClass()::withoutGlobalScope(ActiveScope::class)->where('id', $user)->first();
+        return $this->getModelClass()::where('id', $user)->first();
     }
 
     public function edit($user)

@@ -20,7 +20,11 @@ class Role extends SpatieRole
 	static $packageConfigPrefix = 'accountmanager';
 	static $modelConfigPrefix = 'role';
 
-	protected $fillable = ['name', 'guard_name'];
+	protected $fillable = ['name', 'guard_name', 'allow_from_remote', 'allowed_ips'];
+
+	protected $casts = [
+		'allow_from_remote' => 'boolean'
+	];
 
 	public function getTranslatedClassname()
 	{

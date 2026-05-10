@@ -2,6 +2,8 @@
 
 namespace IlBronza\AccountManager\Http\Controllers\Users;
 
+use IlBronza\CRUD\Scopes\ActiveScope;
+
 class TrashedIndexUserController extends IndexUserController
 {
     public function setModelClass()
@@ -11,7 +13,7 @@ class TrashedIndexUserController extends IndexUserController
 
     public function getIndexElements()
     {
-        return $this->getModelClass()::withoutGlobalScope(ActiveScope::class)->onlyTrashed()->with('roles', 'permissions')->get();
+        return $this->getModelClass()::withoutGlobalScope(ActiveScope::NAME)->onlyTrashed()->with(['roles', 'permissions', 'latestAccessLog'])->get();
     }
 
     public function getIndexFieldsArray()

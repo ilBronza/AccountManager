@@ -131,6 +131,19 @@ class AccountManager implements RoutedObjectInterface
 
             $authButton->addChild($usersButton);
 
+            if (config('accountmanager.logUserAccess.enabled', true))
+            {
+                $accessLogsButton = $menu->createButton([
+                    'name' => 'accessLogs.index',
+                    'icon' => 'file-lines',
+                    'text' => 'accountmanager::accountmanager.accessLogs',
+                    'href' => IbRouter::route($this, 'accessLogs.index'),
+                    'permissions' => ['users.index'],
+                ]);
+
+                $authButton->addChild($accessLogsButton);
+            }
+
             if($user->isSuperadmin())
             {
                 $rolesButton = $menu->createButton([

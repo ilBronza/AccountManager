@@ -14,6 +14,14 @@ class RoleFieldsetsParameters extends FieldsetParametersFile
                 'fields' => [
                     'name' => ['text' => 'string|required|max:255'],
                     'guard_name' => ['text' => 'string|required|max:255'],
+                    'allow_from_remote' => [
+                        'type' => 'boolean',
+                        'rules' => 'boolean|required',
+                    ],
+                    'allowed_ips' => [
+                        'type' => 'textarea',
+                        'rules' => 'string|nullable',
+                    ],
                     'permissions' => [
                         'type' => 'select',
                         'multiple' => true,
