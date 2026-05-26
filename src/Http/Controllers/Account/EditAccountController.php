@@ -8,6 +8,7 @@ use IlBronza\AccountManager\Models\User;
 use IlBronza\CRUD\CRUD;
 use IlBronza\CRUD\Providers\RouterProvider\IbRouter;
 use IlBronza\CRUD\Traits\CRUDEditUpdateTrait;
+use IlBronza\Form\Helpers\FieldsetsProvider\FieldsetParametersFile;
 use IlBronza\Ukn\Ukn;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Hash;
@@ -27,8 +28,14 @@ class EditAccountController extends CRUD
 
     public function getGenericParametersFile() : ? string
     {
+    	dd(config('accountmanager.models.user.parametersFiles.editAccount'));
 		return config('accountmanager.models.user.parametersFiles.editAccount');
     }
+
+	public function getOverriddenEditParametersFile() : ?string
+	{
+		return config('accountmanager.models.user.parametersFiles.editAccount');
+	}
 
     public function setModelClass()
     {
@@ -55,7 +62,8 @@ class EditAccountController extends CRUD
 
 	public function getAfterUpdatedRedirectUrl()
 	{
-		return IbRouter::route(app('accountmanager'), 'users.show', ['user' => Auth::id()]);
+		return '/';
+		// return IbRouter::route(app('accountmanager'), 'users.show', ['user' => Auth::id()]);
 	}
 
 	public function update(Request $request)

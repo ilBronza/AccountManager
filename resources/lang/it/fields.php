@@ -41,4 +41,5 @@ return [
     'ip'                    => 'IP',
     'last_access_at'        => 'Ultima operazione',
     'last_access_ip'      => 'IP ultimo accesso',
+    'heartbeat_online'    => 'Online adesso',
 ];

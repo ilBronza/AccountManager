@@ -13,7 +13,12 @@ class TrashedIndexUserController extends IndexUserController
 
     public function getIndexElements()
     {
-        return $this->getModelClass()::withoutGlobalScope(ActiveScope::NAME)->onlyTrashed()->with(['roles', 'permissions', 'latestAccessLog'])->get();
+        $users = $this->getModelClass()::withoutGlobalScope(ActiveScope::NAME)
+            ->onlyTrashed()
+            ->with(['roles', 'permissions', 'latestAccessLog'])
+            ->get();
+
+        return $this->withHeartbeatOnline($users);
     }
 
     public function getIndexFieldsArray()

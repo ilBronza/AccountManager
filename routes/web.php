@@ -1,6 +1,7 @@
 <?php
 
 use IlBronza\AccountManager\AccountManager;
+use IlBronza\AccountManager\Http\Controllers\HeartbeatController;
 use IlBronza\AccountManager\Models\User;
 use IlBronza\CRUD\Helpers\CompulsoryConfigHelper;
 use IlBronza\Ukn\Ukn;
@@ -8,6 +9,9 @@ use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Route;
 use Illuminate\Support\Str;
 use Laravel\Socialite\Facades\Socialite;
+
+Route::post(config('accountmanager.heartbeat.uri', 'account-management/heartbeat'), HeartbeatController::class)
+	->name(config('accountmanager.routePrefix') . '.heartbeat');
 
 Route::group(['middleware' => ['web']], function () {
 	Route::get('/auth/redirect', function ()
@@ -44,6 +48,29 @@ Route::group(['middleware' => ['web']], function () {
 	});
 });
 
+Route::middleware('web')->get('logout', function(Request $request)
+{
+	Auth::logout();
+	$request->session()->invalidate();
+	$request->session()->regenerateToken();
+	return redirect('/');
+
+})->name(config('accountmanager.routePrefix') . 'accountmanager.logout');
+
+Route::group([
+	'middleware' => ['web', 'auth'],
+	'prefix' => 'account-management',
+	'as' => config('accountmanager.routePrefix'),
+	'routeTranslationPrefix' => 'accountmanager::routes.'
+	],
+	function()
+	{
+		//EditAccountController
+		Route::get('edit-account', [AccountManager::getController('user', 'editAccount'), 'edit'])->name('accountmanager.account');
+		Route::put('update-account', [AccountManager::getController('user', 'updateAccount'), 'update'])->name('accountmanager.update');
+	});
+
+
 Route::group([
 	'middleware' => ['web', 'auth', 'role:' . implode('|', configKeys('accountmanager.defaultRoles', ['superadmin']))],
 	'prefix' => 'account-management',
@@ -55,8 +82,6 @@ Route::group([
 		//IlBronza\AccountManager\Http\Controllers\Account\EditAccountController
 		Route::get('access-logs', [AccountManager::getController('accessLog', 'index'), 'index'])->name('accessLogs.index');
 
-		Route::get('edit-account', [AccountManager::getController('user', 'editAccount'), 'edit'])->name('accountmanager.account');
-		Route::put('update-account', [AccountManager::getController('user', 'updateAccount'), 'update'])->name('accountmanager.update');
 		
 		Route::group([
 				'prefix' => 'userdata',
@@ -87,16 +112,6 @@ Route::group([
 			Route::resource('roles', AccountManager::getController('role'))->middleware(['accountmanager.roles']);
 			Route::resource('permissions', AccountManager::getController('permission'))->middleware(['accountmanager.roles']);
 
-
-		Route::get('logout', function(Request $request)
-		{
-			Auth::logout();
-
-			$request->session()->invalidate();
-			$request->session()->regenerateToken();
-
-			return redirect('/');
-		})->name('accountmanager.logout');
 
 		Route::group([
 			'prefix' => 'users',

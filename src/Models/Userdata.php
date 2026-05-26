@@ -101,7 +101,7 @@ class Userdata extends BaseModel implements HasMedia
 
 	public function user()
 	{
-		return $this->belongsTo(User::getProjectClassName());
+		return $this->belongsTo(User::getProjectClassName())->withoutGlobalScope(ActiveScope::class);
 	}
 
 	public function getShortName(bool $force = false) : ?string

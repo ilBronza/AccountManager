@@ -74,6 +74,18 @@ return [
         'connection' => 'activityMysql',
     ],
 
+    /**
+     * POST senza middleware (né web/auth/role): il client invia user_id nel body.
+     * Cache key: heartbeat-{user_id}, TTL in secondi.
+     */
+    'heartbeat' => [
+        'enabled' => true,
+        'ttl_seconds' => 60,
+        /** Invio client: resta sotto il TTL (es. 30s con TTL 60s). */
+        'interval_seconds' => 30,
+        'uri' => 'account-management/heartbeat',
+    ],
+
     'trashedUsers' => true,
 
 	'defaultAvatar' => 'https://randomuser.me/api/portraits/men/97.jpg',

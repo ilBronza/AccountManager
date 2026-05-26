@@ -4,8 +4,8 @@ namespace IlBronza\AccountManager\Http\Controllers\Userdata;
 
 use IlBronza\AccountManager\Models\User;
 use IlBronza\CRUD\Providers\RouterProvider\IbRouter;
+use IlBronza\CRUD\Scopes\ActiveScope;
 use Illuminate\Http\Request;
-
 use function app;
 
 class EditUserDataAvatarController extends EditUserDataController
@@ -27,14 +27,14 @@ class EditUserDataAvatarController extends EditUserDataController
 
 	public function userEdit(string $user)
 	{
-		$this->user = User::gpc()::find($user);
+		$this->user = User::gpc()::withInactive()->find($user);
 
 		return $this->edit();
 	}
 
 	public function userUpdate(Request $request, string $user)
 	{
-		$this->user = User::gpc()::find($user);
+		$this->user = User::gpc()::withInactive()->find($user);
 
 		return $this->update($request);
 	}

@@ -2,7 +2,7 @@
 
 namespace IlBronza\AccountManager\Http\Controllers\Users;
 
-use IlBronza\CRUD\Models\Scopes\ActiveScope;
+use IlBronza\CRUD\Scopes\ActiveScope;
 use IlBronza\CRUD\Traits\CRUDIndexTrait;
 use IlBronza\CRUD\Traits\CRUDPlainIndexTrait;
 
@@ -20,7 +20,11 @@ class IndexUserController extends BaseUserPackageController
 
     public function getIndexElements()
     {
-        return $this->getModelClass()::with(['roles', 'permissions', 'latestAccessLog'])->get();
+        $users = $this->getModelClass()::where('active', true)
+            ->with(['roles', 'permissions', 'latestAccessLog'])
+            ->get();
+
+        return $this->withHeartbeatOnline($users);
     }
 
     public function getIndexFieldsArray()

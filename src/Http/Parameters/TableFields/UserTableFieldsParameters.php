@@ -36,21 +36,24 @@ class UserTableFieldsParameters extends FieldsGroupParametersFile
                     'type' => 'flat',
                     'filterRange' => 'alphabetical',
                 ],
+                ...((config('accountmanager.heartbeat.enabled', true)) ? [
+                    'heartbeat_online' => 'boolean',
+                ] : []),
                 'email' => 'links.email',
                 'roles' => [
                     'type' => 'relations.belongsToMany',
                     'allowedForRoles' => ['superadmin', 'administrator'],
                 ],
-                'mySelfDuplicate' => [
-                    'type' => 'links.link',
-                    'function' => 'getDuplicateUrl',
-                    'faIcon' => 'copy',
-                    'roles' => ['superadmin']
-                ],
-                'permissions' => [
-                    'type' => 'relations.belongsToMany',
-                    'allowedForRoles' => ['superadmin', 'administrator']
-                ],
+                // 'mySelfDuplicate' => [
+                //     'type' => 'links.link',
+                //     'function' => 'getDuplicateUrl',
+                //     'faIcon' => 'copy',
+                //     'roles' => ['superadmin']
+                // ],
+                // 'permissions' => [
+                //     'type' => 'relations.belongsToMany',
+                //     'allowedForRoles' => ['superadmin', 'administrator']
+                // ],
 
                 'mySelfDelete' => 'links.delete'
             ]

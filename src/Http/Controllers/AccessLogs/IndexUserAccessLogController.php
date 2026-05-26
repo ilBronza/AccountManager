@@ -16,6 +16,8 @@ class IndexUserAccessLogController extends CRUD
 
     static $packageConfigPrefix = 'accountmanager';
 
+    public $avoidCreateButton = true;
+
     public $allowedMethods = ['index'];
 
     public function setModelClass()

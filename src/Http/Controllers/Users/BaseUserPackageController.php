@@ -6,6 +6,8 @@ use IlBronza\CRUD\CRUD;
 use IlBronza\CRUD\Http\Controllers\BasePackageTrait;
 use IlBronza\CRUD\Scopes\ActiveScope;
 use Illuminate\Database\Eloquent\Builder;
+use Illuminate\Support\Collection;
+use Illuminate\Support\Facades\Cache;
 
 class BaseUserPackageController extends CRUD
 {
@@ -38,5 +40,30 @@ class BaseUserPackageController extends CRUD
         return $query;
     }
 
+    /**
+     * Imposta l’attributo heartbeat_online in base alle chiavi cache heartbeat-{id} (una sola lettura batch).
+     *
+     * @param  Collection<int, \Illuminate\Database\Eloquent\Model>  $users
+     * @return Collection<int, \Illuminate\Database\Eloquent\Model>
+     */
+    protected function withHeartbeatOnline(Collection $users): Collection
+    {
+        if (! config('accountmanager.heartbeat.enabled', true)) {
+            foreach ($users as $user) {
+                $user->setAttribute('heartbeat_online', false);
+            }
 
+            return $users;
+        }
+
+        $keys = $users->map(fn ($user) => 'heartbeat-' . $user->getKey())->values()->all();
+        $presence = $keys === [] ? [] : Cache::many($keys);
+
+        foreach ($users as $user) {
+            $key = 'heartbeat-' . $user->getKey();
+            $user->setAttribute('heartbeat_online', ! empty($presence[$key]));
+        }
+
+        return $users;
+    }
 }
