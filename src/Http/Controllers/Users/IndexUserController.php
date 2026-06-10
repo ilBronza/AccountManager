@@ -5,6 +5,7 @@ namespace IlBronza\AccountManager\Http\Controllers\Users;
 use IlBronza\CRUD\Scopes\ActiveScope;
 use IlBronza\CRUD\Traits\CRUDIndexTrait;
 use IlBronza\CRUD\Traits\CRUDPlainIndexTrait;
+use Auth;
 
 class IndexUserController extends BaseUserPackageController
 {
@@ -20,8 +21,12 @@ class IndexUserController extends BaseUserPackageController
 
     public function getIndexElements()
     {
-        $users = $this->getModelClass()::where('active', true)
-            ->with(['roles', 'permissions', 'latestAccessLog'])
+        $query = $this->getModelClass()::query();
+
+        if(! Auth::user()->isSuperadmin())
+            $query->where('active', true);
+
+        $users =  $query->with(['roles', 'permissions', 'latestAccessLog'])
             ->get();
 
         return $this->withHeartbeatOnline($users);
