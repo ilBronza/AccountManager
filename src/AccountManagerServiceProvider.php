@@ -36,7 +36,7 @@ class AccountManagerServiceProvider extends ServiceProvider
 		$this->loadTranslationsFrom(__DIR__ . '/../resources/lang', 'accountmanager');
 		$this->loadViewsFrom(__DIR__ . '/../resources/views', 'accountmanager');
 		$this->loadMigrationsFrom(__DIR__ . '/../database/migrations');
-		$this->loadRoutesFrom(__DIR__ . '/../routes/web.php');
+		$this->loadRoutesFrom(__DIR__ . '/../routes/accountmanager.php');
 
 		$this->app['router']->aliasMiddleware('accountmanager.roles', AccountManagerMiddlewareRolesPermissions::class);
 		$this->app['router']->aliasMiddleware('accountmanager.logUserAccess', LogUserAccess::class);
