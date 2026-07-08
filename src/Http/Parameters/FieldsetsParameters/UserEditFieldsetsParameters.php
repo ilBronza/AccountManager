@@ -18,7 +18,7 @@ class UserEditFieldsetsParameters extends FieldsetParametersFile
                     'password' => ['password' => 'string|nullable|confirmed|max:191'],
                     'password_confirmation' => ['password' => 'string|nullable'],
                 ],
-                'width' => ['1-2@m']
+                'width' => ['xlarge']
             ],
             'roles' => [
                 'translationPrefix' => 'accountmanager::fields',
@@ -56,7 +56,7 @@ class UserEditFieldsetsParameters extends FieldsetParametersFile
                         'roles' => ['superadmin', 'administrator']
                     ]
                 ],
-                'width' => ['1-2@m']
+                'width' => ['2xlarge']
             ]
         ];
 
