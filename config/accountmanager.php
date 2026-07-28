@@ -79,7 +79,7 @@ return [
      * Cache key: heartbeat-{user_id}, TTL in secondi.
      */
     'heartbeat' => [
-        'enabled' => true,
+        'enabled' => env('ACCOUNTMANAGER_HEARTBEAT_ENABLED', true),
         'ttl_seconds' => 60,
         /** Invio client: resta sotto il TTL (es. 30s con TTL 60s). */
         'interval_seconds' => 30,
