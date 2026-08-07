@@ -61,7 +61,7 @@ Route::group([
 	'middleware' => ['web', 'auth'],
 	'prefix' => 'account-management',
 	'as' => config('accountmanager.routePrefix'),
-	'routeTranslationPrefix' => 'accountmanager::routes.'
+	'routeTranslationPrefix' => AccountManager::getRouteTranslationPrefix()
 	],
 	function()
 	{
@@ -75,7 +75,7 @@ Route::group([
 	'middleware' => ['web', 'auth', 'role:' . implode('|', configKeys('accountmanager.defaultRoles', ['superadmin']))],
 	'prefix' => 'account-management',
 	'as' => config('accountmanager.routePrefix'),
-	'routeTranslationPrefix' => 'accountmanager::routes.'
+	'routeTranslationPrefix' => AccountManager::getRouteTranslationPrefix()
 	],
 	function()
 	{
