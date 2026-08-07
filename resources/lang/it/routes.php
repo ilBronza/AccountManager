@@ -1,6 +1,24 @@
 <?php
 
 return [
+	'accountmanageraccessLogsindex' => 'Lista log accessi',
+	'accountmanageraccesslogs' => [
+		'index' => 'Registro accessi',
+	],
+	'accountmanageraccountmanager' => [
+		'account' => 'Account',
+		'logout' => 'Esci',
+		'update' => 'Aggiorna account',
+		'editUserdata' => 'Modifica dati utente',
+		'editAvatar' => 'Modifica immagine profilo',
+		'updateUserdata' => 'Modifica dati profilo',
+		'updateAvatar' => 'Modifica immagine profilo',
+		'duplicate' => 'Duplica utente',
+	],
+	'accountmanageraccountmanageruser' => [
+		'editAvatar' => 'Modifica avatar — utente',
+		'updateAvatar' => 'Aggiorna avatar — utente',
+	],
 	'accountmanagerpermissions' => [
 		'index' => 'Permessi',
 		'store' => 'Crea permesso',
@@ -19,24 +37,11 @@ return [
 		'destroy' => 'Elimina ruolo',
 		'edit' => 'Modifica ruolo',
 	],
-	'accountmanageraccountmanager' => [
-		'account' => 'Account',
-		'logout' => 'Logout',
-		'update' => 'Aggiorna account',
-		'editUserdata' => 'Modifica dati utente',
-		'editAvatar' => 'Modifica immagine profilo',
-		'updateUserdata' => 'Modifica dati profilo',
-		'updateAvatar' => 'Modifica immagine profilo',
-		'duplicate' => 'Duplica utente'
-	],
 	'accountmanageruserdatas' => [
 		'deleteMedia' => 'Elimina immagine',
 		'show' => 'Mostra utente',
 		'update' => 'Modifica utente',
 		'edit' => 'Modifica utente',
-	],
-	'accountmanageraccesslogs' => [
-		'index' => 'Registro accessi',
 	],
 	'accountmanagerusers' => [
 		'index' => 'Lista utenti',
@@ -47,53 +52,11 @@ return [
 		'destroy' => 'Elimina utente',
 		'edit' => 'Mostra utente',
 	],
+	'accountmanageruserscreateSlim' => 'Crea rapido — utente',
+	'accountmanagerusersrestore' => 'Ripristina utente',
+	'accountmanagerusersstoreSlim' => 'Salva rapido — utente',
+	'accountmanageruserstrashed' => 'Utente eliminati',
 	'operatorsoperators' => [
-		'edit' => ':model'
+		'edit' => ':model',
 	],
-
-
-
-	// 'accountmanagerpermissions' => [
-	// 	'index' => 'Permessi',
-	// 	'store' => 'Crea permesso',
-	// 	'create' => 'Crea permesso',
-	// 	'show' => 'Mostra permesso :permission',
-	// 	'update' => 'Aggiorna permesso :permission',
-	// 	'destroy' => 'Elimina permesso :permission',
-	// 	'edit' => 'Modifica permesso :permission',
-	// ],
-	// 'accountmanagerroles' => [
-	// 	'index' => 'Ruoli',
-	// 	'store' => 'Crea ruolo',
-	// 	'create' => 'Crea ruolo',
-	// 	'show' => 'Mostra ruolo :role',
-	// 	'update' => 'Aggiorna ruolo :role',
-	// 	'destroy' => 'Elimina ruolo :role',
-	// 	'edit' => 'Modifica ruolo :role',
-	// ],
-	// 'accountmanageraccountmanager' => [
-	// 	'account' => 'Account',
-	// 	'logout' => 'Logout',
-	// 	'update' => 'Aggiorna account',
-	// 	'editUserdata' => 'Modifica dati utente',
-	// 	'editAvatar' => 'Modifica immagine profilo',
-	// 	'updateUserdata' => 'Modifica dati profilo',
-	// 	'updateAvatar' => 'Modifica immagine profilo',
-	// 	'duplicate' => 'Duplica utente'
-	// ],
-	// 'accountmanageruserdatas' => [
-	// 	'deleteMedia' => 'Elimina immagine',
-	// 	'show' => 'Mostra utente :userdata',
-	// 	'update' => 'Modifica utente :userdata',
-	// 	'edit' => 'Modifica utente :userdata',
-	// ],
-	// 'accountmanagerusers' => [
-	// 	'index' => 'Lista utenti',
-	// 	'store' => 'Crea utente',
-	// 	'create' => 'Crea utente',
-	// 	'show' => 'Mostra utente :user',
-	// 	'update' => 'Modifica utente :user',
-	// 	'destroy' => 'Elimina utente',
-	// 	'edit' => 'Mostra utente :user',
-	// ]
 ];
