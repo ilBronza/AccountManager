@@ -10,6 +10,7 @@ use IlBronza\AccountManager\Models\Traits\UserPermissionsTrait;
 use IlBronza\AccountManager\Models\Traits\UserUserdataTrait;
 use IlBronza\CRUD\Models\Casts\ExtraField;
 use IlBronza\CRUD\Providers\RouterProvider\IbRouter;
+use IlBronza\CRUD\Traits\Model\BroadcastCrudTrait;
 use IlBronza\CRUD\Traits\Model\CRUDActiveScopeTrait;
 use IlBronza\CRUD\Traits\Model\CRUDCacheTrait;
 use IlBronza\CRUD\Traits\Model\CRUDModelExtraFieldsTrait;
@@ -21,7 +22,7 @@ class User extends BaseUser
 {
 	use HasFactory;
 	use PackageAccountModelsTrait;
-
+	use BroadcastCrudTrait;
 	use CRUDActiveScopeTrait;
 	use CRUDModelExtraFieldsTrait;
 

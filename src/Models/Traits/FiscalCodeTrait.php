@@ -3,9 +3,8 @@
 namespace IlBronza\AccountManager\Models\Traits;
 
 use Carbon\Carbon;
-
 use IlBronza\Addresses\Models\City;
-
+use IlBronza\Ukn\Facades\Ukn;
 use function dd;
 use function in_array;
 use function is_numeric;
@@ -41,6 +40,8 @@ trait FiscalCodeTrait
 	{
 		if(preg_match($this->getFiscalCodeRegexPattern(), $this->fiscal_code))
 			return $this->fiscal_code;
+
+		Ukn::e('il codice fiscale ' . $this->fiscal_code . ' risulta essere errato');
 
 		return null;
 	}
