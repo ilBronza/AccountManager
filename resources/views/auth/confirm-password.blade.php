@@ -1,27 +1,52 @@
-<x-guest-layout>
-    <div class="mb-4 text-sm text-gray-600">
-        {{ __('This is a secure area of the application. Please confirm your password before continuing.') }}
+@extends('uikittemplate::app')
+
+@section('content')
+
+    <div class="login-container uk-flex uk-flex-middle confirm-password">
+        <div class="uk-margin-auto">
+            <div class="uk-width-medium uk-text-center">
+
+                <img
+                        class="uk-margin-bottom"
+                        width="100%"
+                        src="{{ config('mail.logo.path', config('menu.logo.path')) }}"
+                        alt="">
+
+                <p>@lang('accountmanager::auth.confirmPasswordText')</p>
+
+                <form class="uk-form uk-form-vertical uk-text-left" method="POST"
+                      action="{{ route('password.confirm') }}">
+                    @csrf
+
+                    <div class="uk-margin">
+                        <label class="uk-form-label" for="password">@lang('accountmanager::auth.password')</label>
+                        <div class="uk-form-controls">
+                            <input
+                                    class="uk-input @error('password') uk-form-danger @enderror"
+                                    type="password"
+                                    id="password"
+                                    name="password"
+                                    required
+                                    autocomplete="current-password"
+                                    placeholder="@lang('accountmanager::auth.password')"
+                            >
+
+                            @error('password')
+                            <span class="uk-text-danger">
+                                <strong>{{ $message }}</strong>
+                            </span>
+                            @enderror
+                        </div>
+                    </div>
+
+                    <div>
+                        <button type="submit" class="uk-width-1-1 uk-button uk-button-primary uk-button-medium">
+                            @lang('accountmanager::auth.passwordConfirmation')
+                        </button>
+                    </div>
+                </form>
+            </div>
+        </div>
     </div>
 
-    <form method="POST" action="{{ route('password.confirm') }}">
-        @csrf
-
-        <!-- Password -->
-        <div>
-            <x-input-label for="password" :value="__('Password')" />
-
-            <x-text-input id="password" class="block mt-1 w-full"
-                            type="password"
-                            name="password"
-                            required autocomplete="current-password" />
-
-            <x-input-error :messages="$errors->get('password')" class="mt-2" />
-        </div>
-
-        <div class="flex justify-end mt-4">
-            <x-primary-button>
-                {{ __('Confirm') }}
-            </x-primary-button>
-        </div>
-    </form>
-</x-guest-layout>
+@endsection
