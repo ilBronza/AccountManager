@@ -41,7 +41,7 @@ trait FiscalCodeTrait
 		if(preg_match($this->getFiscalCodeRegexPattern(), $this->fiscal_code))
 			return $this->fiscal_code;
 
-		Ukn::e('il codice fiscale ' . $this->fiscal_code . ' risulta essere errato');
+		Ukn::e('il codice fiscale di ' . $this->getName() . ' (' . $this->fiscal_code . ') risulta essere errato');
 
 		return null;
 	}
