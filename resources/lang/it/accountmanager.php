@@ -35,4 +35,11 @@ return [
     // Messaggi usati in middleware / controller
     'userNotActive' => 'Il tuo account non è attivo.',
     'userCloned'    => 'L\'utente :user è stato duplicato.',
+
+  'created_at' => 'Creato il',
+  'mySelfShow' => 'Visualizza',
+  'mySelfEdit' => 'Modifica',
+  'mySelfDuplicate' => 'Duplica',
+  'mySelfDelete' => 'Elimina',
+  'userdatas' => 'Dati utente',
 ];
