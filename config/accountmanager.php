@@ -160,6 +160,7 @@ return [
             ],
 	        'parametersFiles' => [
 		        'create' => RoleFieldsetsParameters::class,
+		        'show' => RoleFieldsetsParameters::class,
 	        ],
         ],
         'permission' => [

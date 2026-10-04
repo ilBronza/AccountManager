@@ -59,4 +59,6 @@ return [
 	'operatorsoperators' => [
 		'edit' => ':model',
 	],
+    'accountmanagerusers.trashed' => 'Utenti eliminati',
+    'accountmanagerusers.createSlim' => 'Creazione rapida utente',
 ];

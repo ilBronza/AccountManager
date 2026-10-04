@@ -19,4 +19,5 @@ return [
     'resetPassword' => 'Resetta password',
     'passwordSuccessfullyReset' => 'La tua password è stata reimpostata con successo.',
     'userRestored' => 'Utente :user ripristinato.',
+    'confirm' => 'Conferma password',
 ];
