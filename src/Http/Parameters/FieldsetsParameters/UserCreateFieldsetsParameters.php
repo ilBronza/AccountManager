@@ -14,7 +14,7 @@ class UserCreateFieldsetsParameters extends FieldsetParametersFile
                 'fields' => [
                     'name' => ['text' => 'string|required|max:191'],
                     'email' => ['email' => 'email|required|max:191|unique:users,email'],
-                    'password' => ['password' => 'string|required|confirmed|max:191'],
+                    'password' => ['password' => 'string|required|confirmed|min:12|max:191'],
                     'password_confirmation' => ['password' => 'string|required'],
                 ],
                 'width' => ['1-2@m']

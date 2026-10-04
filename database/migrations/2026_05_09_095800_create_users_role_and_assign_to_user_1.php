@@ -1,50 +1,20 @@
 <?php
 
-use IlBronza\AccountManager\Models\Role;
-use IlBronza\AccountManager\Models\User;
 use Illuminate\Database\Migrations\Migration;
+use Illuminate\Support\Facades\DB;
 
 class CreateUsersRoleAndAssignToUser1 extends Migration
 {
-	/**
-	 * Run the migrations.
-	 *
-	 * @return void
-	 */
-	public function up()
-	{
-		$roleClass = Role::gpc();
-		$userClass = User::gpc();
+    public function up()
+    {
+        DB::table('roles')->insertOrIgnore([
+            'name' => 'accountManagerUsers', 'guard_name' => 'web',
+            'created_at' => now(), 'updated_at' => now(),
+        ]);
+    }
 
-		$role = $roleClass::where('name', 'accountManagerUsers')
-			->where('guard_name', 'web')
-			->first();
-
-		if (! $role)
-			$role = $roleClass::create([
-				'name' => 'accountManagerUsers',
-				'guard_name' => 'web'
-			]);
-
-		if ($user = $userClass::find(1))
-			$user->assignRole($role);
-	}
-
-	/**
-	 * Reverse the migrations.
-	 *
-	 * @return void
-	 */
-	public function down()
-	{
-		$roleClass = Role::gpc();
-		$userClass = User::gpc();
-
-		if ($user = $userClass::find(1))
-			$user->removeRole('accountManagerUsers');
-
-		if ($role = $roleClass::where('name', 'accountManagerUsers')->where('guard_name', 'web')->first())
-			$role->delete();
-	}
+    public function down()
+    {
+        // Keep roles and assignments, which may predate this migration.
+    }
 }
-

@@ -27,14 +27,14 @@ class EditUserDataAvatarController extends EditUserDataController
 
 	public function userEdit(string $user)
 	{
-		$this->user = User::gpc()::withInactive()->find($user);
+		$this->user = User::gpc()::withInactive()->findOrFail($user);
 
 		return $this->edit();
 	}
 
 	public function userUpdate(Request $request, string $user)
 	{
-		$this->user = User::gpc()::withInactive()->find($user);
+		$this->user = User::gpc()::withInactive()->findOrFail($user);
 
 		return $this->update($request);
 	}

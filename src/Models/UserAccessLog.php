@@ -28,7 +28,7 @@ class UserAccessLog extends Model
 
     public function __construct(array $attributes = [])
     {
-        $this->connection = config('accountmanager.logUserAccess.connection', 'activityMysql');
+        $this->connection = config('accountmanager.logUserAccess.connection');
         parent::__construct($attributes);
     }
 

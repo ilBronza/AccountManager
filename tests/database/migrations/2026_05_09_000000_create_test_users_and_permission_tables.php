@@ -25,6 +25,12 @@ return new class extends Migration
 			$table->softDeletes();
 		});
 
+		Schema::create('password_reset_tokens', function (Blueprint $table) {
+			$table->string('email')->primary();
+			$table->string('token');
+			$table->timestamp('created_at')->nullable();
+		});
+
 		// Minimal Spatie Permission tables (no teams)
 		Schema::create('permissions', function (Blueprint $table)
 		{
@@ -143,6 +149,7 @@ return new class extends Migration
 		Schema::dropIfExists('model_has_permissions');
 		Schema::dropIfExists('roles');
 		Schema::dropIfExists('permissions');
+		Schema::dropIfExists('password_reset_tokens');
 		Schema::dropIfExists('users');
 	}
 };

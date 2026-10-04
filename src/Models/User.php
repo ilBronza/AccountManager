@@ -52,7 +52,8 @@ class User extends BaseUser
 
 		'avatar' => ExtraField::class,
 
-		'allow_from_remote' => 'boolean'
+		'active' => 'boolean',
+        'allow_from_remote' => 'boolean'
 	];
 
 
@@ -165,7 +166,8 @@ public function getLastAccessIpAttribute(): ?string
 public function setPasswordAttribute($value)
 {
 	if ($value)
-		$this->attributes['password'] = $value;
+		$this->attributes['password'] = password_get_info($value)['algo']
+                ? $value : \Illuminate\Support\Facades\Hash::make($value);
 }
 
 /**
@@ -276,7 +278,7 @@ public function getShortName()
  */
 public function routeNotificationForSlack($notification)
 {
-	return 'https://hooks.slack.com/services/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';
+	return config('accountmanager.slackWebhookUrl');
 }
 
 /**
@@ -314,13 +316,13 @@ public function userCanUpdate(User $user = null)
 	if(is_null($user))
 		$user = Auth::user();
 
-	if($user->getKey() == $this->getKey())
+	if($user && $user->getKey() == $this->getKey())
 		return true;
 
 	if(! is_null($result = $this->getBaseUserRightsResult($user)))
 		return $result;
 
-	return $this->user_id == $user->getKey();
+	return $user && $this->user_id == $user->getKey();
 }
 
 

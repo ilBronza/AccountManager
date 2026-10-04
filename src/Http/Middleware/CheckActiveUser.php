@@ -21,13 +21,17 @@ class CheckActiveUser
     {
         if(Auth::check() && (Auth::user()->active == 0))
         {
-            Ukn::e(__('accountmanager.userNotActive'));
+            Ukn::e(__('accountmanager::accountmanager.userNotActive'));
             
             Auth::logout();
 
             $request->session()->invalidate();
 
             $request->session()->regenerateToken();
+
+            if ($request->expectsJson()) {
+                return response()->json(['message' => 'This account is suspended.'], 403);
+            }
 
             return redirect()->route('login')->withErrors(['error' => 'Your Account is suspended, please contact Admin.']);
 

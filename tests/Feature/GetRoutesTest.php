@@ -41,22 +41,9 @@ class GetRoutesTest extends TestCase
 
 	public static function protectedRoutes(): array
 	{
-		return self::pageRoutes() + [
-			'users duplicate' => ['accountmanageraccountmanager.duplicate', 'account-management/users/duplicate/{user}'],
-		] + self::disabledResourceRoutes();
-	}
+        return self::pageRoutes();
+    }
 
-	public static function disabledResourceRoutes(): array
-	{
-		// CRUD's resource registrar also declares these GETs, but these
-		// controllers do not include the actions in allowedMethods.
-		return [
-			'roles archived' => ['accountmanagerroles.archived', 'account-management/roles/archived'],
-			'roles deleted' => ['accountmanagerroles.list', 'account-management/roles/deleted'],
-			'permissions archived' => ['accountmanagerpermissions.archived', 'account-management/permissions/archived'],
-			'permissions deleted' => ['accountmanagerpermissions.list', 'account-management/permissions/deleted'],
-		];
-	}
 
 	public static function managementRoutes(): array
 	{
@@ -117,20 +104,13 @@ class GetRoutesTest extends TestCase
 		$this->getJson($path)->assertForbidden();
 	}
 
-	#[DataProvider('disabledResourceRoutes')]
-	public function test_get_disabled_resource_route_is_forbidden(string $name, string $uri): void
-	{
-		$this->actingAs($this->makeUserWithRole('superadmin'));
-		$this->assertSame($uri, Route::getRoutes()->getByName($name)?->uri());
-		$this->get($uri)->assertForbidden();
-	}
 
 	public function test_every_registered_package_get_route_has_a_test(): void
 	{
 		$expected = array_column(self::protectedRoutes(), 0, 1) + [
 			'auth/redirect' => 'login.github',
 			'auth/callback' => null,
-			'logout' => 'accountmanageraccountmanager.logout',
+			'logout' => 'accountmanageraccountmanager.logout.confirm',
 		];
 		$actual = [];
 		$file = realpath(__DIR__ . '/../../routes/accountmanager.php');
@@ -152,4 +132,10 @@ class GetRoutesTest extends TestCase
 		ksort($expected);
 		$this->assertSame($expected, $actual, 'Update the GET route tests when adding or changing a package route.');
 	}
+    public function test_unimplemented_resource_routes_are_not_registered(): void
+    {
+        foreach (['roles.archived', 'roles.list', 'permissions.archived', 'permissions.list'] as $name) {
+            $this->assertFalse(Route::has('accountmanager' . $name));
+        }
+    }
 }

@@ -5,7 +5,7 @@
 <script>
 (function () {
 	'use strict';
-	var url = @json(route('accountmanager.heartbeat'));
+	var url = @json(route(config('accountmanager.routePrefix') . '.heartbeat'));
 	var userId = @json(auth()->id());
 	var intervalMs = {{ $heartbeatIntervalMs }};
 
@@ -23,9 +23,11 @@
 			headers: {
 				'Content-Type': 'application/json',
 				'Accept': 'application/json',
-				'X-Requested-With': 'XMLHttpRequest'
+				'X-Requested-With': 'XMLHttpRequest',
+				'X-CSRF-TOKEN': @json(csrf_token())
 			},
-			body: JSON.stringify({ user_id: userId })
+			credentials: 'same-origin',
+			body: JSON.stringify({})
 		}).catch(function () {});
 	}
 

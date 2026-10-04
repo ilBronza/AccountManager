@@ -70,7 +70,10 @@ abstract class TestCase extends Orchestra
 			);
 		});
 
+		$app['config']->set('accountmanager.models.user.class', User::class);
 		$app['config']->set('auth.defaults.guard', 'web');
+		$app['config']->set('auth.defaults.passwords', 'users');
+		$app['config']->set('auth.passwords.users', ['provider' => 'users', 'table' => 'password_reset_tokens', 'expire' => 60, 'throttle' => 60]);
 		$app['config']->set('auth.guards.web', [
 			'driver' => 'session',
 			'provider' => 'users',

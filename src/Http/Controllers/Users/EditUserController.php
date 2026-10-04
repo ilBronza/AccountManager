@@ -12,6 +12,7 @@ use Illuminate\Http\Request;
 class EditUserController extends BaseUserPackageController
 {
     use CRUDEditUpdateTrait;
+    use \IlBronza\AccountManager\Http\Traits\ValidatesUserAccessChanges;
 
 	public ?bool $updateEditor = false;
 
@@ -27,7 +28,7 @@ class EditUserController extends BaseUserPackageController
 
     public function getUserModel(int|string $user)
     {
-        return $this->getModelClass()::where('id', $user)->first();
+        return $this->getModelClass()::where('id', $user)->firstOrFail();
     }
 
     public function edit($user)
@@ -48,24 +49,11 @@ class EditUserController extends BaseUserPackageController
         // return route('accountmanager.update');
     }
 
-    public function avoidSuperadminAssignment(Request $request)
-    {
-        $superadminRoles = Role::select('id')->where('name', 'superadmin')->pluck('id');
-
-        $idsString = $superadminRoles->implode(',');
-
-        $request->validate([
-            'roles.*' => 'nullable|notIn:' . $idsString
-        ], ['roles.*.not_in' => ';-)']);
-    }
-
     public function update(Request $request, $user)
     {
-        if(! Auth::user()->isSuperadmin())
-            $this->avoidSuperadminAssignment($request);
-
         $user = $this->getUserModel($user);
+        $this->validateUserChanges($request, $user);
 
-        return $this->_update($request, $user);
+        return $user->getConnection()->transaction(fn () => $this->_update($request, $user));
     }
 }

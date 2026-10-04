@@ -25,5 +25,6 @@ class AdDSoftdeletesToRolesAndPermissions extends Migration
      */
     public function down()
     {
+        Schema::table('permissions', fn (Blueprint $table) => $table->dropSoftDeletes());
     }
 }

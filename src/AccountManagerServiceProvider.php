@@ -5,12 +5,14 @@ namespace IlBronza\AccountManager;
 use IlBronza\AccountManager\Http\Middleware\AccountManagerMiddlewareRolesPermissions;
 use IlBronza\AccountManager\Http\Middleware\CheckActiveUser;
 use IlBronza\AccountManager\Http\Middleware\LogUserAccess;
-use IlBronza\AccountManager\Http\Middleware\ManageRolesAndPermissionsMiddleware;
 use IlBronza\AccountManager\Models\User;
 use IlBronza\AccountManager\Models\Userdata;
 use IlBronza\CRUD\Traits\IlBronzaPackages\IlBronzaServiceProviderPackagesTrait;
 use Illuminate\Database\Eloquent\Relations\Relation;
 use Illuminate\Support\ServiceProvider;
+use Illuminate\Cache\RateLimiting\Limit;
+use Illuminate\Support\Facades\RateLimiter;
+use Illuminate\Http\Request;
 
 class AccountManagerServiceProvider extends ServiceProvider
 {
@@ -28,6 +30,15 @@ class AccountManagerServiceProvider extends ServiceProvider
 		 *
 		 **/
 
+        \Illuminate\Support\Facades\Validator::extend('ip_or_cidr',
+            fn ($attribute, $value) => \IlBronza\AccountManager\Helpers\IpAddressHelper::isIpOrCidr($value),
+            'The :attribute must be a valid IP address or CIDR range.'
+        );
+
+		RateLimiter::for('accountmanager-heartbeat', fn (Request $request) =>
+                Limit::perMinute(6)->by((string) ($request->user()?->getAuthIdentifier() ?? $request->ip()))
+            );
+
 		Relation::morphMap([
 			'User' => User::gpc(),
 			'Userdata' => Userdata::gpc(),
@@ -38,16 +49,17 @@ class AccountManagerServiceProvider extends ServiceProvider
 		$this->loadMigrationsFrom(__DIR__ . '/../database/migrations');
 		$this->loadRoutesFrom(__DIR__ . '/../routes/accountmanager.php');
 
+		$this->app['router']->aliasMiddleware('accountmanager.active', CheckActiveUser::class);
 		$this->app['router']->aliasMiddleware('accountmanager.roles', AccountManagerMiddlewareRolesPermissions::class);
 		$this->app['router']->aliasMiddleware('accountmanager.logUserAccess', LogUserAccess::class);
 
 		// Publishing is only necessary when using the CLI.
 		if ($this->app->runningInConsole())
 		{
+			$this->commands([\IlBronza\AccountManager\Console\CreateAdmin::class, \IlBronza\AccountManager\Console\PruneAccessLogs::class]);
 			$this->bootForConsole();
 		}
 
-		app('router')->pushMiddlewareToGroup('web', ManageRolesAndPermissionsMiddleware::class);
 		app('router')->pushMiddlewareToGroup('web', CheckActiveUser::class);
 
 		$this->publishes([

@@ -16,7 +16,7 @@ class UserAccountEditFieldsetsParameters extends FieldsetParametersFile
                     'email' => ['email' => 'email|required|max:191'],
                     //'password' => ['required', 'confirmed', Rules\Password::defaults()],
                     'old_password' => ['password' => 'string|max:255'],
-                    'password' => ['password' => 'string|nullable|confirmed|max:191'],
+                    'password' => ['password' => 'string|nullable|confirmed|min:12|max:191'],
                     'password_confirmation' => ['password' => 'string|nullable'],
                 ],
                 'width' => ['1-2@m']

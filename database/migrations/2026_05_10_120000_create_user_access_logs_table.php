@@ -8,7 +8,7 @@ return new class extends Migration
 {
     public function up(): void
     {
-        $connection = config('accountmanager.logUserAccess.connection', 'activityMysql');
+        $connection = config('accountmanager.logUserAccess.connection');
 
         Schema::connection($connection)->create('user_access_logs', function (Blueprint $table) {
             $table->id();
@@ -27,7 +27,7 @@ return new class extends Migration
 
     public function down(): void
     {
-        $connection = config('accountmanager.logUserAccess.connection', 'activityMysql');
+        $connection = config('accountmanager.logUserAccess.connection');
 
         Schema::connection($connection)->dropIfExists('user_access_logs');
     }

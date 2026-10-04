@@ -1,6 +1,7 @@
 <?php
 
-use App\Models\ProjectSpecific\User;
+use IlBronza\AccountManager\Models\User;
+use IlBronza\AccountManager\Http\Parameters\FieldsetsParameters\PermissionFieldsetsParameters;
 use IlBronza\AccountManager\Http\Controllers\Account\EditAccountController;
 use IlBronza\AccountManager\Http\Controllers\Permissions\PermissionController;
 use IlBronza\AccountManager\Http\Controllers\Roles\RoleController;
@@ -37,9 +38,7 @@ use IlBronza\AccountManager\Models\UserAccessLog;
 use IlBronza\AccountManager\Models\Userdata;
 
 return [
-    'manzato' => 'effet',
     'enabled' => false,
-    'usesUserdata' => false,
     'canResetPassword' => false,
     'usesUserdata' => true,
     'usesAvatar' => true,
@@ -71,11 +70,12 @@ return [
         /**
          * Connessione database per la tabella user_access_logs (deve esistere in config/database.php).
          */
-        'connection' => 'activityMysql',
+        'connection' => env('ACCOUNTMANAGER_LOG_CONNECTION'),
+        'retention_days' => 90,
     ],
 
     /**
-     * POST senza middleware (né web/auth/role): il client invia user_id nel body.
+     * Authenticated POST with CSRF protection; identity comes from the session.
      * Cache key: heartbeat-{user_id}, TTL in secondi.
      */
     'heartbeat' => [
@@ -91,6 +91,8 @@ return [
 	'defaultAvatar' => 'https://randomuser.me/api/portraits/men/97.jpg',
 
     'routePrefix' => 'accountmanager',
+    'loginRedirect' => '/home',
+    'slackWebhookUrl' => env('ACCOUNTMANAGER_SLACK_WEBHOOK_URL'),
 
     /***
      * 
@@ -147,6 +149,7 @@ return [
             ],
             'parametersFiles' => [
                 'edit' => UserdataEditFieldsetsParameters::class,
+                'show' => UserdataEditFieldsetsParameters::class,
                 'editAvatar' => UserdataAvatarEditFieldsetsParameters::class
             ],
         ],
@@ -167,6 +170,10 @@ return [
             'class' => Permission::class,
             'table' => 'permissions',
             'controller' => PermissionController::class,
+            'parametersFiles' => [
+                'create' => PermissionFieldsetsParameters::class,
+                'show' => PermissionFieldsetsParameters::class,
+            ],
             'fieldsGroupsFiles' => [
                 'index' => PermissionTableFieldsParameters::class,
                 'related' => PermissionTableFieldsParameters::class,

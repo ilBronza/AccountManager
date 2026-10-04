@@ -53,8 +53,9 @@ class SessionGetRoutesTest extends TestCase
 		$this->assertDatabaseCount('users', 1);
 		$this->assertDatabaseHas('users', [
 			'id' => $user->getKey(),
-			'github_token' => 'test-access-token',
-			'github_refresh_token' => 'test-refresh-token',
+			'github_id' => 'github-42',
+			'github_token' => null,
+			'github_refresh_token' => null,
 		]);
 	}
 
@@ -78,8 +79,9 @@ class SessionGetRoutesTest extends TestCase
 			'name' => 'New GitHub User',
 			'email' => 'new@example.test',
 			'active' => true,
-			'github_token' => 'new-access-token',
-			'github_refresh_token' => 'new-refresh-token',
+			'github_id' => 'github-new',
+			'github_token' => null,
+			'github_refresh_token' => null,
 		]);
 	}
 
@@ -88,7 +90,7 @@ class SessionGetRoutesTest extends TestCase
 		$this->actingAs($this->makeUserWithRole('editor'));
 		$this->withSession(['private_value' => 'remove-me']);
 
-		$this->get('/logout')->assertRedirect('/')->assertSessionMissing('private_value');
+		$this->post('/logout')->assertRedirect('/')->assertSessionMissing('private_value');
 		$this->assertGuest();
 	}
 
@@ -101,7 +103,7 @@ class SessionGetRoutesTest extends TestCase
 		$source->givePermissionTo($permission);
 
 		$this->from('/account-management/users')
-			->get('/account-management/users/duplicate/' . $source->getKey())
+			->post('/account-management/users/duplicate/' . $source->getKey())
 			->assertRedirect('/account-management/users');
 
 		$this->assertDatabaseCount('users', 3);
@@ -111,4 +113,52 @@ class SessionGetRoutesTest extends TestCase
 		$this->assertTrue($clone->hasDirectPermission($permission));
 		$this->assertAuthenticatedAs($admin);
 	}
+
+    public static function deniedGithubAccounts(): array
+    {
+        return ['suspended' => ['suspended'], 'deleted' => ['deleted'], 'different GitHub ID' => ['different']];
+    }
+
+    #[DataProvider('deniedGithubAccounts')]
+    public function test_github_cannot_reactivate_or_relink_an_unavailable_account(string $state): void
+    {
+        $this->makeUserWithRole('superadmin');
+        $user = $this->makeUserWithRole('editor', 'unavailable@example.test');
+        if ($state === 'suspended') {
+            $user->active = false;
+            $user->save();
+        } elseif ($state === 'deleted') {
+            $user->delete();
+        } else {
+            $user->github_id = 'already-linked';
+            $user->save();
+        }
+        $github = (new GithubUser())->map(['id' => 'new-id', 'email' => $user->email, 'name' => 'Tester']);
+        $provider = Mockery::mock(Provider::class);
+        $provider->shouldReceive('user')->once()->andReturn($github);
+        Socialite::shouldReceive('driver')->with('github')->andReturn($provider);
+        $this->get('/auth/callback')->assertForbidden();
+        $this->assertGuest();
+        $this->assertDatabaseCount('users', 2);
+    }
+
+    public function test_github_requires_verified_email_for_new_accounts(): void
+    {
+        $github = (new GithubUser())->map(['id' => 'new-id', 'email' => null, 'name' => 'Tester']);
+        $provider = Mockery::mock(Provider::class);
+        $provider->shouldReceive('user')->once()->andReturn($github);
+        Socialite::shouldReceive('driver')->with('github')->andReturn($provider);
+        $this->get('/auth/callback')->assertStatus(422);
+        $this->assertGuest();
+        $this->assertDatabaseCount('users', 0);
+    }
+
+    public function test_invalid_oauth_state_does_not_sign_in(): void
+    {
+        $provider = Mockery::mock(Provider::class);
+        $provider->shouldReceive('user')->once()->andThrow(new \Laravel\Socialite\Two\InvalidStateException);
+        Socialite::shouldReceive('driver')->with('github')->andReturn($provider);
+        $this->get('/auth/callback')->assertStatus(419);
+        $this->assertGuest();
+    }
 }

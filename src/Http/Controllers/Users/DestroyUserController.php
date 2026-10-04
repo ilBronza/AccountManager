@@ -14,11 +14,15 @@ class DestroyUserController extends BaseUserPackageController
 
     public function restore($user)
     {
-        $model = $this->getModelClass()::onlyTrashed()->find($user);
+        $model = $this->getModelClass()::withInactive()->onlyTrashed()->findOrFail($user);
+        abort_if($model->isSuperAdmin() && ! \Auth::user()->isSuperAdmin(), 403);
+        $model->getConnection()->transaction(function () use ($model) {
+            $model->restore();
+            $model->userdata()->onlyTrashed()->restore();
+        });
 
-        $model->restore();
-
-        dd($model);
+        return redirect()->to(app('accountmanager')->route('users.index'))
+            ->with('status', __('accountmanager::auth.userRestored', ['user' => $model->name]));
     }
 
     public function destroy($user)
@@ -28,6 +32,8 @@ class DestroyUserController extends BaseUserPackageController
         if($user->getKey() == \Auth::id())
             abort(403, 'Non puoi cancellare te stesso');
 
-        return $this->_destroy($user);
+        abort_if($user->isSuperAdmin() && ! \Auth::user()->isSuperAdmin(), 403);
+
+        return $user->getConnection()->transaction(fn () => $this->_destroy($user));
     }
 }

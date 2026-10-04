@@ -27,7 +27,7 @@ class BaseUserPackageController extends CRUD
 
     public function getUserModel(int|string $user)
     {
-        return $this->getBaseUserQuery()->find($user);
+        return $this->getBaseUserQuery()->findOrFail($user);
     }
 
     public function getFindModelQuery(string $key, array $relations = []) : Builder

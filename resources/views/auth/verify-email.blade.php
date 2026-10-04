@@ -34,7 +34,7 @@
 					</div>
 				</form>
 
-				<form class="uk-form uk-form-vertical uk-text-left" method="POST" action="{{ route('logout') }}">
+				<form class="uk-form uk-form-vertical uk-text-left" method="POST" action="{{ app('accountmanager')->route('accountmanager.logout') }}">
 					@csrf
 
 					<div>

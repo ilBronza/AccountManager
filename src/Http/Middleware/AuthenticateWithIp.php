@@ -36,8 +36,6 @@ class AuthenticateWithIp extends Authenticate
         abort(403, 'IP non autorizzato');
     }
 
-    //[{"ip":"146.241.33.114"}]
-
     protected function isAllowedByUser($user, ?string $ip): bool
     {
         $allowFromRemote = (($user->allow_from_remote ?? false) === true);
@@ -96,47 +94,24 @@ class AuthenticateWithIp extends Authenticate
         return IpUtils::checkIp($ip, $list);
     }
 
-    protected function parseAllowedIps(array $ips): array
+    protected function parseAllowedIps(array|string|null $ips): array
     {
+        if ($ips === null || $ips === '') {
+            return [];
+        }
+        if (is_string($ips)) {
+            $decoded = json_decode($ips, true);
+            $ips = is_array($decoded) ? $decoded : preg_split('/[\r\n,]+/', $ips);
+        }
         $result = [];
-
-        foreach($ips as $key => $parameters)
-            $result[] = $parameters['ip'];
-
-        return $result;
-
-        if (! $text)
-            return [];
-
-        if (is_array($text))
-            $text = implode("\n", $text);
-
-        if (! is_string($text))
-            return [];
-
-        $text = str_replace(["\r\n", "\r"], "\n", $text);
-
-        $rawPieces = array_merge(
-            preg_split('/\n+/', $text) ?: [],
-            preg_split('/,+/', $text) ?: []
-        );
-
-        $pieces = [];
-        foreach ($rawPieces as $piece)
-        {
-            $piece = trim($piece);
-
-            if (! $piece)
-                continue;
-
-            // allow inline comments: "1.2.3.4 # office"
-            $piece = trim(explode('#', $piece, 2)[0]);
-
-            if ($piece)
-                $pieces[] = $piece;
+        foreach ($ips as $entry) {
+            $value = is_array($entry) ? ($entry['ip'] ?? '') : $entry;
+            $value = is_string($value) ? trim(explode('#', $value, 2)[0]) : '';
+            if ($value !== '') {
+                $result[] = $value;
+            }
         }
 
-        return array_values(array_unique($pieces));
+        return array_values(array_unique($result));
     }
 }
-

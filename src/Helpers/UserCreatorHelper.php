@@ -4,6 +4,7 @@ namespace IlBronza\AccountManager\Helpers;
 
 use IlBronza\AccountManager\Models\User;
 use Illuminate\Support\Facades\Hash;
+use Illuminate\Support\Str;
 
 use function implode;
 use function request;
@@ -13,9 +14,9 @@ class UserCreatorHelper
 	protected bool $active = false;
 
 	protected string $firstName;
-	protected ?string $surname;
-	protected ?string $email;
-	protected ?string $password;
+	protected ?string $surname = null;
+	protected ?string $email = null;
+	protected ?string $password = null;
 
 	protected array $roles = [];
 	protected array $permissions = [];
@@ -27,31 +28,33 @@ class UserCreatorHelper
 		$helper->setFirstName($firstName);
 		$helper->setSurname($surname);
 		$helper->setEmail($email);
+		$helper->setActive($active);
 
 		return $helper->generateUser();
 	}
 
-	public function generateUser()
-	{
-		$user = User::getProjectClassName()::make();
+    public function generateUser(): User
+    {
+        $model = User::getProjectClassName();
 
-		$user->email = $this->provideEmail();
-		$user->name = $this->getCompositeName();
+        return (new $model)->getConnection()->transaction(function () use ($model) {
+            $user = new $model;
+            $user->email = $this->provideEmail();
+            $user->name = $this->getCompositeName();
+            $user->password = $this->providePassword();
+            $user->active = $this->isActive();
+            $user->save();
 
-		$user->password = $this->providePassword();
-		$user->active = $this->isActive();
+            $userdata = $user->getUserdata();
+            $userdata->first_name = $this->getFirstName();
+            $userdata->surname = $this->getSurname();
+            $userdata->save();
+            $user->syncRoles($this->getRoles());
+            $user->syncPermissions($this->getPermissions());
 
-		$user->save();
-
-		$userdata = $user->getUserdata();
-
-		$userdata->first_name = $this->getFirstName();
-		$userdata->surname = $this->getSurname();
-
-		$userdata->save();
-
-		return $user;
-	}
+            return $user;
+        });
+    }
 
 	public function provideEmail() : string
 	{
@@ -121,7 +124,7 @@ class UserCreatorHelper
 			return $value;
 
 		return Hash::make(
-			$this->getCompositeName()
+			Str::random(64)
 		);
 	}
 

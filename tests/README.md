@@ -1,51 +1,55 @@
 # Test di AccountManager
 
-La suite esegue richieste HTTP sulle route reali del pacchetto, con middleware,
-controller e viste attivi. Ogni pagina disponibile deve rispondere `200` e
-contenere HTML; un `500` fa fallire il test.
+La suite usa Testbench e SQLite in memoria, senza `RefreshDatabase`.
+Le richieste HTTP attraversano middleware, controller, form e viste reali.
+GitHub e notifiche email sono simulati: non vengono contattati servizi esterni.
 
-- `GetRoutesTest`: pagine GET, autenticazione, ruoli esclusi e route aggiunte
-  dal registrar CRUD (`archived` e `deleted`, non abilitate dai controller).
-  Un controllo confronta tutte le GET registrate dal pacchetto con quelle
-  coperte dalla suite, per rilevare nuove route senza test.
-- `SessionGetRoutesTest`: redirect GitHub, callback per utenti esistenti e nuovi,
-  logout e duplicazione con verifica di ruoli e permessi copiati.
-- `UsersIndexAccessTest`: accesso alla lista utenti per i ruoli autorizzati
-  (`200`) e rifiuto degli altri (`403`).
-- `HeartbeatTest`: i due test POST già presenti.
+- `GetRoutesTest`: tutte le pagine GET registrate, accesso e rendering HTML.
+  Le route CRUD supplementari non implementate non vengono registrate.
+- `SessionGetRoutesTest`: OAuth, associazione GitHub, account sospesi/eliminati,
+  stato OAuth invalido, logout POST e duplicazione POST.
+- `UserWritesTest`: inviti, transazioni, password, copia indipendente di userdata,
+  protezione superadmin, cancellazione/ripristino e protezione CSRF reale.
+- `HeartbeatTest` e `AccessRulesTest`: presenza autenticata, TTL, limiti di
+  frequenza, account sospesi, configurazione dei ruoli e IPv4/IPv6/CIDR.
+- `MigrationsTest`: migrazioni del package su tabelle host minime, rollback e
+  reinstallazione; nessun account privilegiato automatico o cancellazione ruoli.
+- `CreateAdminTest` e `AccessLogsTest`: provisioning esplicito dell'amministratore,
+  esclusione query string dai log e conservazione dei dati recenti.
 
-GitHub viene simulato tramite il provider Socialite: nessuna richiesta esterna.
-I dati, inclusi utenti, userdata, media e access log, sono salvati in SQLite
-in memoria e ricreati per ogni test. Non viene usato `RefreshDatabase`.
-La connessione di test traduce soltanto `DESCRIBE` e `SHOW COLUMNS`, richiesti
-da CRUD/FormField per costruire i form; le query sui dati restano reali.
-Lo schema fixture riproduce le tabelle necessarie senza eseguire le migrazioni
-storiche del pacchetto, che dipendono da tabelle dell'applicazione ospite.
+Le normali feature usano lo schema fixture. Solo i test di installazione
+eseguono le migrazioni storiche. La connessione SQLite traduce `DESCRIBE` e
+`SHOW COLUMNS` necessari a CRUD/FormField per i form; tutte le query sui dati
+sono reali. La suite non sostituisce una verifica MySQL dell'applicazione host.
 
-## Esecuzione nel workspace dei pacchetti
+## Esecuzione
 
-Dalla cartella `pacchetti`, con il vendor condiviso di `.ibtest`:
+Con il vendor locale:
 
-```bash
+```sh
+composer test
+composer test:lint
+```
+
+Nel workspace IlBronza, dalla cartella `pacchetti`:
+
+```sh
 python3 .ibtest/bin/ibtest.py AccountManager
-python3 .ibtest/bin/ibtest.py AccountManager --filter GetRoutesTest
 ```
 
-Serve anche Laravel Socialite 5 per le route GitHub. Se manca nel vendor
-condiviso, seguire `.ibtest/README.md` per aggiungerlo e rigenerare l'autoload.
+Se PHP-Wasm non è disponibile, usare PHP locale con il bootstrap condiviso già
+generato. Dalla cartella AccountManager:
 
-Se il runtime PHP-Wasm non è disponibile, dopo che il runner ha generato
-`.ibtest/bootstrap_AccountManager.php` si può usare il PHP locale:
-
-```bash
-php .ibtest/vendor/phpunit/phpunit/phpunit \
-  --bootstrap .ibtest/bootstrap_AccountManager.php \
-  -c AccountManager/phpunit.xml --do-not-cache-result
+```sh
+ACCOUNTMANAGER_TEST_AUTOLOAD="$(pwd)/../.ibtest/bootstrap_AccountManager.php" \
+  php ../.ibtest/vendor/phpunit/phpunit/phpunit -c phpunit.xml --do-not-cache-result
 ```
 
-Con un normale vendor dell'applicazione che contiene tutte le dipendenze del
-pacchetto, dalla cartella `AccountManager`:
+`tests/bootstrap.php` usa cartelle temporanee per manifest e viste compilate,
+senza scrivere nel vendor condiviso. Aggiungere `--filter NomeTest` per una
+verifica mirata. Non occorre installare dipendenze nel workspace condiviso.
 
-```bash
-vendor/bin/phpunit
-```
+La CI configura repository Composer di tipo path per i pacchetti IlBronza e
+verifica Laravel 11/PHP 8.2 e Laravel 12/PHP 8.4. Le dipendenze di questi test
+d'integrazione seguono i branch dei pacchetti sorella, come negli altri package
+del workspace; i risultati locali riguardano le working copy presenti.

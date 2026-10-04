@@ -35,12 +35,12 @@ class PermissionController extends CRUD
 
     public $modelClass = 'IlBronza\AccountManager\Models\Permission';
 
-    public $allowedMethods = ['index', 'show', 'edit', 'update', 'create', 'store', 'delete'];
+    public $allowedMethods = ['index', 'show', 'edit', 'update', 'create', 'store', 'delete', 'destroy'];
 
     public $guardedShowDBFields = ['id', 'created_at', 'updated_at'];
 
     protected $relationshipsControllers = [
-        'roles' => '\IlBronza\AccountManager\Http\Controllers\RoleController'
+        'roles' => \IlBronza\AccountManager\Http\Controllers\Roles\RoleController::class
     ];
 
     public function getIndexFieldsArray()
@@ -76,5 +76,19 @@ class PermissionController extends CRUD
     public function delete(Permission $permission)
     {
         return $this->_delete($permission);
+    }
+    public function getRouteBaseNamePrefix(): ?string
+    {
+        return config('accountmanager.routePrefix');
+    }
+
+    public function getGenericParametersFile(): ?string
+    {
+        return config('accountmanager.models.permission.parametersFiles.create');
+    }
+
+    public function destroy(Permission $permission)
+    {
+        return $this->_destroy($permission);
     }
 }

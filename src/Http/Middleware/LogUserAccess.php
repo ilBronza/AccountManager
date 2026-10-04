@@ -37,7 +37,7 @@ class LogUserAccess
             'user_id' => $request->user()->getKey(),
             'visited_at' => now(),
             'method' => $request->getMethod(),
-            'url' => $request->fullUrl(),
+            'url' => $request->url(),
             'ip' => $request->ip(),
             'user_agent' => $request->userAgent(),
         ]);

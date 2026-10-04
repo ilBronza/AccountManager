@@ -28,7 +28,6 @@ class EditAccountController extends CRUD
 
     public function getGenericParametersFile() : ? string
     {
-    	dd(config('accountmanager.models.user.parametersFiles.editAccount'));
 		return config('accountmanager.models.user.parametersFiles.editAccount');
     }
 
@@ -66,19 +65,22 @@ class EditAccountController extends CRUD
 		// return IbRouter::route(app('accountmanager'), 'users.show', ['user' => Auth::id()]);
 	}
 
-	public function update(Request $request)
-	{
-		if($request->password)
-		{
-			if(! Hash::check($request->old_password, Auth::user()->password))
-				return back()->withErrors(['old_password' => 'Vecchia password sbagliata. Se non ricordi la vecchia password, vai nel menu utente e procedi con la voce "Reset password"']);
-					}
-		else
-			$request->request->remove('password');
+    public function update(Request $request)
+    {
+        $user = $request->user();
+        $request->validate([
+            'email' => ['sometimes', 'required', 'email', \Illuminate\Validation\Rule::unique($user->getTable(), 'email')->ignore($user)],
+            'password' => ['nullable', 'string', 'confirmed', \Illuminate\Validation\Rules\Password::min(12)],
+            'old_password' => $request->filled('password') ? ['required', 'string', 'current_password'] : ['nullable'],
+        ]);
+        if (! $request->filled('password')) {
+            $request->request->remove('password');
+        }
+        $request->request->remove('old_password');
+        foreach (['roles', 'permissions', 'active', 'allow_from_remote', 'allowed_ips', 'github_id'] as $field) {
+            abort_if($request->exists($field), 403);
+        }
 
-		$request->request->remove('old_password');
-
-		return $this->_update($request, Auth::user());
-	}
-
+        return $user->getConnection()->transaction(fn () => $this->_update($request, $user));
+    }
 }

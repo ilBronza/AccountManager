@@ -2,15 +2,13 @@
 
 use IlBronza\AccountManager\AccountManager;
 use IlBronza\AccountManager\Http\Controllers\HeartbeatController;
-use IlBronza\AccountManager\Models\User;
-use IlBronza\CRUD\Helpers\CompulsoryConfigHelper;
-use IlBronza\Ukn\Ukn;
+use IlBronza\AccountManager\Http\Controllers\GithubLoginController;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Route;
-use Illuminate\Support\Str;
 use Laravel\Socialite\Facades\Socialite;
 
 Route::post(config('accountmanager.heartbeat.uri', 'account-management/heartbeat'), HeartbeatController::class)
+	->middleware(['web', 'auth', 'accountmanager.active', 'throttle:accountmanager-heartbeat'])
 	->name(config('accountmanager.routePrefix') . '.heartbeat');
 
 Route::group(['middleware' => ['web']], function () {
@@ -19,36 +17,13 @@ Route::group(['middleware' => ['web']], function () {
 		return Socialite::driver('github')->redirect();
 	})->name('login.github');
 	 
-	Route::get('/auth/callback', function ()
-	{
-		$githubUser = Socialite::driver('github')->user();
-
-		if(! $user = User::getProjectClassName()::where('github_id', $githubUser->id)->first())
-			if(! $user = User::getProjectClassName()::where('email', $githubUser->email)->first())
-			{
-				$password = Str::random(8);
-
-				$user = User::getProjectClassName()::make();
-				$user->name = $githubUser->name ?? $githubUser->email;
-				$user->email = $githubUser->email;
-				$user->password = Hash::make($password);
-
-				$user->active = true;
-
-				Ukn::w('Your new password is ' . $password . '. Change it as soon as possible');
-			}
-
-		$user->github_token = $githubUser->token;
-		$user->github_refresh_token = $githubUser->refreshToken;
-		$user->save();
-
-		\Auth::login($user);
-
-		return redirect('/home');
-	});
+	Route::get('/auth/callback', GithubLoginController::class);
 });
 
-Route::middleware('web')->get('logout', function(Request $request)
+Route::middleware('web')->get('logout', fn () => view('accountmanager::auth.logout'))
+    ->name(config('accountmanager.routePrefix') . 'accountmanager.logout.confirm');
+
+Route::middleware('web')->post('logout', function(Request $request)
 {
 	Auth::logout();
 	$request->session()->invalidate();
@@ -58,7 +33,7 @@ Route::middleware('web')->get('logout', function(Request $request)
 })->name(config('accountmanager.routePrefix') . 'accountmanager.logout');
 
 Route::group([
-	'middleware' => ['web', 'auth'],
+	'middleware' => ['web', 'auth', 'accountmanager.active'],
 	'prefix' => 'account-management',
 	'as' => config('accountmanager.routePrefix'),
 	'routeTranslationPrefix' => AccountManager::getRouteTranslationPrefix()
@@ -72,7 +47,7 @@ Route::group([
 
 
 Route::group([
-	'middleware' => ['web', 'auth', 'role:' . implode('|', configKeys('accountmanager.defaultRoles', ['superadmin']))],
+	'middleware' => ['web', 'auth', 'accountmanager.active', 'accountmanager.roles'],
 	'prefix' => 'account-management',
 	'as' => config('accountmanager.routePrefix'),
 	'routeTranslationPrefix' => AccountManager::getRouteTranslationPrefix()
@@ -109,8 +84,8 @@ Route::group([
 
 			});
 
-			Route::resource('roles', AccountManager::getController('role'))->middleware(['accountmanager.roles']);
-			Route::resource('permissions', AccountManager::getController('permission'))->middleware(['accountmanager.roles']);
+			Route::resource('roles', AccountManager::getController('role'))->only(['index', 'create', 'store', 'show', 'edit', 'update', 'destroy']);
+			Route::resource('permissions', AccountManager::getController('permission'))->only(['index', 'create', 'store', 'show', 'edit', 'update', 'destroy']);
 
 
 		Route::group([
@@ -121,7 +96,7 @@ Route::group([
 			{
 				Route::get('trashed', [AccountManager::getController('user', 'trashed'), 'index'])->name('users.trashed');
 
-				Route::get('duplicate/{user}', [AccountManager::getController('user', 'duplicate'), 'duplicate'])
+				Route::post('duplicate/{user}', [AccountManager::getController('user', 'duplicate'), 'duplicate'])
 					->name('accountmanager.duplicate');
 
 				Route::get('create-slim', [AccountManager::getController('user', 'createSlim'), 'create'])->name('users.createSlim');

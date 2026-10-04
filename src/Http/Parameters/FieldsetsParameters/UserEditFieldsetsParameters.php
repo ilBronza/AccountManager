@@ -15,7 +15,7 @@ class UserEditFieldsetsParameters extends FieldsetParametersFile
                     'name' => ['text' => 'string|required|max:191'],
                     'email' => ['email' => 'email|required|max:191'],
                     //'password' => ['required', 'confirmed', Rules\Password::defaults()],
-                    'password' => ['password' => 'string|nullable|confirmed|max:191'],
+                    'password' => ['password' => 'string|nullable|confirmed|min:12|max:191'],
                     'password_confirmation' => ['password' => 'string|nullable'],
                 ],
                 'width' => ['xlarge']
@@ -36,7 +36,7 @@ class UserEditFieldsetsParameters extends FieldsetParametersFile
                     'allowed_ips' => [
                         'type' => 'json',
                         'fields' => [
-                            'ip' => ['text' => 'string|nullable|ip'],
+                            'ip' => ['text' => 'string|nullable|ip_or_cidr'],
                         ],
                         'rules' => 'array|nullable',
                         'roles' => ['superadmin', 'administrator']

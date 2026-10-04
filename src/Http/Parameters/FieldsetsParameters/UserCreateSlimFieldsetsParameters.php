@@ -12,8 +12,8 @@ class UserCreateSlimFieldsetsParameters extends FieldsetParametersFile
             'base' => [
                 'translationPrefix' => 'accountmanager::fields',
                 'fields' => [
-                    'new_first_name' => ['text' => 'string|required|max:191'],
-                    'new_surname' => ['text' => 'string|required|max:191'],
+                    'new_first_name' => ['text' => 'string|required|max:64'],
+                    'new_surname' => ['text' => 'string|required|max:64'],
                     'new_email' => ['email' => 'email|required|max:191|unique:users,email'],
                 ],
                 'width' => ['1-2@m']

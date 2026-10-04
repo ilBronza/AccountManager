@@ -67,7 +67,7 @@ class AccountManager implements RoutedObjectInterface
 		    $userAreaChildren[] =
 			    [
 				    'text' => 'accountmanager::accountmanager.logout',
-				    'href' => IbRouter::route($this, 'accountmanager.logout')
+				    'href' => IbRouter::route($this, 'accountmanager.logout.confirm')
 			    ];
 
 		    $userAreaParameters = [

@@ -14,13 +14,13 @@ class HeartbeatController
             return response()->json(['ok' => false], 404);
         }
 
-        $userId = $request->input('user_id');
+        $userId = $request->user()?->getAuthIdentifier();
 
         if ($userId === null || $userId === '' || ! is_scalar($userId)) {
-            return response()->json(['ok' => false], 422);
+            return response()->json(['ok' => false], 401);
         }
 
-        $ttl = (int) config('accountmanager.heartbeat.ttl_seconds', 60);
+        $ttl = max(1, (int) config('accountmanager.heartbeat.ttl_seconds', 60));
 
         Cache::put('heartbeat-' . $userId, true, $ttl);
 
