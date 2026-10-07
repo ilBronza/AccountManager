@@ -11,14 +11,17 @@ Route::post(config('accountmanager.heartbeat.uri', 'account-management/heartbeat
 	->middleware(['web', 'auth', 'accountmanager.active', 'throttle:accountmanager-heartbeat'])
 	->name(config('accountmanager.routePrefix') . '.heartbeat');
 
-Route::group(['middleware' => ['web']], function () {
-	Route::get('/auth/redirect', function ()
-	{
-		return Socialite::driver('github')->redirect();
-	})->name('login.github');
-	 
-	Route::get('/auth/callback', GithubLoginController::class);
-});
+if (class_exists(Socialite::class))
+{
+	Route::group(['middleware' => ['web']], function () {
+		Route::get('/auth/redirect', function ()
+		{
+			return Socialite::driver('github')->redirect();
+		})->name('login.github');
+
+		Route::get('/auth/callback', GithubLoginController::class);
+	});
+}
 
 Route::middleware('web')->get('logout', fn () => view('accountmanager::auth.logout'))
     ->name(config('accountmanager.routePrefix') . 'accountmanager.logout.confirm');

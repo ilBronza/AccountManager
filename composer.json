@@ -18,7 +18,6 @@
         "php": "^8.2",
         "laravel/framework": "^11.0 || ^12.0",
         "laravel/ui": "^4.0",
-        "laravel/socialite": "^5.0",
         "ilbronza/crud": "^2.5",
         "ilbronza/form": "^2.5",
         "ilbronza/formfield": "^2.5",
@@ -27,8 +26,6 @@
         "ilbronza/menu": "^2.5",
         "ilbronza/uikittemplate": "^2.5",
         "ilbronza/ukn": "^2.5",
-        "ilbronza/addresses": "^2.5",
-        "ilbronza/notifications": "^2.5",
         "spatie/laravel-permission": "^6.0",
         "spatie/laravel-medialibrary": "^11.0",
         "spatie/laravel-activitylog": "^4.0",
@@ -38,7 +35,8 @@
         "orchestra/testbench": "^9.0 || ^10.0",
         "phpunit/phpunit": "^11.0",
         "mockery/mockery": "^1.6",
-        "fakerphp/faker": "^1.23"
+        "fakerphp/faker": "^1.23",
+        "laravel/socialite": "^5.0"
     },
     "autoload": {
         "psr-4": {
@@ -68,5 +66,10 @@
     "scripts": {
         "test": "phpunit",
         "test:lint": "@php tests/lint.php"
+    },
+    "suggest": {
+        "ilbronza/notifications": "Enables extended database notifications for roles.",
+        "ilbronza/addresses": "Enables address management and birthplace lookup.",
+        "laravel/socialite": "Enables GitHub authentication."
     }
 }

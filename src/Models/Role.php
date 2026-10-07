@@ -5,7 +5,7 @@ namespace IlBronza\AccountManager\Models;
 use IlBronza\AccountManager\Models\Traits\PackageAccountModelsTrait;
 
 use IlBronza\CRUD\Traits\Model\CRUDCacheTrait;
-use IlBronza\Notifications\Traits\ExtendedNotifiable;
+use IlBronza\AccountManager\Models\Traits\RoleNotifiableTrait;
 
 use Spatie\Permission\Models\Role as SpatieRole;
 
@@ -13,7 +13,7 @@ class Role extends SpatieRole
 {
 	use CRUDCacheTrait;
 	use PackageAccountModelsTrait;
-	use ExtendedNotifiable;
+	use RoleNotifiableTrait;
 
 	static $deletingRelationships = [];
 

@@ -93,6 +93,11 @@ trait FiscalCodeTrait
 
 	public function getBirtyCityByFiscalCode(string $fiscalCode) : ? City
 	{
+		if (! class_exists(City::class))
+		{
+			return null;
+		}
+
 		$cityCode = substr($fiscalCode, 11, 4);
 
 		return City::gpc()::findCachedByField('belfiore', $cityCode);
@@ -208,7 +213,7 @@ trait FiscalCodeTrait
 		return $this->stateIsEuState($state);
 	}
 
-	public function isNotBornInEu(bool $default = null) : ? bool
+	public function isNotBornInEu(?bool $default = null) : ? bool
 	{
 		if(is_null($this->isBornInEu($default)))
 			return null;
