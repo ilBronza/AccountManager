@@ -13,10 +13,14 @@
 						alt="">
 
 				<form class="uk-form uk-form-vertical uk-text-left" method="POST"
-					  action="{{ route('password.store') }}">
+					  action="{{ route('password.update') }}">
 					@csrf
 
-					<input type="hidden" name="token" value="{{ $request->route('token') }}">
+					<input type="hidden" name="token" value="{{ $token }}">
+
+					@error('token')
+						<p class="uk-text-danger"><strong>{{ $message }}</strong></p>
+					@enderror
 
 					<div class="uk-margin">
 						<label class="uk-form-label" for="email">@lang('accountmanager::auth.email')</label>
@@ -25,8 +29,9 @@
 									class="uk-input @if(isset($errors)) @error('email') uk-form-danger @enderror @endif"
 									name="email"
 									id="email"
-									value="{{ old('email', $request->email) }}"
-									type="text"
+									value="{{ old('email', $email) }}"
+									type="email"
+									required autocomplete="email" autofocus
 									placeholder="@lang('accountmanager::auth.email')"
 							>
 
@@ -48,7 +53,7 @@
 									type="password"
 									id="password"
 									name="password"
-									required autocomplete="current-password"
+									required autocomplete="new-password"
 									placeholder="@lang('accountmanager::auth.password')"
 							>
 							@if(isset($errors))
@@ -70,7 +75,7 @@
 									type="password"
 									id="password_confirmation"
 									name="password_confirmation"
-									required autocomplete="current-password"
+									required autocomplete="new-password"
 									placeholder="@lang('accountmanager::auth.passwordConfirmation')"
 							>
 							@if(isset($errors))
@@ -85,7 +90,7 @@
 
 					<div>
 						<button
-								type="sumbit"
+								type="submit"
 								class="uk-width-1-1 uk-button uk-button-primary uk-button-medium">
 							@lang('accountmanager::auth.resetPassword')
 						</button>

@@ -14,6 +14,10 @@
 
 				<p class="uk-text-small">{{ trans('accountmanager::auth.resetPasswordDescription') }}</p>
 
+				@if(session('status'))
+					<div class="uk-alert uk-alert-success" role="status">{{ session('status') }}</div>
+				@endif
+
 				<form class="uk-form uk-form-vertical uk-text-left" method="POST"
 					  action="{{ route('password.email') }}">
 					@csrf
@@ -26,7 +30,8 @@
 									name="email"
 									id="email"
 									value="{{ old('email') }}"
-									type="text"
+									type="email"
+									required autocomplete="email" autofocus
 									placeholder="{{ __('Email') }}"
 							>
 
@@ -42,7 +47,7 @@
 
 					<div>
 						<button
-								type="sumbit"
+								type="submit"
 								class="uk-width-1-1 uk-button uk-button-primary uk-button-medium">
 							@lang('accountmanager::auth.sendResetPasswordLink')
 						</button>
