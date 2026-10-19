@@ -16,6 +16,13 @@ GitHub e notifiche email sono simulati: non vengono contattati servizi esterni.
   reinstallazione; nessun account privilegiato automatico o cancellazione ruoli.
 - `CreateAdminTest` e `AccessLogsTest`: provisioning esplicito dell'amministratore,
   esclusione query string dai log e conservazione dei dati recenti.
+- `PasswordRecoveryTest`: route reali di Laravel UI con registrazione disabilitata,
+  sorgenti dei controller pubblicabili e viste del package con layout UIkit.
+  Copre apertura dei due moduli, notifica e URL con token/email, messaggio di
+  successo, aggiornamento dell'hash, login, evento `PasswordReset`, consumo e
+  riutilizzo del token, scadenza, token di un altro utente, throttling e
+  validazione di email, token, password e conferma. Usa esclusivamente SQLite
+  in memoria e `Notification::fake()`, senza inviare email reali.
 
 Le normali feature usano lo schema fixture. Solo i test di installazione
 eseguono le migrazioni storiche. La connessione SQLite traduce `DESCRIBE` e
@@ -48,6 +55,18 @@ ACCOUNTMANAGER_TEST_AUTOLOAD="$(pwd)/../.ibtest/bootstrap_AccountManager.php" \
 `tests/bootstrap.php` usa cartelle temporanee per manifest e viste compilate,
 senza scrivere nel vendor condiviso. Aggiungere `--filter NomeTest` per una
 verifica mirata. Non occorre installare dipendenze nel workspace condiviso.
+
+Per la sola regressione del recupero password, con il vendor locale:
+
+```sh
+vendor/bin/phpunit --filter PasswordRecoveryTest
+```
+
+Le viste `auth.*` sono risolte direttamente da `resources/views` del package,
+come dopo la pubblicazione nell'app host; i controller `App\Http\Controllers\Auth`
+sono caricati dai sorgenti distribuiti. Non ci sono copie dei controller nei
+fixture né viste o broker simulati. La notifica è simulata, ma il suo URL viene
+generato con `toMail()` e aperto tramite una vera richiesta HTTP di test.
 
 La CI configura repository Composer di tipo path per i pacchetti IlBronza e
 verifica Laravel 11/PHP 8.2 e Laravel 12/PHP 8.4. Le dipendenze di questi test
