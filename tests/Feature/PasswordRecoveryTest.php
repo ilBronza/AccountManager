@@ -148,7 +148,9 @@ class PasswordRecoveryTest extends TestCase
             ->assertRedirect(route('password.request'))
             ->assertSessionHasErrors('email');
 
-        $this->get(route('password.request'))->assertOk()->assertSee('uk-text-danger');
+        $message = session('errors')->first('email');
+        $this->assertNotEmpty($message);
+        $this->get(route('password.request'))->assertOk()->assertSee($message);
         $this->assertDatabaseCount('password_reset_tokens', 0);
         Notification::assertNothingSent();
     }
@@ -232,7 +234,9 @@ class PasswordRecoveryTest extends TestCase
         $this->from($url)->post(route('password.update'), array_replace($this->resetPayload($user, $token), $invalid))
             ->assertRedirect($url)
             ->assertSessionHasErrors($field);
-        $this->get($url)->assertOk()->assertSee('uk-text-danger');
+        $message = session('errors')->first($field);
+        $this->assertNotEmpty($message);
+        $this->get($url)->assertOk()->assertSee($message);
 
         $this->assertSame($hash, $user->fresh()->getRawOriginal('password'));
         $this->assertTrue(Password::broker()->tokenExists($user, $token));

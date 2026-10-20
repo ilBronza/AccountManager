@@ -72,3 +72,10 @@ La CI configura repository Composer di tipo path per i pacchetti IlBronza e
 verifica Laravel 11/PHP 8.2 e Laravel 12/PHP 8.4. Le dipendenze di questi test
 d'integrazione seguono i branch dei pacchetti sorella, come negli altri package
 del workspace; i risultati locali riguardano le working copy presenti.
+
+Il 19 ottobre 2026 il flusso password è stato verificato anche su Laravel
+10.50.3/Testbench 8/PHPUnit 10.5.63 e Laravel 12.69.1/Testbench 10/PHPUnit 11.5.55,
+con PHP 8.4.23. Per queste due verifiche sono stati usati bootstrap isolati in
+`/tmp`, framework e dipendenze già presenti nel workspace e sorgenti ufficiali
+Testbench, senza caricare le applicazioni host o i loro database. Il vendor
+condiviso standard rimane Laravel 11.51.0/Testbench 9/PHPUnit 11.5.55.
