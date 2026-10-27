@@ -6,9 +6,13 @@ presenza online e registro degli accessi.
 
 ## Requisiti e installazione
 
-PHP 8.2+, Laravel 11 o 12. Le dipendenze dirette sono dichiarate in Composer;
-la matrice CI copre Laravel 11/PHP 8.2 e Laravel 12/PHP 8.4. Le verifiche locali
-nel workspace usano Laravel 11 con il vendor condiviso `.ibtest`.
+PHP 8.2+ e Laravel, con versione minima dichiarata in Composer.
+
+I vincoli Composer delle dipendenze Laravel e delle relative integrazioni indicano soltanto una versione minima, senza un limite sulle major successive. La scelta delle versioni concrete spetta all’applicazione ospite e al suo `composer.lock`; la compatibilità del codice va verificata con i test.
+
+La matrice CI comprende Laravel 11/PHP 8.2, Laravel 12/PHP 8.4 e
+Laravel 13/PHP 8.4. Le verifiche locali nel workspace usano Laravel 11
+con il vendor condiviso `.ibtest`.
 
 ```sh
 composer require ilbronza/accountmanager
