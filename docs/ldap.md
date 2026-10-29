@@ -175,3 +175,10 @@ manuali, conflitti, dati locali invariati e isolamento fra directory.
 
 L'emulatore non certifica rete, trust TLS, lockout/scadenza password e policy del
 dominio reale: completarli con l'ambiente AD del cliente prima dell'attivazione.
+
+La rubrica usa il componente DataTables condiviso: ricerca globale e per colonna,
+ordinamento, paginazione, esportazione e preferenze utente seguono la configurazione
+del pacchetto Datatables. Tutte le identità del filtro selezionato vengono caricate
+dall'endpoint AJAX autenticato; lo stato della tabella è distinto per le viste
+da collegare, collegati e tutti. I moduli di collegamento non partecipano alla
+ricerca o all'esportazione, e i valori AD restano sottoposti a escaping Blade.

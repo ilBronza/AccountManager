@@ -7,6 +7,8 @@ use IlBronza\AccountManager\Auth\Ldap\DirectoryIdentity;
 use IlBronza\AccountManager\Auth\Ldap\LdapAccounts;
 use IlBronza\AccountManager\Auth\Ldap\LdapDirectoryUsers;
 use IlBronza\AccountManager\Models\User;
+use IlBronza\AccountManager\Http\Parameters\TableFields\LdapDirectoryTableFieldsParameters;
+use IlBronza\Datatables\Datatables;
 use Illuminate\Http\Request;
 use Illuminate\Validation\ValidationException;
 
@@ -31,7 +33,7 @@ class LdapDirectoryController
         $status = $filters['status'] ?? 'unlinked';
         $search = trim($filters['q'] ?? '');
         $ready = $inventory->ready();
-        $entries = null;
+        $entries = collect();
         $localUsers = $linkedUsers = collect();
         $counts = ['all' => 0, 'linked' => 0, 'unlinked' => 0];
         if ($ready) {
@@ -51,7 +53,7 @@ class LdapDirectoryController
                 });
             }
             $entries = $query->select(['directory.*', 'links.user_id as local_user_id'])
-                ->orderBy('directory.name')->orderBy('directory.id')->paginate(25)->withQueryString();
+                ->orderBy('directory.name')->orderBy('directory.id')->get();
             $model = User::getProjectClassName();
             $localUsers = $model::query()->without('userdata')->with('roles')->where('active', true)
                 ->orderBy('name')->get(['id', 'name', 'email', 'active']);
@@ -63,7 +65,27 @@ class LdapDirectoryController
                 ->get(['id', 'name', 'email', 'active'])->keyBy(fn ($user) => (string) $user->getKey());
         }
 
-        return view('accountmanager::ldap.directory', compact('ready', 'entries', 'localUsers', 'linkedUsers', 'counts', 'status', 'search'));
+        $table = null;
+        if ($ready) {
+            $table = Datatables::create(
+                'ldapDirectory'.$status,
+                ['index' => LdapDirectoryTableFieldsParameters::getTracedFieldsGroup()],
+                fn () => $entries,
+                false,
+                compact('localUsers', 'linkedUsers'),
+                \stdClass::class
+            );
+            // Keep the selected directory status and any bookmarked search on reload.
+            $table->setUrl($request->fullUrl());
+            $table->setHasSorting(true);
+            $table->setPageLength(25);
+            $table->setCaption(__('accountmanager::directory.title'));
+            if ($request->ajax()) return $table->renderPage();
+        } elseif ($request->ajax()) {
+            abort(409, __('accountmanager::directory.migration_required'));
+        }
+
+        return view('accountmanager::ldap.directory', compact('ready', 'table', 'counts', 'status', 'search'));
     }
 
     public function link(Request $request, string $directoryUser, LdapDirectoryUsers $inventory, LdapAccounts $accounts)

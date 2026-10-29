@@ -51,6 +51,17 @@ class LdapDirectoryPageTest extends TestCase
         return '/account-management/ldap-users'.($entry ? '/'.$entry->id.'/link' : '');
     }
 
+    protected function data(string $query = ''): \Illuminate\Testing\TestResponse
+    {
+        $response = $this->get($this->url().$query, ['X-Requested-With' => 'XMLHttpRequest', 'Accept' => 'application/json']);
+        $response->assertOk()->assertJsonStructure(['data', 'recordsTotal', 'recordsFiltered']);
+
+        // Check the decoded HTML cells returned by the real DataTables endpoint.
+        return \Illuminate\Testing\TestResponse::fromBaseResponse(new \Illuminate\Http\Response(
+            collect($response->json('data'))->flatten()->implode('\n')
+        ));
+    }
+
     public function test_directory_and_association_actions_require_authentication_and_management_role(): void
     {
         $entry = $this->import();
@@ -72,14 +83,49 @@ class LdapDirectoryPageTest extends TestCase
         $local = $this->makeUserWithRole('worker', 'ad1@example.test');
         app(LdapAccounts::class)->link((string) $local->id, $this->identity(2));
 
-        $this->get($this->url())->assertOk()->assertSee('AD Person 1')->assertDontSee('AD Person 2')
-            ->assertSee(__('accountmanager::directory.login_disabled'))
+        $this->get($this->url())->assertOk()->assertSee('wannabedatatable', false)
+            ->assertSee(__('accountmanager::directory.login_disabled'));
+        $this->data()->assertSee('AD Person 1')->assertDontSee('AD Person 2')
             ->assertSee('worker')->assertSee('name="_token"', false);
-        $this->get($this->url().'?status=linked')->assertOk()->assertSee('AD Person 2')->assertDontSee('AD Person 1')
+        $this->data('?status=linked')->assertOk()->assertSee('AD Person 2')->assertDontSee('AD Person 1')
             ->assertSee($local->email)->assertSee('worker');
-        $this->get($this->url().'?status=all&q=ad2')->assertOk()->assertSee('AD Person 2')->assertDontSee('AD Person 1');
+        $this->data('?status=all&q=ad2')->assertOk()->assertSee('AD Person 2')->assertDontSee('AD Person 1');
         $this->assertFalse(config('accountmanager_ldap.enabled'));
         $this->assertDatabaseCount(LdapAccounts::TABLE, 1);
+    }
+
+    public function test_datatables_receives_all_rows_and_keeps_the_selected_status_and_search_on_reload(): void
+    {
+        config(['datatables.saveState' => true]);
+        $this->admin();
+        for ($i = 1; $i <= 31; $i++) $this->import($i);
+        $local = $this->makeUserWithRole('worker', 'linked@example.test');
+        app(LdapAccounts::class)->link((string) $local->id, $this->identity(31));
+
+        $response = $this->get($this->url(), ['X-Requested-With' => 'XMLHttpRequest', 'Accept' => 'application/json']);
+        $response->assertOk()->assertJsonCount(30, 'data')->assertJsonPath('recordsTotal', 30);
+        $this->data()->assertSee('AD Person 30')->assertDontSee('AD Person 31');
+        $this->data('?status=linked')->assertSee('AD Person 31')->assertDontSee('AD Person 30');
+        $this->get($this->url().'?status=all', ['X-Requested-With' => 'XMLHttpRequest', 'Accept' => 'application/json'])
+            ->assertOk()->assertJsonCount(31, 'data');
+
+        $this->get($this->url().'?status=linked&q=ad31')->assertOk()
+            ->assertSee('ldapDirectorylinked', false)->assertSee('data-url="'.e(url($this->url()).'?q=ad31&status=linked').'"', false)
+            ->assertSee('stateSave: true', false)->assertSee('searchable', false)
+            ->assertDontSee('id="ldap-search"', false)->assertDontSee('?page=', false);
+    }
+
+    public function test_ajax_data_has_the_same_access_and_directory_isolation_rules(): void
+    {
+        $this->get($this->url(), ['X-Requested-With' => 'XMLHttpRequest', 'Accept' => 'application/json'])->assertUnauthorized();
+        $this->actingAs($this->makeUserWithRole('editor'));
+        $this->get($this->url(), ['X-Requested-With' => 'XMLHttpRequest', 'Accept' => 'application/json'])->assertForbidden();
+        $this->admin();
+        config(['accountmanager_ldap.directory_enabled' => false]);
+        $this->get($this->url(), ['X-Requested-With' => 'XMLHttpRequest', 'Accept' => 'application/json'])->assertNotFound();
+        config(['accountmanager_ldap.directory_enabled' => true]);
+        Schema::drop(LdapDirectoryUsers::TABLE);
+        $this->get($this->url(), ['X-Requested-With' => 'XMLHttpRequest', 'Accept' => 'application/json'])->assertStatus(409);
     }
 
     public function test_manual_association_preserves_the_same_user_id_credentials_roles_and_current_session(): void
@@ -129,7 +175,7 @@ class LdapDirectoryPageTest extends TestCase
         DB::table('users')->where('id', $user->id)->update(['deleted_at' => null]);
         DB::table(LdapDirectoryUsers::TABLE)->where('id', $entry->id)->update(['missing' => true]);
         $this->postJson($this->url($entry), ['user_id' => (string) $user->id])->assertUnprocessable();
-        $this->get($this->url())->assertOk()->assertDontSee('action="'.url($this->url($entry)).'"', false);
+        $this->data()->assertDontSee('action="'.url($this->url($entry)).'"', false);
         $this->assertDatabaseCount(LdapAccounts::TABLE, 0);
     }
 
@@ -161,7 +207,7 @@ class LdapDirectoryPageTest extends TestCase
         $entry = $this->import();
         $this->postJson($this->url($entry), ['user_id' => (string) $firstUser->id])->assertForbidden();
         $this->postJson($this->url($entry), ['user_id' => (string) $root->id])->assertForbidden();
-        $this->get($this->url())->assertOk()->assertDontSee('<option value="'.$firstUser->id.'"', false)
+        $this->data()->assertDontSee('<option value="'.$firstUser->id.'"', false)
             ->assertDontSee('<option value="'.$root->id.'"', false);
         $this->assertDatabaseCount(LdapAccounts::TABLE, 0);
     }
@@ -171,7 +217,7 @@ class LdapDirectoryPageTest extends TestCase
         $this->admin();
         $entry = $this->import();
         DB::table(LdapDirectoryUsers::TABLE)->where('id', $entry->id)->update(['connection' => 'another']);
-        $this->get($this->url())->assertOk()->assertDontSee('AD Person 1');
+        $this->data()->assertDontSee('AD Person 1');
         $this->postJson($this->url($entry), ['user_id' => '1'])->assertNotFound();
         $this->deleteJson($this->url($entry), ['user_id' => '1'])->assertNotFound();
     }
@@ -182,7 +228,7 @@ class LdapDirectoryPageTest extends TestCase
         $entry = $this->import(name: '<script>alert(1)</script>');
         DB::table(LdapDirectoryUsers::TABLE)->where('id', $entry->id)->update(['enabled' => false, 'in_required_group' => false]);
         config(['accountmanager_ldap.required_group_dn' => 'cn=allowed,dc=example,dc=test']);
-        $this->get($this->url())->assertOk()->assertSee('&lt;script&gt;alert(1)&lt;/script&gt;', false)
+        $this->data()->assertSee('&lt;script&gt;alert(1)&lt;/script&gt;', false)
             ->assertDontSee('<script>alert(1)</script>', false)->assertSee(__('accountmanager::directory.disabled'))
             ->assertSee(__('accountmanager::directory.outside_group'));
     }
