@@ -16,7 +16,7 @@
     ],
     "require": {
         "php": "^8.2",
-        "laravel/framework": ">=10.48",
+        "laravel/framework": "^9.52.21 || >=10.48",
         "laravel/ui": ">=4.0",
         "ilbronza/crud": "*",
         "ilbronza/form": "*",
