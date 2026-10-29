@@ -25,6 +25,9 @@ class AccountManagerServiceProvider extends ServiceProvider
 	 */
 	public function boot()
 	{
+		RateLimiter::for('accountmanager-ldap-import', fn (Request $request) =>
+            Limit::perMinute(3)->by(hash('sha256', config('accountmanager_ldap.connection').'|'.$request->user()?->getAuthIdentifier()))
+        );
 		RateLimiter::for('accountmanager-ldap', function (Request $request) {
             $username = $request->input('username');
             $key = hash('sha256', strtolower(trim(is_string($username) ? $username : '')) . '|' . $request->ip());

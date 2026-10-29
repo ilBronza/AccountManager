@@ -105,6 +105,16 @@ Anche abilitando altri ruoli di gestione, solo un superadmin può associare gli
 account locali superadmin o l'utente con ID 1. I moduli richiedono CSRF e rifiutano
 conflitti, identità di altre directory e identità assenti dall'ultima importazione.
 
+Nella stessa pagina, **Verifica LDAP** legge tutta la directory e mostra i
+conteggi senza salvare dati. **Importa / aggiorna utenti** aggiorna la rubrica
+conservando i collegamenti esistenti, senza creare utenti locali o cambiare ruoli.
+Al termine mostra gli account rilevati, attivi, ammessi dal gruppo, collegati,
+da collegare e non più rilevati. Entrambe le azioni usano POST con CSRF, gli stessi
+ruoli di gestione della pagina e un limite di tre richieste al minuto per
+amministratore e directory. Un errore non espone credenziali o dettagli LDAP e
+conserva l'ultima importazione riuscita. La verifica è disponibile anche prima
+delle migrazioni; per salvare l'importazione devono essere già applicate.
+
 ### Collegamento tramite CLI
 
 Con LDAP ancora disabilitato nell'interfaccia, l'amministratore associa ogni

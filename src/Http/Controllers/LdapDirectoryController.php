@@ -4,6 +4,7 @@ namespace IlBronza\AccountManager\Http\Controllers;
 
 use DomainException;
 use IlBronza\AccountManager\Auth\Ldap\DirectoryIdentity;
+use IlBronza\AccountManager\Auth\Ldap\DirectoryReader;
 use IlBronza\AccountManager\Auth\Ldap\LdapAccounts;
 use IlBronza\AccountManager\Auth\Ldap\LdapDirectoryUsers;
 use IlBronza\AccountManager\Models\User;
@@ -11,6 +12,7 @@ use IlBronza\AccountManager\Http\Parameters\TableFields\LdapDirectoryTableFields
 use IlBronza\Datatables\Datatables;
 use Illuminate\Http\Request;
 use Illuminate\Validation\ValidationException;
+use Throwable;
 
 class LdapDirectoryController
 {
@@ -86,6 +88,24 @@ class LdapDirectoryController
         }
 
         return view('accountmanager::ldap.directory', compact('ready', 'table', 'counts', 'status', 'search'));
+    }
+
+    public function import(Request $request, DirectoryReader $directory, LdapDirectoryUsers $inventory)
+    {
+        $this->authorize($request);
+        $input = $request->validate(['mode' => ['required', 'string', 'in:preview,import']]);
+        $preview = $input['mode'] === 'preview';
+        abort_unless($preview || $inventory->ready(), 409);
+
+        try {
+            $stats = $inventory->import($directory, $preview);
+        } catch (Throwable $exception) {
+            return redirect()->route(config('accountmanager.routePrefix').'ldapUsers.index')
+                ->withErrors(['ldap_import' => __('accountmanager::directory.import_failed')]);
+        }
+
+        return redirect()->route(config('accountmanager.routePrefix').'ldapUsers.index')
+            ->with('ldap_import_result', ['preview' => $preview, 'stats' => $stats]);
     }
 
     public function link(Request $request, string $directoryUser, LdapDirectoryUsers $inventory, LdapAccounts $accounts)

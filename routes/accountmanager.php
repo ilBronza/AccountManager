@@ -69,6 +69,8 @@ Route::group([
 		Route::get('access-logs', [AccountManager::getController('accessLog', 'index'), 'index'])->name('accessLogs.index');
 
         Route::get('ldap-users', [\IlBronza\AccountManager\Http\Controllers\LdapDirectoryController::class, 'index'])->name('ldapUsers.index');
+        Route::post('ldap-users/import', [\IlBronza\AccountManager\Http\Controllers\LdapDirectoryController::class, 'import'])
+            ->middleware('throttle:accountmanager-ldap-import')->name('ldapUsers.import');
         Route::post('ldap-users/{directoryUser}/link', [\IlBronza\AccountManager\Http\Controllers\LdapDirectoryController::class, 'link'])
             ->whereNumber('directoryUser')->name('ldapUsers.link');
         Route::delete('ldap-users/{directoryUser}/link', [\IlBronza\AccountManager\Http\Controllers\LdapDirectoryController::class, 'unlink'])
