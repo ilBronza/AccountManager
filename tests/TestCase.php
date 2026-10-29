@@ -65,7 +65,7 @@ abstract class TestCase extends Orchestra
 			return new SqliteConnection(
 				(new SQLiteConnector())->connect($config),
 				$config['database'],
-				$config['prefix'],
+				$config['prefix'] ?? '',
 				$config
 			);
 		});
