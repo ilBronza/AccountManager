@@ -104,6 +104,7 @@
 						@endif
 					</div>
 				</form>
+                @include('accountmanager::auth.ldap-link')
 
 			</div>
 		</div>

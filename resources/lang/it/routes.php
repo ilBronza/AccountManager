@@ -1,6 +1,11 @@
 <?php
 
 return [
+    'accountmanagerldapUsers' => [
+        'index' => 'Utenti Active Directory',
+        'link' => 'Collega utente Active Directory',
+        'unlink' => 'Rimuovi collegamento Active Directory',
+    ],
 	'accountmanageraccessLogsindex' => 'Lista log accessi',
 	'accountmanageraccesslogs' => [
 		'index' => 'Registro accessi',

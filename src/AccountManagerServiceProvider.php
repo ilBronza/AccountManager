@@ -25,6 +25,15 @@ class AccountManagerServiceProvider extends ServiceProvider
 	 */
 	public function boot()
 	{
+		RateLimiter::for('accountmanager-ldap', function (Request $request) {
+            $username = $request->input('username');
+            $key = hash('sha256', strtolower(trim(is_string($username) ? $username : '')) . '|' . $request->ip());
+
+            return [
+                Limit::perMinute(30)->by('ldap-ip:' . $request->ip()),
+                Limit::perMinute(5)->by('ldap-user:' . $key),
+            ];
+        });
 		/**
 		 *
 		 *
@@ -56,6 +65,21 @@ class AccountManagerServiceProvider extends ServiceProvider
 		// Publishing is only necessary when using the CLI.
 		if ($this->app->runningInConsole())
 		{
+			$this->commands([
+                \IlBronza\AccountManager\Console\LinkLdapUser::class,
+                \IlBronza\AccountManager\Console\TestLdapUser::class,
+                \IlBronza\AccountManager\Console\ImportLdapUsers::class,
+            ]);
+            $this->publishes([
+                __DIR__ . '/../config/accountmanager_ldap.php' => config_path('accountmanager_ldap.php'),
+            ], 'accountmanager-ldap-config');
+            // Opt-in migration: never loaded with the package's normal migrations.
+            $this->publishes([
+                __DIR__ . '/../database/ldap-migrations/2026_10_27_000000_create_accountmanager_ldap_identities_table.php'
+                    => database_path('migrations/2026_10_27_000000_create_accountmanager_ldap_identities_table.php'),
+                __DIR__ . '/../database/ldap-migrations/2026_10_28_000001_create_accountmanager_ldap_directory_users_table.php'
+                    => database_path('migrations/2026_10_28_000001_create_accountmanager_ldap_directory_users_table.php'),
+            ], 'accountmanager-ldap-migrations');
 			$this->commands([\IlBronza\AccountManager\Console\CreateAdmin::class, \IlBronza\AccountManager\Console\PruneAccessLogs::class]);
 			$this->bootForConsole();
 		}
@@ -74,6 +98,11 @@ class AccountManagerServiceProvider extends ServiceProvider
 	 */
 	public function register()
 	{
+		$this->mergeConfigFrom(__DIR__ . '/../config/accountmanager_ldap.php', 'accountmanager_ldap');
+        $this->app->bind(\IlBronza\AccountManager\Auth\Ldap\DirectoryAuthenticator::class,
+            \IlBronza\AccountManager\Auth\Ldap\LdapRecordDirectory::class);
+        $this->app->bind(\IlBronza\AccountManager\Auth\Ldap\DirectoryReader::class,
+            \IlBronza\AccountManager\Auth\Ldap\LdapRecordDirectory::class);
 		$this->mergeConfigFrom(__DIR__ . '/../config/accountmanager.php', 'accountmanager');
 
 		$this->loadTranslationsFrom(__DIR__ . '/../resources/lang', 'accountmanager');

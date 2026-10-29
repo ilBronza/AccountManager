@@ -131,6 +131,16 @@ class AccountManager implements RoutedObjectInterface
 
             $authButton->addChild($usersButton);
 
+            if (config('accountmanager_ldap.directory_enabled')
+                && $user->hasAnyRole((array) config('accountmanager_ldap.management_roles', ['superadmin']))) {
+                $authButton->addChild($menu->createButton([
+                    'name' => 'ldapUsers.index',
+                    'icon' => 'address-book',
+                    'text' => 'accountmanager::directory.title',
+                    'href' => route(config('accountmanager.routePrefix').'ldapUsers.index'),
+                ]));
+            }
+
             if (config('accountmanager.logUserAccess.enabled', true))
             {
                 $accessLogsButton = $menu->createButton([

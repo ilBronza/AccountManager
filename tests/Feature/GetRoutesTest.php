@@ -109,6 +109,8 @@ class GetRoutesTest extends TestCase
 	{
 		$expected = array_column(self::protectedRoutes(), 0, 1) + [
 			'auth/redirect' => 'login.github',
+			'login/ldap' => 'accountmanager.ldap.login',
+            'account-management/ldap-users' => 'accountmanagerldapUsers.index',
 			'auth/callback' => null,
 			'logout' => 'accountmanageraccountmanager.logout.confirm',
 		];

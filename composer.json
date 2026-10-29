@@ -36,7 +36,8 @@
         "phpunit/phpunit": ">=10.5",
         "mockery/mockery": "^1.6",
         "fakerphp/faker": "^1.23",
-        "laravel/socialite": ">=5.0"
+        "laravel/socialite": ">=5.0",
+        "directorytree/ldaprecord-laravel": "^3.4"
     },
     "autoload": {
         "psr-4": {
@@ -70,6 +71,7 @@
     "suggest": {
         "ilbronza/notifications": "Enables extended database notifications for roles.",
         "ilbronza/addresses": "Enables address management and birthplace lookup.",
-        "laravel/socialite": "Enables GitHub authentication."
+        "laravel/socialite": "Enables GitHub authentication.",
+        "directorytree/ldaprecord-laravel": "^3.4: Enables optional Active Directory login (requires ext-ldap)."
     }
 }

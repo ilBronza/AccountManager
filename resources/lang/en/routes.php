@@ -1,6 +1,11 @@
 <?php
 
 return [
+    'accountmanagerldapUsers' => [
+        'index' => 'Active Directory users',
+        'link' => 'Link Active Directory user',
+        'unlink' => 'Remove Active Directory association',
+    ],
     'accountmanagerpermissions' => [
         'index'   => 'Permissions',
         'store'   => 'Create permission',

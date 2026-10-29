@@ -79,3 +79,21 @@ con PHP 8.4.23. Per queste due verifiche sono stati usati bootstrap isolati in
 `/tmp`, framework e dipendenze già presenti nel workspace e sorgenti ufficiali
 Testbench, senza caricare le applicazioni host o i loro database. Il vendor
 condiviso standard rimane Laravel 11.51.0/Testbench 9/PHPUnit 11.5.55.
+
+## LDAP opzionale
+
+`LdapLoginTest` verifica la compatibilità del login locale, le associazioni esplicite,
+CSRF, throttling, account sospesi e rollback della migrazione opzionale.
+`LdapRecordDirectoryTest` usa DirectoryEmulator di LdapRecord con SQLite in memoria
+per password, GUID e gruppi annidati. Richiede `directorytree/ldaprecord-laravel:^3.4`
+e `ext-ldap`; viene saltato esplicitamente quando la dipendenza opzionale manca.
+Copre anche LDAP semplice sulla porta 389 quando SSL e TLS sono esplicitamente
+disabilitati. `LdapTestCommandTest` verifica il comando diagnostico, i prompt
+e gli errori senza modifiche a utenti, associazioni o sessioni e con login spento.
+Nessun test contatta Active Directory reale.
+
+`LdapDirectoryImportTest` copre importazioni ripetute e parziali, identità
+disabilitate/fuori gruppo, isolamento delle directory e conservazione di utenti,
+ruoli e collegamenti. `LdapDirectoryPageTest` copre la pagina amministrativa,
+ricerca, filtri, CSRF, controllo dei ruoli e associazioni manuali senza modificare
+password o ruoli. Il lettore AD viene verificato anche con l'emulatore reale.

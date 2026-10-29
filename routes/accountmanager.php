@@ -7,6 +7,14 @@ use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Route;
 use Laravel\Socialite\Facades\Socialite;
 
+// Registered consistently for route caching; controllers return 404 when disabled.
+Route::middleware('web')->group(function () {
+    Route::get('login/ldap', [\IlBronza\AccountManager\Http\Controllers\LdapLoginController::class, 'show'])
+        ->name('accountmanager.ldap.login');
+    Route::post('login/ldap', [\IlBronza\AccountManager\Http\Controllers\LdapLoginController::class, 'login'])
+        ->middleware('throttle:accountmanager-ldap')->name('accountmanager.ldap.authenticate');
+});
+
 Route::post(config('accountmanager.heartbeat.uri', 'account-management/heartbeat'), HeartbeatController::class)
 	->middleware(['web', 'auth', 'accountmanager.active', 'throttle:accountmanager-heartbeat'])
 	->name(config('accountmanager.routePrefix') . '.heartbeat');
@@ -59,6 +67,12 @@ Route::group([
 	{
 		//IlBronza\AccountManager\Http\Controllers\Account\EditAccountController
 		Route::get('access-logs', [AccountManager::getController('accessLog', 'index'), 'index'])->name('accessLogs.index');
+
+        Route::get('ldap-users', [\IlBronza\AccountManager\Http\Controllers\LdapDirectoryController::class, 'index'])->name('ldapUsers.index');
+        Route::post('ldap-users/{directoryUser}/link', [\IlBronza\AccountManager\Http\Controllers\LdapDirectoryController::class, 'link'])
+            ->whereNumber('directoryUser')->name('ldapUsers.link');
+        Route::delete('ldap-users/{directoryUser}/link', [\IlBronza\AccountManager\Http\Controllers\LdapDirectoryController::class, 'unlink'])
+            ->whereNumber('directoryUser')->name('ldapUsers.unlink');
 
 		
 		Route::group([

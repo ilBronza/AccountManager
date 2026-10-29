@@ -1,0 +1,25 @@
+<?php
+
+return [
+    'title' => 'Active Directory users',
+    'description' => 'Link each AD identity to an existing local user: directory sign-in and local passwords will use the same user and roles.',
+    'unlinked' => 'Unlinked', 'linked' => 'Linked', 'all' => 'All',
+    'search' => 'Search name, account or email', 'filter' => 'Filter',
+    'directory_user' => 'Active Directory identity', 'state' => 'AD status',
+    'local_user' => 'Local user and roles', 'association' => 'Association',
+    'active' => 'Active', 'disabled' => 'Disabled',
+    'in_group' => 'In the allowed group', 'outside_group' => 'Outside the allowed group',
+    'missing' => 'Not found in the last import', 'last_seen' => 'Last seen',
+    'choose_user' => 'Select a local user', 'link' => 'Link user', 'unlink' => 'Remove association',
+    'manage_users' => 'Manage users and roles', 'edit_user' => 'User and roles',
+    'no_roles' => 'No roles', 'unavailable_user' => 'Local user unavailable',
+    'empty' => 'No identities match the filters.',
+    'migration_required' => 'The LDAP inventory has not been prepared. Contact the administrator.',
+    'policy_note' => 'Linking an identity does not change passwords or roles. AD sign-in still requires an active AD account and membership in the configured group.',
+    'login_disabled' => 'AD sign-in is currently disabled. You can still prepare associations.',
+    'linked_success' => 'AD identity linked. The local user’s password, roles and data are unchanged.',
+    'unlinked_success' => 'AD association removed. The local user and roles are unchanged.',
+    'link_conflict' => 'Cannot apply this association: check that the user is active and that no different association already exists. Reload the page.',
+    'missing_cannot_link' => 'This identity is absent from the last import. Refresh the inventory before linking it.',
+    'previous' => 'Previous', 'next' => 'Next', 'results' => ':total identities found',
+];

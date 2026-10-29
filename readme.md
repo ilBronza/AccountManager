@@ -278,3 +278,8 @@ La suite include le pagine, le scritture, CSRF, autorizzazioni, accesso IP,
 OAuth simulato, inviti simulati, conservazione dei log e migrazioni reali con
 rollback e reinstallazione. Per il vendor condiviso del workspace e i limiti
 dell'ambiente vedere [tests/README.md](tests/README.md).
+
+## Accesso Active Directory opzionale
+
+LDAP è disponibile come accesso aggiuntivo, disabilitato per default, senza
+sostituire il login locale o GitHub. Vedere [installazione e configurazione LDAP](docs/ldap.md).

@@ -1,0 +1,25 @@
+<?php
+
+return [
+    'title' => 'Utenti Active Directory',
+    'description' => 'Collega ogni identità AD a un utente esistente: accesso aziendale e password locale useranno lo stesso utente e gli stessi ruoli.',
+    'unlinked' => 'Da collegare', 'linked' => 'Collegati', 'all' => 'Tutti',
+    'search' => 'Cerca nome, account o email', 'filter' => 'Filtra',
+    'directory_user' => 'Identità Active Directory', 'state' => 'Stato AD',
+    'local_user' => 'Utente locale e ruoli', 'association' => 'Collegamento',
+    'active' => 'Attivo', 'disabled' => 'Disabilitato',
+    'in_group' => 'Nel gruppo ammesso', 'outside_group' => 'Fuori dal gruppo ammesso',
+    'missing' => 'Non rilevato nell’ultima importazione', 'last_seen' => 'Ultima rilevazione',
+    'choose_user' => 'Seleziona un utente locale', 'link' => 'Collega utente', 'unlink' => 'Rimuovi collegamento',
+    'manage_users' => 'Gestisci utenti e ruoli', 'edit_user' => 'Utente e ruoli',
+    'no_roles' => 'Nessun ruolo', 'unavailable_user' => 'Utente locale non disponibile',
+    'empty' => 'Nessuna identità corrisponde ai filtri.',
+    'migration_required' => 'La rubrica LDAP non è ancora stata preparata. Contatta l’amministratore.',
+    'policy_note' => 'Collegare un’identità non modifica password o ruoli. Per accedere tramite AD restano necessari un account AD attivo e l’appartenenza al gruppo configurato.',
+    'login_disabled' => 'L’accesso AD è attualmente disabilitato. Puoi comunque preparare i collegamenti.',
+    'linked_success' => 'Identità AD collegata. Password, ruoli e dati dell’utente locale sono invariati.',
+    'unlinked_success' => 'Collegamento AD rimosso. L’utente locale e i suoi ruoli sono invariati.',
+    'link_conflict' => 'Collegamento non applicabile: controlla che l’utente sia attivo e che non esistano già associazioni diverse. Ricarica la pagina.',
+    'missing_cannot_link' => 'Questa identità non è più presente nell’ultima importazione. Aggiorna la rubrica prima di collegarla.',
+    'previous' => 'Precedente', 'next' => 'Successiva', 'results' => ':total identità trovate',
+];
