@@ -47,7 +47,11 @@ In `config/accountmanager_ldap.php` scegliere:
   `samaccountname` inserisce `mrossi`, con `userprincipalname` `mrossi@azienda.local`.
   I risultati ambigui vengono rifiutati.
 - `required_group_dn`: facoltativo, DN del gruppo autorizzato; include i gruppi
-  annidati. Non assegna né rimuove ruoli applicativi.
+  annidati e il gruppo primario. Non assegna né rimuove ruoli applicativi.
+  Login e import usano lo stesso controllo: partendo dall'utente risalgono i gruppi
+  che lo contengono (attributo `member` dei gruppi), quindi il flag dell'inventario
+  coincide sempre con chi può entrare. L'import esegue il controllo utente per
+  utente: con directory molto grandi è più lento.
 - `sync_name`: default `false`. Se abilitato aggiorna solo `users.name` dal
   display name AD al login; email, password, stato attivo e permessi restano locali.
 

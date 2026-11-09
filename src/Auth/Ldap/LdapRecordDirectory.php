@@ -12,17 +12,14 @@ class LdapRecordDirectory implements DirectoryAuthenticator, DirectoryReader
     public function users(): iterable
     {
         $this->validateConfiguration();
-        $allowed = null;
         if ($groupDn = config('accountmanager_ldap.required_group_dn')) {
-            $allowed = [];
-            // The relationship includes nested and primary-group members and paginates results.
-            $group = Group::on($this->connectionName())->findOrFail($groupDn);
-            foreach ($group->members()->recursive()->get(['objectguid', 'objectclass', 'objectsid', 'member', 'primarygroupid']) as $member) {
-                $allowed[strtolower((string) $member->getConvertedGuid())] = true;
-            }
+            // Fail the whole import on a wrong DN instead of flagging every account as outside.
+            Group::on($this->connectionName())->findOrFail($groupDn);
         }
+        // objectsid and primarygroupid let the shared group check resolve the primary group.
         $users = User::on($this->connectionName())->where('objectcategory', '=', 'person')
-            ->select(['objectguid', 'cn', 'displayname', 'samaccountname', 'userprincipalname', 'mail', 'useraccountcontrol'])
+            ->select(['objectguid', 'objectsid', 'primarygroupid', 'cn', 'displayname', 'samaccountname',
+                'userprincipalname', 'mail', 'useraccountcontrol'])
             ->paginate(500, true);
         foreach ($users as $user) {
             $identity = $this->identity($user);
@@ -33,7 +30,7 @@ class LdapRecordDirectory implements DirectoryAuthenticator, DirectoryReader
                 $user->getFirstAttribute('mail'),
                 $user->getDn(),
                 ((int) $user->getFirstAttribute('useraccountcontrol') & 2) === 0,
-                $allowed === null || isset($allowed[$identity->guid]),
+                $this->inRequiredGroup($user, $groupDn),
             );
         }
     }
@@ -87,12 +84,22 @@ class LdapRecordDirectory implements DirectoryAuthenticator, DirectoryReader
             return null;
         }
 
-        $group = config('accountmanager_ldap.required_group_dn');
-        if ($group && ! $user->groups()->recursive()->exists($group)) {
+        if (! $this->inRequiredGroup($user, config('accountmanager_ldap.required_group_dn'))) {
             return null;
         }
 
         return $user;
+    }
+
+    /**
+     * The single required-group check shared by sign-in and the directory import, so the
+     * inventory flag can never disagree with who is actually admitted. It walks from the
+     * account up through its groups (nested and primary included), one directory search
+     * per level and per account: the import trades speed for that guarantee.
+     */
+    protected function inRequiredGroup(User $user, ?string $groupDn): bool
+    {
+        return ! $groupDn || $user->groups()->recursive()->exists($groupDn);
     }
 
     protected function identity(User $user): DirectoryIdentity
