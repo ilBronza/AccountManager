@@ -4,6 +4,10 @@ Gestione di utenti, ruoli, permessi, profili e avatar per applicazioni Laravel c
 usano i componenti CRUD e UI IlBronza. Include accessi GitHub, restrizioni IP,
 presenza online e registro degli accessi.
 
+Il controllo opzionale [Accesso alle route](docs/route-access.md) permette di
+associare ruoli e permessi alle route da un albero degli URL, con selezione dei
+rami e accesso negato in assenza di associazioni, salvo i ruoli amministrativi.
+
 ## Requisiti e installazione
 
 PHP 8.2+ e Laravel, con versione minima dichiarata in Composer.

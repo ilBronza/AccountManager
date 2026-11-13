@@ -23,15 +23,22 @@ class MigrationsTest extends TestCase
         $this->assertDatabaseCount('users', 1);
         $this->assertDatabaseHas('roles', ['name' => 'custom-role']);
         $this->assertTrue(Schema::hasTable('user_access_logs'));
+        $this->assertTrue(Schema::hasTable('accountmanager_routes'));
+        $this->assertTrue(Schema::hasColumn('accountmanager_routes', 'description'));
+        $this->assertTrue(Schema::hasColumn('accountmanager_routes', 'system_roles'));
+        $this->assertTrue(Schema::hasTable('accountmanager_route_role'));
+        $this->assertTrue(Schema::hasTable('accountmanager_route_permission'));
         $this->assertTrue(Schema::hasColumn('users', 'github_id'));
+        $rolesCount = DB::table('roles')->count();
         $this->artisan('migrate:rollback', ['--path' => [$path], '--realpath' => true])->assertSuccessful();
         $this->assertDatabaseCount('users', 1);
         $this->assertDatabaseHas('roles', ['name' => 'custom-role']);
         $this->assertFalse(Schema::hasTable('user_access_logs'));
+        $this->assertFalse(Schema::hasTable('accountmanager_routes'));
         $this->assertFalse(Schema::hasColumn('users', 'active'));
         $this->artisan('migrate', ['--path' => [$path], '--realpath' => true])->assertSuccessful();
         $this->assertDatabaseCount('users', 1);
-        $this->assertDatabaseCount('roles', 5);
+        $this->assertDatabaseCount('roles', $rolesCount);
     }
 
     public function test_empty_installation_does_not_create_an_administrator(): void

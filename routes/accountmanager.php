@@ -19,6 +19,21 @@ Route::post(config('accountmanager.heartbeat.uri', 'account-management/heartbeat
 	->middleware(['web', 'auth', 'accountmanager.active', 'throttle:accountmanager-heartbeat'])
 	->name(config('accountmanager.routePrefix') . '.heartbeat');
 
+// Always registered for route caching; management middleware returns 404 when disabled.
+Route::group([
+    'middleware' => ['web', 'auth', 'accountmanager.active', \IlBronza\AccountManager\Http\Middleware\ManageRouteAccess::class],
+    'prefix' => 'account-management/routes',
+    'as' => config('accountmanager.routePrefix').'routes.',
+    'routeTranslationPrefix' => AccountManager::getRouteTranslationPrefix(),
+], function () {
+    Route::get('', [\IlBronza\AccountManager\Http\Controllers\Routes\RouteController::class, 'index'])->name('index');
+    Route::get('related', [\IlBronza\AccountManager\Http\Controllers\Routes\RelatedRouteController::class, 'index'])->name('related');
+    Route::post('associate', \IlBronza\AccountManager\Http\Controllers\Routes\AssociateRouteController::class)->name('associate');
+    Route::post('preview', \IlBronza\AccountManager\Http\Controllers\Routes\PreviewRouteController::class)->name('preview');
+    Route::put('{route}', [\IlBronza\AccountManager\Http\Controllers\Routes\RouteController::class, 'update'])
+        ->whereNumber('route')->name('update');
+});
+
 if (class_exists(Socialite::class))
 {
 	Route::group(['middleware' => ['web']], function () {

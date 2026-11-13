@@ -6,6 +6,36 @@ GitHub e notifiche email sono simulati: non vengono contattati servizi esterni.
 
 - `GetRoutesTest`: tutte le pagine GET registrate, accesso e rendering HTML.
   Le route CRUD supplementari non implementate non vengono registrate.
+- `RouteAccessTest`: catalogo route, albero per segmenti e domini, associazioni
+  multiple, sincronizzazione automatica all’apertura e nei dati AJAX,
+  esclusioni per nome/URI nascoste dalla tabella senza rami vuoti,
+  `store`/`update` nascoste solo con le rispettive `create`/`edit` registrate,
+  eredità dei ruoli/permessi dei form nel middleware con revoche immediate
+  e associazioni proprie conservate quando il form manca,
+  blocco predefinito, bypass amministrativi, permessi diretti ed
+  ereditati, guard e autenticazione API, pagina e dati AJAX, configurazione spenta.
+- `RouteHierarchyTest`: campo v2 `row_parent_id`, getter delle righe virtuali,
+  riferimenti coerenti per rami e foglie, domini aperti per default, identità
+  distinte tra domini e varianti HTTP, selezione dei discendenti invariata,
+  rendering HTML/JSON, stabilità degli ID dopo il salvataggio della descrizione
+  e riuso nella tabella delle route correlate; nessuna
+  colonna di parentela persistita nel catalogo.
+- `RelatedRouteAccessTest`: DataTable CRUD delle route collegate nella modale,
+  prefissi dei nomi e degli URI, ampliamento ai gruppi superiori, confini dei
+  segmenti e dei domini, esclusioni e salvataggi ereditati, caricamento AJAX,
+  associazioni multiple atomiche con ritorno allo stesso prefisso e autorizzazione.
+- `RouteDescriptionsTest`: file PHP dei package scoperti tramite Composer,
+  repository locali con symlink, precedenza applicazione/route/package,
+  importazione dei soli campi vuoti e conservazione delle descrizioni popolate,
+  modifica dalla tabella con editor CRUD, validazione, accesso amministrativo
+  e CSRF, route in cache, validazione dei file e conflitti, escaping HTML e migrazione.
+- `RouteNameTranslationsTest`: nomi tradotti dai file dei package e
+  dell’applicazione, metadati della singola route, chiavi storiche, lingua
+  corrente e fallback, route in cache, traduzioni mancanti ed escaping HTML.
+- `RouteSystemRolesTest`: ruoli dichiarati nei middleware Spatie e dei package,
+  alias, gruppi, controller ed esclusioni, regole specifiche e predefinite,
+  override e prefissi, route in cache, aggiornamento senza modificare le
+  associazioni, colonna con escaping HTML e migrazione incrementale.
 - `SessionGetRoutesTest`: OAuth, associazione GitHub, account sospesi/eliminati,
   stato OAuth invalido, logout POST e duplicazione POST.
 - `UserWritesTest`: inviti, transazioni, password, copia indipendente di userdata,

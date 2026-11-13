@@ -64,6 +64,14 @@ class AccountManagerServiceProvider extends ServiceProvider
 		$this->app['router']->aliasMiddleware('accountmanager.active', CheckActiveUser::class);
 		$this->app['router']->aliasMiddleware('accountmanager.roles', AccountManagerMiddlewareRolesPermissions::class);
 		$this->app['router']->aliasMiddleware('accountmanager.logUserAccess', LogUserAccess::class);
+        $routeAccessMiddleware = \IlBronza\AccountManager\Http\Middleware\AuthorizeRouteAccess::class;
+        $this->app['router']->aliasMiddleware('accountmanager.routeAccess', $routeAccessMiddleware);
+        $kernel = $this->app->make(\Illuminate\Contracts\Http\Kernel::class);
+        foreach (config('accountmanager.routeAccess.middlewareGroups', ['web', 'api']) as $group) {
+            $kernel->appendMiddlewareToGroup($group, $routeAccessMiddleware);
+        }
+        // Ensure token/session authentication and model binding have run before checking route access.
+        $kernel->appendToMiddlewarePriority($routeAccessMiddleware);
 
 		// Publishing is only necessary when using the CLI.
 		if ($this->app->runningInConsole())

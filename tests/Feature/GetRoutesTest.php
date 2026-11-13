@@ -108,6 +108,8 @@ class GetRoutesTest extends TestCase
 	public function test_every_registered_package_get_route_has_a_test(): void
 	{
 		$expected = array_column(self::protectedRoutes(), 0, 1) + [
+            'account-management/routes' => 'accountmanagerroutes.index',
+            'account-management/routes/related' => 'accountmanagerroutes.related',
 			'auth/redirect' => 'login.github',
 			'login/ldap' => 'accountmanager.ldap.login',
             'account-management/ldap-users' => 'accountmanagerldapUsers.index',

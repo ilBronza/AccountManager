@@ -16,6 +16,7 @@
     ],
     "require": {
         "php": "^8.2",
+        "composer-runtime-api": "^2.1",
         "laravel/framework": "^9.52.21 || >=10.48",
         "laravel/ui": ">=4.0",
         "ilbronza/crud": "*",

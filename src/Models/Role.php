@@ -26,6 +26,11 @@ class Role extends SpatieRole
 		'allow_from_remote' => 'boolean'
 	];
 
+    public function routes(): \Illuminate\Database\Eloquent\Relations\BelongsToMany
+    {
+        return $this->belongsToMany(config('accountmanager.models.route.class', Route::class), 'accountmanager_route_role', 'role_id', 'route_id');
+    }
+
 	public function getTranslatedClassname()
 	{
 		return trans('crudModels.' . $this->getCamelcaseClassBasename());

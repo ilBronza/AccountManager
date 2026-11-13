@@ -39,6 +39,42 @@ use IlBronza\AccountManager\Models\Userdata;
 
 return [
     'enabled' => false,
+    'routeAccess' => [
+        'enabled' => false,
+
+        // May edit route associations; this does not grant access to other pages.
+        'managementRoles' => ['superadmin', 'superadministrator', 'administrator', 'routesManager'],
+
+        // Everyone else is denied when no role or permission is associated.
+        'bypassRoles' => [
+            'superadmin',
+            'superadministrator',
+            'administrator'
+        ],
+
+
+        // Authentication endpoints must remain reachable before login.
+        'exceptRoutes' => [
+            'login',
+            'password.*',
+            'ignition.*',
+            'dbreplicator.*',
+            'login.github',
+        ],
+
+        'exceptUris' => [
+            'login',
+            '*account-management*',
+            '*activity-log-management*',
+            '*_boost*',
+            'cache-clear',
+            '_ignition',
+            'auth/callback'
+        ],
+
+        // Applied after authentication in these middleware groups.
+        'middlewareGroups' => ['web', 'api'],
+    ],
     'canResetPassword' => false,
     'usesUserdata' => true,
     'usesAvatar' => true,
@@ -136,6 +172,16 @@ return [
 
 	'fakeEmailDomain' => 'fake' . (str_replace('http://', '', str_replace('https://', '', env('APP_URL')))),
     'models' => [
+        'route' => [
+            'class' => \IlBronza\AccountManager\Models\Route::class,
+            'table' => 'accountmanager_routes',
+            'controllers' => [
+                'index' => \IlBronza\AccountManager\Http\Controllers\Routes\RouteController::class,
+            ],
+            'fieldsGroupsFiles' => [
+                'index' => \IlBronza\AccountManager\Http\Parameters\TableFields\RouteTableFieldsParameters::class,
+            ],
+        ],
         'userdata' => [
             'class' => Userdata::class,
             'table' => 'users__userdata',

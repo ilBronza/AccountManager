@@ -1,6 +1,8 @@
 <?php
 
 return [
+    'accountmanagerroutes' => ['index' => 'Accesso alle route', 'associate' => 'Associa ruoli e permessi', 'preview' => 'Anteprima route',
+        'related' => 'Route collegate'],
     'accountmanagerldapUsers' => [
         'index' => 'Utenti Active Directory',
         'link' => 'Collega utente Active Directory',

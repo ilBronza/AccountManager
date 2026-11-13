@@ -9,6 +9,15 @@ class AccountManagerMiddlewareRolesPermissions extends CRUDBasePackageMiddleware
 {
     protected string $configPackageName = 'accountmanager';
 
+    public function handle(Request $request, \Closure $next): \Symfony\Component\HttpFoundation\Response
+    {
+        if (config('accountmanager.routeAccess.enabled', false)) {
+            return app(AuthorizeRouteAccess::class)->handle($request, $next);
+        }
+
+        return parent::handle($request, $next);
+    }
+
     protected function getRolesForCurrentRoute(Request $request): array
     {
         $name = $request->route()?->getName();

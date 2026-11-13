@@ -88,7 +88,9 @@ class AccountManager implements RoutedObjectInterface
 		    $account->setFirst();
 	    }
 
-		if(! ($user?->isAdministrator())&&(! ($user = Auth::user())?->isSuperadmin()))
+		if (! $user?->isAdministrator() && ! $user?->isSuperadmin()
+            && ! (config('accountmanager.routeAccess.enabled', false)
+                && app(\IlBronza\AccountManager\Routing\RouteAccess::class)->canManage($user)))
 			return ;
 
         if(config('accountmanager.enabled', false))
@@ -97,7 +99,9 @@ class AccountManager implements RoutedObjectInterface
                     'text' => 'menu::menu.settings',
                     'name' => 'settings',
                     'icon' => 'gear',
-                    'roles' => ['administrator']
+                    'roles' => config('accountmanager.routeAccess.enabled', false)
+                        ? app(\IlBronza\AccountManager\Routing\RouteAccess::class)->managementRoles()
+                        : ['administrator']
                 ]);
 
             $settingsButton->setFirst();
@@ -130,6 +134,16 @@ class AccountManager implements RoutedObjectInterface
             ]);
 
             $authButton->addChild($usersButton);
+
+            if (config('accountmanager.routeAccess.enabled', false)
+                && app(\IlBronza\AccountManager\Routing\RouteAccess::class)->canManage($user)) {
+                $authButton->addChild($menu->createButton([
+                    'name' => 'routes.index',
+                    'icon' => 'sitemap',
+                    'text' => 'accountmanager::route-access.title',
+                    'href' => route(config('accountmanager.routePrefix').'routes.index'),
+                ]));
+            }
 
             if (config('accountmanager_ldap.directory_enabled')
                 && $user->hasAnyRole((array) config('accountmanager_ldap.management_roles', ['superadmin']))) {
