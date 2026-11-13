@@ -27,6 +27,77 @@ può gestire le route. La tabella usa controller, trait e parametri di `ilbronza
 campi di `ilbronza/datatables`, con le normali impostazioni di paginazione,
 ricerca, ordinamento e salvataggio dello stato del progetto.
 
+## Gestione dalla pagina corrente
+
+Il pulsante **Accesso alla pagina**, accanto al pannello utente nella barra destra,
+apre una modale UIkit con i ruoli e i permessi già associati alla route corrente.
+È disponibile ai ruoli `superadmin`, `superadministrator` (compatibilità storica),
+`administrator` e `routesManager`, quando `routeAccess.enabled` è attivo, anche
+se il menu centrale AccountManager è disabilitato. La modale è inserita dal package
+nel layout `uikittemplate::app`, conservando le altre viste aggiuntive del progetto.
+
+I ruoli abilitati alla gestione sono configurabili in `routeAccess.managementRoles`;
+sono ammessi anche i ruoli in `routeAccess.bypassRoles`. La migration
+`2026_11_13_000003_create_routes_manager_role.php`, caricata automaticamente dal
+package, crea `routesManager` per il guard `web`. È idempotente e non assegna il
+ruolo a nessun utente; il rollback conserva il ruolo e le sue assegnazioni.
+Eseguire `php artisan migrate` nelle applicazioni che usano il package.
+
+`routesManager` abilita la gestione del catalogo e delle associazioni, comprese
+le modifiche alla descrizione e l’anteprima. Non è un ruolo di bypass e deve
+avere le normali associazioni per accedere alle altre pagine del gestionale.
+Gli endpoint di gestione rimangono raggiungibili ai gestori anche senza
+esclusioni dal controllo generale.
+
+La modale carica il catalogo all’apertura, offre una ricerca per ruoli e permessi
+e salva senza cambiare pagina. **Salva** sostituisce entrambe le selezioni della
+singola route; deselezionare tutto revoca le associazioni. Le modifiche valgono
+per tutti gli utenti e tutti i record di quella route. Per `create` ed `edit`
+valgono anche per il salvataggio corrispondente, secondo le regole sotto.
+Le altre route e le assegnazioni dei ruoli agli utenti non vengono modificate.
+
+I ruoli di bypass (`administrator`, `superadmin` e il nome storico
+`superadministrator` per impostazione predefinita) hanno già accesso implicito
+a ogni route: sono esclusi dalle selezioni, dalle associazioni mostrate e dai
+ruoli di sistema visualizzati, sia nella modale sia nel catalogo. L’esclusione
+segue `routeAccess.bypassRoles`; `routesManager` resta associabile. Anche gli
+endpoint rifiutano associazioni manuali ai ruoli di bypass. Eventuali collegamenti
+storici restano conservati e non vengono modificati dal salvataggio della modale.
+
+Le pagine senza nome e quelle escluse dal controllo mostrano una spiegazione
+senza modulo di modifica. La modale contiene anche il collegamento al catalogo
+completo. Caricamento e salvataggio richiedono un account attivo autorizzato;
+il salvataggio è protetto da CSRF e valida tutte le selezioni prima di modificare
+le pivot nella stessa transazione.
+
+### Route sorelle e imparentate
+
+La scheda **Route collegate** della modale contiene la stessa DataTable CRUD
+del catalogo globale, con albero, ricerca, paginazione, descrizioni e associazioni
+multiple. Viene caricata quando si apre la scheda, senza lasciare la pagina.
+La route corrente è evidenziata con l’etichetta **Pagina corrente**.
+
+Il prefisso iniziale è quello del nome Laravel senza l’ultimo segmento:
+`clients.edit` mostra `clients.*`, incluse le route annidate come
+`clients.notes.index`. Dal selettore si possono scegliere i prefissi superiori
+del nome oppure un prefisso del percorso URL della pagina. Il confronto dei nomi
+rispetta il punto separatore, quello degli URI lo slash: `clients` non include
+`clients-other`. Sono incluse solo route con lo stesso dominio registrato.
+Per una home priva di prefissi viene mostrata soltanto la route corrente.
+
+Si selezionano le route o i rami e si usano **Associa alle selezionate** o
+**Rimuovi dalle selezionate**. Il salvataggio resta nella modale e nel prefisso
+scelto, senza modificare le altre route. Anche il server verifica l’appartenenza
+delle selezioni al prefisso. Le esclusioni, i ruoli di bypass e l’ereditarietà
+di `store`/`update` conservano le stesse regole del catalogo globale.
+Lo stato della tabella è distinto per pagina e prefisso.
+
+Quando la tabella aggiorna le associazioni, la scheda della pagina corrente
+viene ricaricata se non contiene modifiche non salvate. In caso contrario le
+selezioni dell’operatore restano visibili con un messaggio che segnala
+l’aggiornamento. Salvando la pagina corrente si aggiorna anche la tabella
+alla successiva apertura della relativa scheda.
+
 ## Regole di accesso
 
 Con la funzione attiva, **nessuna associazione significa accesso negato**.

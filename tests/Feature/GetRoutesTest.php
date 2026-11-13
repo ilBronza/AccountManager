@@ -109,6 +109,7 @@ class GetRoutesTest extends TestCase
 	{
 		$expected = array_column(self::protectedRoutes(), 0, 1) + [
             'account-management/routes' => 'accountmanagerroutes.index',
+            'account-management/routes/access' => 'accountmanagerroutes.access.show',
             'account-management/routes/related' => 'accountmanagerroutes.related',
 			'auth/redirect' => 'login.github',
 			'login/ldap' => 'accountmanager.ldap.login',

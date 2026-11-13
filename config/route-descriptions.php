@@ -13,6 +13,8 @@ return [
     $prefix.'routes.associate' => 'Associa o rimuove ruoli e permessi dalle route selezionate.',
     $prefix.'routes.preview' => 'Apre l’anteprima di una pagina usando un record di esempio disponibile.',
     $prefix.'routes.update' => 'Salva la descrizione personalizzata di una route.',
+    $prefix.'routes.access.show' => 'Mostra ruoli, permessi e associazioni della pagina corrente.',
+    $prefix.'routes.access.update' => 'Aggiorna i ruoli e i permessi associati alla pagina corrente.',
     $prefix.'accountmanager.logout.confirm' => 'Mostra la pagina di conferma della disconnessione.',
     $prefix.'accountmanager.logout' => 'Disconnette l’utente e chiude la sessione corrente.',
     $prefix.'accountmanager.account' => 'Mostra il modulo di modifica del proprio account.',

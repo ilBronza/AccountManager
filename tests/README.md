@@ -20,6 +20,13 @@ GitHub e notifiche email sono simulati: non vengono contattati servizi esterni.
   rendering HTML/JSON, stabilità degli ID dopo il salvataggio della descrizione
   e riuso nella tabella delle route correlate; nessuna
   colonna di parentela persistita nel catalogo.
+- `CurrentRouteAccessTest`: ruolo `routesManager`, migration idempotente senza
+  assegnazioni automatiche, pulsante nella barra destra e modale della route
+  corrente, selezioni precompilate e sostituzione atomica, revoche immediate,
+  ereditarietà del salvataggio, utenti non autorizzati, account sospesi, CSRF,
+  route escluse/senza nome/non più registrate e configurazione disattivata;
+  ruoli di bypass esclusi dalle associazioni modificabili nella modale e nel
+  catalogo, validazione delle richieste manuali e conservazione dei link storici.
 - `RelatedRouteAccessTest`: DataTable CRUD delle route collegate nella modale,
   prefissi dei nomi e degli URI, ampliamento ai gruppi superiori, confini dei
   segmenti e dei domini, esclusioni e salvataggi ereditati, caricamento AJAX,

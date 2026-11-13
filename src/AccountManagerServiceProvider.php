@@ -58,6 +58,7 @@ class AccountManagerServiceProvider extends ServiceProvider
 
 		$this->loadTranslationsFrom(__DIR__ . '/../resources/lang', 'accountmanager');
 		$this->loadViewsFrom(__DIR__ . '/../resources/views', 'accountmanager');
+        view()->composer('uikittemplate::app', \IlBronza\AccountManager\View\CurrentRouteAccessComposer::class);
 		$this->loadMigrationsFrom(__DIR__ . '/../database/migrations');
 		$this->loadRoutesFrom(__DIR__ . '/../routes/accountmanager.php');
 

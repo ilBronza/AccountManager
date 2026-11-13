@@ -159,4 +159,16 @@ class RelatedRouteAccessTest extends TestCase
         config(['accountmanager.routeAccess.enabled' => false]);
         $this->getJson($this->url())->assertNotFound();
     }
+
+    public function test_current_page_exposes_a_lazy_related_table_without_loading_it_in_readonly_pages(): void
+    {
+        $this->actingAs($this->makeUserWithRole('superadmin'));
+        $this->get('/clients')->assertOk()->assertSee('Route collegate')->assertSee('data-related-frame', false);
+        $this->getJson('/account-management/routes/access?route_name=clients.index')->assertOk()
+            ->assertJsonPath('related_url', route('accountmanagerroutes.related', ['related_to' => 'clients.index', 'iframed' => 'true']));
+        RouteSyncHelper::sync();
+        $scope = RelatedRouteScope::resolve('home');
+        $this->assertSame('current', $scope->scope);
+        $this->assertSame(['home'], $scope->routes()->pluck('name')->all());
+    }
 }

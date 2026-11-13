@@ -2,7 +2,7 @@
 
 return [
     'accountmanagerroutes' => ['index' => 'Accesso alle route', 'associate' => 'Associa ruoli e permessi', 'preview' => 'Anteprima route',
-        'related' => 'Route collegate'],
+        'access' => ['show' => 'Accesso alla pagina', 'update' => 'Salva accesso alla pagina'], 'related' => 'Route collegate'],
     'accountmanagerldapUsers' => [
         'index' => 'Utenti Active Directory',
         'link' => 'Collega utente Active Directory',

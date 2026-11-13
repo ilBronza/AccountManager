@@ -86,6 +86,20 @@ class AccountManager implements RoutedObjectInterface
 		    $menu->addToNavbar($account, $destra);
 
 		    $account->setFirst();
+
+            if (config('accountmanager.routeAccess.enabled', false)
+                && app(\IlBronza\AccountManager\Routing\RouteAccess::class)->canManage($user)) {
+                $pageAccess = $menu->provideButton([
+                    'name' => 'accountmanager.currentRouteAccess',
+                    'text' => 'accountmanager::route-access.current_page',
+                    'icon' => 'user-lock',
+                    'href' => '#accountmanager-current-route-access',
+                    'roles' => app(\IlBronza\AccountManager\Routing\RouteAccess::class)->managementRoles(),
+                ]);
+                $pageAccess->setToggle('accountmanager-current-route-access');
+                $menu->addToNavbar($pageAccess, $destra);
+                $pageAccess->setPosition(1);
+            }
 	    }
 
 		if (! $user?->isAdministrator() && ! $user?->isSuperadmin()

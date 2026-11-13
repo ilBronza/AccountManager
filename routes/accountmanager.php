@@ -30,6 +30,8 @@ Route::group([
     Route::get('related', [\IlBronza\AccountManager\Http\Controllers\Routes\RelatedRouteController::class, 'index'])->name('related');
     Route::post('associate', \IlBronza\AccountManager\Http\Controllers\Routes\AssociateRouteController::class)->name('associate');
     Route::post('preview', \IlBronza\AccountManager\Http\Controllers\Routes\PreviewRouteController::class)->name('preview');
+    Route::get('access', [\IlBronza\AccountManager\Http\Controllers\Routes\CurrentRouteAccessController::class, 'show'])->name('access.show');
+    Route::put('access', [\IlBronza\AccountManager\Http\Controllers\Routes\CurrentRouteAccessController::class, 'update'])->name('access.update');
     Route::put('{route}', [\IlBronza\AccountManager\Http\Controllers\Routes\RouteController::class, 'update'])
         ->whereNumber('route')->name('update');
 });
