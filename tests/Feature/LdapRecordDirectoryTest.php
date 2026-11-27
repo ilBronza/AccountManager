@@ -8,6 +8,7 @@ use IlBronza\AccountManager\Tests\TestCase;
 use LdapRecord\Container;
 use LdapRecord\Laravel\LdapServiceProvider;
 use LdapRecord\Laravel\Testing\DirectoryEmulator;
+use LdapRecord\Laravel\Testing\LdapObject;
 use LdapRecord\Models\ActiveDirectory\Group;
 use LdapRecord\Models\ActiveDirectory\User;
 use LdapRecord\Testing\LdapFake;
@@ -199,5 +200,75 @@ class LdapRecordDirectoryTest extends TestCase
         $this->assertFalse($rows[$outside->getConvertedGuid()]->inRequiredGroup);
         $this->assertSame('mario', $rows[$allowed->getConvertedGuid()]->samAccountName);
         $this->assertSame($allowed->getDn(), $rows[$allowed->getConvertedGuid()]->dn);
+    }
+
+    public function test_directory_reader_flags_members_whose_member_of_is_unreadable(): void
+    {
+        // AD may let the service account read a group's member values while denying memberOf
+        // on some accounts. Sign-in still admits them, so the inventory must flag them too.
+        $hidden = $this->user(['objectcategory' => 'person']);
+        $group = Group::create(['cn' => 'Allowed']);
+        $child = Group::create(['cn' => 'Nested']);
+        $group->members()->attach($child);
+        $child->members()->attach($hidden);
+        LdapObject::findByDn($hidden->getDn())->attributes()->where('name', 'memberof')->get()->each->delete();
+        $this->assertCount(0, User::where('memberof', '=', $child->getDn())->get());
+        config(['accountmanager_ldap.required_group_dn' => $group->getDn()]);
+
+        $rows = collect(iterator_to_array((new LdapRecordDirectory)->users()))->keyBy(fn ($row) => $row->identity->guid);
+        $this->assertTrue($rows[$hidden->getConvertedGuid()]->inRequiredGroup);
+        $this->assertSame($hidden->getConvertedGuid(), (new LdapRecordDirectory)->find('mario@example.test')->guid);
+    }
+
+    public function test_directory_reader_survives_circular_group_nesting(): void
+    {
+        $user = $this->user(['objectcategory' => 'person']);
+        $outside = $this->user(['cn' => 'Outside', 'samaccountname' => 'outside',
+            'userprincipalname' => 'outside@example.test', 'objectcategory' => 'person']);
+        $group = Group::create(['cn' => 'Allowed']);
+        $child = Group::create(['cn' => 'Nested']);
+        $group->members()->attach($child);
+        $child->members()->attach($group);
+        $child->members()->attach($user);
+        config(['accountmanager_ldap.required_group_dn' => $group->getDn()]);
+
+        $rows = collect(iterator_to_array((new LdapRecordDirectory)->users()))->keyBy(fn ($row) => $row->identity->guid);
+        $this->assertTrue($rows[$user->getConvertedGuid()]->inRequiredGroup);
+        $this->assertFalse($rows[$outside->getConvertedGuid()]->inRequiredGroup);
+    }
+
+    public function test_directory_reader_fails_the_import_when_the_required_group_is_missing(): void
+    {
+        $this->user(['objectcategory' => 'person']);
+        config(['accountmanager_ldap.required_group_dn' => 'cn=Missing,dc=example,dc=test']);
+        $this->expectException(\LdapRecord\Models\ModelNotFoundException::class);
+        iterator_to_array((new LdapRecordDirectory)->users());
+    }
+
+    public function test_directory_reader_flags_exactly_the_accounts_sign_in_admits(): void
+    {
+        $direct = $this->user(['objectcategory' => 'person']);
+        $nested = $this->user(['cn' => 'Nested User', 'samaccountname' => 'nested',
+            'userprincipalname' => 'nested@example.test', 'objectcategory' => 'person']);
+        $hidden = $this->user(['cn' => 'Hidden User', 'samaccountname' => 'hidden',
+            'userprincipalname' => 'hidden@example.test', 'objectcategory' => 'person']);
+        $outside = $this->user(['cn' => 'Outside', 'samaccountname' => 'outside',
+            'userprincipalname' => 'outside@example.test', 'objectcategory' => 'person']);
+        $group = Group::create(['cn' => 'Allowed']);
+        $child = Group::create(['cn' => 'Nested']);
+        $group->members()->attach($child);
+        $group->members()->attach($direct);
+        $child->members()->attach($nested);
+        $child->members()->attach($hidden);
+        LdapObject::findByDn($hidden->getDn())->attributes()->where('name', 'memberof')->get()->each->delete();
+        config(['accountmanager_ldap.required_group_dn' => $group->getDn()]);
+
+        $directory = new LdapRecordDirectory;
+        foreach ($directory->users() as $row) {
+            $admitted = $directory->find($row->userPrincipalName) !== null;
+            $this->assertSame($admitted, $row->inRequiredGroup, $row->userPrincipalName);
+        }
+        $this->assertNull($directory->find('outside@example.test'));
+        $this->assertNotNull($directory->find('hidden@example.test'));
     }
 }

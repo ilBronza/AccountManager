@@ -2,6 +2,7 @@
 
 ## Unreleased
 
+- Compute the LDAP inventory's required-group flag with the same check sign-in uses, instead of a `memberOf` search that silently skipped accounts whose `memberOf` the service account cannot read.
 - Declare runtime and test dependencies, factory autoload and Composer test scripts.
 - Fix permission form routes and normalize configured role lists/maps, denying explicitly empty rules.
 - Register only implemented resource routes and enforce active accounts on package routes.
